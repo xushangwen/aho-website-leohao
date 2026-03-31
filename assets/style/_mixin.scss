@@ -1,0 +1,201 @@
+//媒体查询
+//$breakpoints: (
+//    'phone': (320px, 480px),
+//    'pad': (481px, 768px),
+//    'notebook': (769px, 1024px),
+//    'desktop': (1025px, 1200px),
+//    'tv': 1201px
+//);
+//@mixin rt($breakname) {
+//    $bp: map-get($breakpoints, $breakname);
+//    @if type-of($bp) == 'list' {
+//        $min: nth($bp, 1);
+//        $max: nth($bp, 2);
+//        @media screen and (min-width: $min) and (max-width: $max) {
+//            @content
+//        }
+//    }
+//    @else {
+//        @media screen and (min-width:$bp) {
+//            @content
+//        }
+//    }
+//}
+
+$breakpoints: (
+    'mobile': 992px,
+    'laptop': 1400px,
+    'full': 1680px,
+);
+
+@mixin rt($breakname) {
+    $bp: map-get($breakpoints, $breakname);
+    @media screen and (max-width: $bp) {
+        @content
+    }
+}
+
+@mixin mo() {
+    @include rt('mobile') {
+        @content
+    }
+}
+
+
+@mixin lap() {
+    @include rt('laptop') {
+        @content
+    }
+}
+
+@mixin full() {
+    @include rt('full') {
+        @content
+    }
+}
+
+@function tovw($px: 0, $base: 1920px) {
+    @return #{calc($px / $base * 100)}vw;
+}
+
+@function torgb($color) {
+    $red: red($color);
+    $green: green($color);
+    $blue: blue($color);
+    @return $red, $green, $blue;
+}
+
+@mixin flex-c($wrap: nowrap) {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: $wrap;
+}
+
+@mixin flex-r($wrap: nowrap) {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: $wrap;
+}
+
+@mixin flex-center(){
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin full-absolute{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+@mixin after() {
+    content: '';
+    display: block;
+}
+
+@mixin niceScroll(){
+    &::-webkit-scrollbar {
+        width: 6px;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--BASE_COLOR);
+        //border-radius: 6px;
+    }
+    &::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(217, 217, 217, 0.1);
+        background-color: #f1f1f1;
+    }
+}
+
+@mixin bgHoverScale() {
+    position: relative;
+    overflow: hidden;
+    &:hover {
+        .bg {
+            transform: scale(1.1);
+        }
+    }
+    .bg {
+        width: 100%;
+        height: inherit;
+        position: absolute;
+        left: 0;
+        top: 0;
+        transition: transform .5s;
+    }
+}
+
+@mixin icon($width: 36px) {
+    background-color: $GRAY300;
+    width: $width;
+    height: $width;
+    border-radius: $width;
+    @include flex-r(nowrap);
+    @include flex-center;
+    transition: all .3s;
+    overflow: hidden;
+    //position: relative;
+    &:after {
+        content: '';
+        display: block;
+        width: $width;
+        height: $width;
+        border-radius: $width;
+        position: absolute;
+        left: 0;
+        top: 0;
+        transform: scale(0);
+        transition: all .3s;
+        background-color: currentColor;
+    }
+    i {
+        font-size: 24px;
+        line-height: $width;
+        color: white;
+        position: relative;
+        z-index: 2;
+    }
+    &.scale {
+        transform: scale(.1);
+        i {
+            opacity: 0;
+        }
+    }
+}
+
+@mixin mt-number-animate($height: 50px, $lineHeight: $height, $font-size: 50px, $width: 29px) {
+    .mt-number-animate {
+        line-height: $lineHeight;
+        height: $height;
+        font-size: $font-size;
+        overflow: hidden;
+        display: inline-block;
+        position: relative;
+        .mt-number-animate-dom {
+            width: $width;
+            text-align: center;
+            float: left;
+            position: relative;
+            top: 0;
+            .mt-number-animate-span {
+                width: 100%;
+                float: left;
+            }
+        }
+        .mt-number-animate-dot {
+            float: left;
+        }
+    }
+}
+
+
+%ff-default {
+    font-family: HarmonyOS_Sans, -apple-system, BlinkMacSystemFont, SF UI Text, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Arial, sans-serif;
+}
+
+%ff-number {
+    font-family: SpaceGrotesk;
+}

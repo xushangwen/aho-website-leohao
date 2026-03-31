@@ -1,0 +1,215 @@
+<template>
+    <main>
+        <EleDefaultCover
+            image="/images/about/honor/cover.jpg"
+            image-mobile="/images/about/honor/cover-m.jpg"
+            text="澳弘荣誉"
+        ></EleDefaultCover>
+        <EleBreadcrumb
+            :navigate="breadcrumb"
+        />
+
+        <section class="s1">
+            <div class="wrap">
+                <div class="t">澳弘荣誉</div>
+                <div class="patent-list">
+                    <MotionGlareHover
+                        class="item-wrapper"
+                        v-for="(item, index) in honorList"
+                        :key="`item${index}`"
+                    >
+                        <EleRatioWrapper
+                            :ratio="270/420"
+                        >
+                            <div class="item">
+                                <div class="bg">
+                                    <img src="/images/about/honor/item-bg.jpg" alt="">
+                                </div>
+                                <div class="cont">
+                                    <img :src="item.image?.[0] || ''" alt="">
+                                </div>
+                            </div>
+                        </EleRatioWrapper>
+                    </MotionGlareHover>
+                    <div class="loading" v-if="loading">加载中...</div>
+                    <div class="no-more" v-if="noMore && honorList.length > 0">没有更多数据</div>
+                </div>
+            </div>
+        </section>
+    </main>
+</template>
+
+<script setup lang="ts">
+import useEventStore from "@/stores/event";
+
+const runtimeConfig = useRuntimeConfig()
+const appConfig = useAppConfig()
+const eventStore = useEventStore()
+const docScrollTop = computed(() => eventStore.docScrollTop)
+
+const breadcrumb = ref([
+    {
+        name: '关于澳弘',
+        link: '/about'
+    }, {
+        name: '澳弘荣誉',
+        link: ''
+    }
+])
+
+// 列表数据
+const honorList = ref([])
+const loading = ref(false)
+const noMore = ref(false)
+const page = ref(1)
+const pageSize = 12
+const totalPage = ref(1)
+
+// 获取列表数据
+async function getListData(pageNum = 1) {
+    if (loading.value || noMore.value && pageNum > 1) return null
+    
+    loading.value = true
+    try {
+        const params = {
+            page_num: pageNum,
+            per_page: pageSize
+        }
+        
+        const { data } = await useFetch(appConfig.api('/honor/list'), {
+            params
+        })
+        
+        if (data.value?.code === 0) {
+            const newList = data.value.list_model || []
+            
+            // 更新分页信息
+            totalPage.value = data.value.pagination?.total_page || 1
+            
+            // 检查是否还有更多数据
+            const hasMore = newList.length >= pageSize
+            
+            return {
+                list: newList,
+                hasMore,
+                totalPage: totalPage.value
+            }
+        }
+        return null
+    } catch (error) {
+        console.error('获取荣誉数据失败:', error)
+        return null
+    } finally {
+        loading.value = false
+    }
+}
+
+// 使用 useAsyncData 获取第一页列表数据
+const { data: initialListData, refresh: refreshList } = await useAsyncData(
+    'honor-list',
+    () => getListData(1)
+)
+
+// 初始化列表数据
+watch(initialListData, (newData) => {
+    if (newData) {
+        honorList.value = newData.list || []
+        noMore.value = !newData.hasMore
+        totalPage.value = newData.totalPage || 1
+        page.value = 2
+    }
+}, { immediate: true })
+
+// 加载更多数据
+async function loadMore() {
+    if (loading.value || noMore.value) return
+    
+    const result = await getListData(page.value)
+    if (result) {
+        honorList.value = [...honorList.value, ...result.list]
+        noMore.value = !result.hasMore
+        totalPage.value = result.totalPage || 1
+        if (result.hasMore) {
+            page.value++
+        }
+    }
+}
+
+// 滚动加载更多
+function handleScroll() {
+    const scrollHeight = document.documentElement.scrollHeight
+    const scrollTop = document.documentElement.scrollTop
+    const clientHeight = document.documentElement.clientHeight
+    
+    if (scrollTop + clientHeight >= scrollHeight - 1000 && !loading.value && !noMore.value) {
+        loadMore()
+    }
+}
+
+// 监听滚动事件
+watch(docScrollTop, () => {
+    handleScroll()
+})
+</script>
+
+<style scoped lang="scss">
+.s1 {
+    padding: 100px 0;
+
+    .wrap {
+        > .t {
+            color: #000;
+            font-size: 38px;
+            font-weight: 700;
+        }
+    }
+
+    .patent-list {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 48px;
+        margin-top: 48px;
+        .item-wrapper {
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--main-light-gray, #DCDCDC);
+            transition: box-shadow .3s;
+            &:hover {
+                box-shadow: 0 5px 50px -3px rgba(0, 0, 0, 0.15);
+            }
+        }
+        .item {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            .bg {
+                position: absolute;
+                inset: 0;
+            }
+            .bg>img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            .cont {
+                width: 100%;
+                height: 100%;
+                @include flex-c();
+                @include flex-center;
+                img {
+                    height: 90%;
+                    width: auto;
+                }
+            }
+        }
+        .loading,
+        .no-more {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px 0;
+            color: var(--main-gray, #666);
+            font-size: 14px;
+        }
+    }
+}
+</style>

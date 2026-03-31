@@ -1,0 +1,41 @@
+$BC: #FF6400;
+:root {
+    --BASE_COLOR_BLUE: #1E3296;
+    --BLUE_BC: #1E3296;
+    --ORANGE_BC: #FF6400;
+    --BASE_COLOR_GREEN: #86F9A2;
+    --GREEN_BC: #86F9A2;
+
+    --BASE_COLOR: var(--BASE_COLOR_BLUE);
+    --BC: var(--BASE_COLOR_BLUE);
+    --main-blue: var(--BASE_COLOR_BLUE);
+    --main-orange: var(--ORANGE_BC);
+    --main-yellow: #FFD700;
+    --main-black: #0F171F;
+    --main-gray: #C8C9C7;
+    --main-dark-gray: #3C3C3C;
+    --main-light-gray: #DCDCDC;
+    --main-white: #FFFFFF;
+
+    --COLOR_TITLE: #333333;
+    --COLOR_TEXT_MAIN: #444444;
+
+    --COLOR_TEXT_1: #777;
+    --COLOR_TEXT_2: #888;
+    --COLOR_TEXT_3: #999;
+    --COLOR_TEXT_4: #AAA;
+    --COLOR_TEXT_5: #BBB;
+    --COLOR_TEXT_6: #CCC;
+    --COLOR_TEXT_7: #DDD;
+    --COLOR_TEXT_8: #EEE;
+
+    --COLOR_DEFAULT_BG: #cccccc;
+
+    --COLOR_GRADIENT_1: linear-gradient(316.23deg, #044A89 0%, #118C73 66.4%, #6CB148 114.49%);
+
+    --ANIMATION_TIME: 0.3s;
+
+    --HEADER_HEIGHT: 92px;
+    --HEADER_HEIGHT_MOB: 70px;
+    --WIDTH_SLIDE: 7.5vw; /*108px / 1440px*/
+}
