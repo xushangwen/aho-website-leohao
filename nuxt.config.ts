@@ -106,12 +106,12 @@ export default defineNuxtConfig({
                 //     src: '/js/loadMap.js',
                 //     mode: 'client'
                 // },
-                {
-                    src: 'https://api.map.baidu.com/getscript?v=3.0&ak=P4sdMvuqpV5oELoyWjl5mZh0AMmIUc6b&s=1"',
-                    // src: 'https://api.map.baidu.com/api?v=2.0&ak=P4sdMvuqpV5oELoyWjl5mZh0AMmIUc6b',
-                    async: true,
-                    defer: true
-                }
+                // 百度地图仅联系页面需要，暂时移出全局加载，避免开发时 "APP被您禁用" 弹窗
+                // {
+                //     src: 'https://api.map.baidu.com/getscript?v=3.0&ak=P4sdMvuqpV5oELoyWjl5mZh0AMmIUc6b&s=1"',
+                //     async: true,
+                //     defer: true
+                // }
                 // <script src="https://myawesome-lib.js"></script>
                 // { type: 'text/javascript',src: 'https://unpkg.com/swiper@8/swiper-bundle.js', body: false },
             ],

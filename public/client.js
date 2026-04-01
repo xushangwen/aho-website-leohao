@@ -382,7 +382,7 @@ const history = [
 const indexApplication = [
     {
         name: '智能家居',
-        iconClass: 'ri-home-3-line',
+        iconClass: 'ri-home-office-line',
         region: '电视机、洗衣机、电冰箱、空调、热水器、微波炉、厨房电器、清洁电器、智能家居。',
         cover: '/images/home/application/1home.jpg',
         contentBg: '/images/application/1.jpg',
@@ -395,7 +395,7 @@ const indexApplication = [
     },
     {
         name: '汽车电子',
-        iconClass: 'ri-car-line',
+        iconClass: 'ri-police-car-line',
         region: '电池管理、车载电源、刹车控制、方向盘、水泵、冷却系统、车灯、后视镜、座椅、车内感知……',
         cover: '/images/home/application/2car.jpg',
         contentBg: '/images/application/2.jpg',
@@ -422,7 +422,7 @@ const indexApplication = [
     },
     {
         name: '电源能源',
-        iconClass: 'ri-flashlight-line',
+        iconClass: 'ri-battery-charge-line',
         region: '不间断电源(UPS)、光伏逆变器、各因适配器、电站储能、移动电源、照明。',
         cover: '/images/home/application/3elec.jpg',
         contentBg: '/images/application/3.jpg',
@@ -435,7 +435,7 @@ const indexApplication = [
     },
     {
         name: '消费办公',
-        iconClass: 'ri-computer-line',
+        iconClass: 'ri-printer-line',
         region: '打印机、POS机、显示器、游戏机、电动工具。',
         cover: '/images/home/application/4office.jpg',
         contentBg: '/images/application/4.jpg',
@@ -448,7 +448,7 @@ const indexApplication = [
     },
     {
         name: '通讯安防',
-        iconClass: 'ri-shield-line',
+        iconClass: 'ri-webcam-line',
         region: '光模块、机顶盒、安防控制、监控系统……',
         cover: '/images/home/application/5tele.jpg',
         contentBg: '/images/application/5.jpg',
@@ -461,7 +461,7 @@ const indexApplication = [
     },
     {
         name: '工控/医疗/其他',
-        iconClass: 'ri-settings-3-line',
+        iconClass: 'ri-router-line',
         region: '工业控制、精密电机、航空液压、各类EMS产品。',
         cover: '/images/home/application/6industry.jpg',
         contentBg: '/images/application/6.jpg',

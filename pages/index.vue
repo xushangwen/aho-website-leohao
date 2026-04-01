@@ -165,49 +165,96 @@
             </div>
         </section>
 
-        <section class="s5">
-            <div class="bg">
-                <img src="/images/home/global-service.jpg" alt="">
+        <section class="s5" ref="elS5Section">
+            <div class="s5-bg"></div>
+            <div class="s5-header">
+                <div class="s5-title">我们的全球服务</div>
+                <div class="s5-desc">澳弘电子与全球领先企业深度合作，推动科技创新与行业发展</div>
             </div>
-            <div
-                class="point-layer"
-                :class="{active: statusPointLayer}"
-                ref="elPointsLayer">
-                <div
-                    class="item"
-                    :class="[item.type]"
-                    v-for="(item, index) in gloPointsForHome"
-                    :key="index"
-                    :style="{
-                            left: item.position?.left || 0,
-                            top: item.position?.top || 0
-                        }"
+            <div class="s5-map-wrap">
+                <div class="s5-map-zoom">
+                <img src="/images/home/world-map.svg" class="s5-map-img" alt="world map" />
+                <svg
+                    class="s5-markers-svg"
+                    viewBox="0 0 800 450"
+                    preserveAspectRatio="xMidYMid meet"
+                    @mouseleave="onMarkerLeave"
                 >
-                    <div class="dot"></div>
-                    <div class="cont-container">
-                        <div class="name">{{ item.name }}</div>
-                        <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M19.284 17.3647L12.9131 23.7256L6.54222 17.3547C3.02173 13.8342 3.02173 8.1334 6.54222 4.62291C10.0527 1.10242 15.7535 1.10242 19.264 4.62191C22.7745 8.1324 22.7745 13.8332 19.264 17.3437L19.284 17.3647ZM11.913 9.99366H8.91255V11.9939H11.913V14.9944H13.9132V11.9939H16.9137V9.99366H13.9132V6.99324H11.913V9.99366Z" fill="#FF6400"/>
-                        </svg>
+                    <!-- 全区域事件捕获层 -->
+                    <rect x="0" y="0" width="800" height="450" fill="transparent" style="pointer-events:all" />
+                    <template v-for="(marker, idx) in filteredMarkers" :key="marker.name + marker.type">
+                        <g
+                            class="s5-marker-g"
+                            @mouseenter="onMarkerEnter(marker)"
+                            @mouseleave="onMarkerLeave"
+                            @click.stop="onMarkerClick(marker)"
+                        >
+                            <!-- 动态脉冲光晕（空心描边，CSS r动画） — 仅 active 时显示 -->
+                            <circle
+                                v-if="isMarkerActive(marker)"
+                                :cx="marker.x" :cy="marker.y"
+                                :r="getMarkerSize(marker.type) * 1.8"
+                                fill="none"
+                                :stroke="markerColors[marker.type]"
+                                stroke-width="2"
+                                opacity="0.4"
+                                class="s5-pulse-circle"
+                            />
+                            <!-- 静态次光晕（空心描边，固定大小） — 仅 active 时显示 -->
+                            <circle
+                                v-if="isMarkerActive(marker)"
+                                :cx="marker.x" :cy="marker.y"
+                                :r="getMarkerSize(marker.type) * 1.4"
+                                fill="none"
+                                :stroke="markerColors[marker.type]"
+                                stroke-width="1.5"
+                                opacity="0.6"
+                            />
+                            <!-- 主标记点：hover时r放大+strokeWidth增加+glow -->
+                            <circle
+                                :cx="marker.x" :cy="marker.y"
+                                :r="isMarkerActive(marker) ? getMarkerSize(marker.type) * 1.4 : getMarkerSize(marker.type)"
+                                :fill="markerColors[marker.type]"
+                                stroke="white"
+                                :stroke-width="isMarkerActive(marker) ? 2 : 1.5"
+                                class="marker-dot"
+                                :class="{ 'marker-visible': statusS5 }"
+                                :style="{
+                                    transitionDelay: isMarkerActive(marker) ? '0ms' : `${idx * 40}ms`,
+                                    filter: isMarkerActive(marker)
+                                        ? `drop-shadow(0 0 8px ${markerColors[marker.type]})`
+                                        : 'drop-shadow(0 1px 2px rgba(0,0,0,0.15))',
+                                }"
+                            />
+                        </g>
+                    </template>
+                </svg>
+                </div><!-- /s5-map-zoom -->
+                <!-- HTML tooltip：固定于标记点正上方，带底部三角箭头 -->
+                <div
+                    v-if="hoveredMarker"
+                    class="s5-tooltip-div"
+                    :style="{ left: tooltipScreenPos.x + 'px', top: tooltipScreenPos.y + 'px' }"
+                >{{ hoveredMarker.name }}</div>
+            </div>
+            <div class="s5-bottom">
+                <div class="s5-filters">
+                    <button class="s5-fbtn" :class="{ active: activeFilter === 'all' }" @click="activeFilter = 'all'">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4zM4 16h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"/></svg>
+                        <span class="s5-flabel">全部</span>
+                        <span class="s5-fcount">33</span>
+                    </button>
+                    <button v-for="cat in filterCategories" :key="cat.type" class="s5-fbtn" :class="{ active: activeFilter === cat.type }" @click="activeFilter = cat.type">
+                        <span class="s5-fdot" :style="{ backgroundColor: cat.color, boxShadow: `0 0 8px ${cat.color}50` }"></span>
+                        <span class="s5-flabel">{{ cat.label }}</span>
+                        <span class="s5-fcount">{{ cat.count }}</span>
+                    </button>
+                </div>
+                <div class="s5-stats">
+                    <div class="s5-stat" v-for="stat in statsCards" :key="stat.label">
+                        <div class="s5-stat-num" :style="{ color: stat.color }">{{ stat.value }}</div>
+                        <div class="s5-stat-txt">{{ stat.label }}</div>
                     </div>
-                </div>
-            </div>
-            <div class="main">
-                <div class="s-t">我们的全球服务</div>
-                <div class="s-a">澳弘电子与全球领先企业深度合作，推动科技创新与行业发展</div>
-            </div>
-            <div class="legend">
-                <div class="item">
-                    <div class="circle customer"></div>
-                    <div class="type-name">客户</div>
-                </div>
-                <div class="item">
-                    <div class="circle sale"></div>
-                    <div class="type-name">海外销售</div>
-                </div>
-                <div class="item">
-                    <div class="circle base"></div>
-                    <div class="type-name">生产基地</div>
                 </div>
             </div>
         </section>
@@ -244,11 +291,11 @@ const bannerSlides = ref(appConfig.clientConfig.indexBanner)
 const indexApplication = ref(appConfig.clientConfig.indexApplication)
 
 const scItems = [
-    { subject: '智慧生活', subjectIcon: 'ri-home-3-line', way: '便利的方式', wayIcon: 'ri-lightbulb-line' },
-    { subject: '大众出行', subjectIcon: 'ri-car-line', way: '安全的保障', wayIcon: 'ri-shield-line' },
-    { subject: '能源管理', subjectIcon: 'ri-flashlight-line', way: '稳定的动力', wayIcon: 'ri-battery-charge-line' },
-    { subject: '现代制造', subjectIcon: 'ri-tools-line', way: '可靠的控制', wayIcon: 'ri-settings-line' },
-    { subject: '智能科技', subjectIcon: 'ri-cpu-line', way: '智慧的互联', wayIcon: 'ri-global-line' },
+    { subject: '智慧生活', subjectIcon: 'ri-lightbulb-flash-line', way: '便利的方式', wayIcon: 'ri-timer-flash-line' },
+    { subject: '大众出行', subjectIcon: 'ri-route-line', way: '安全的保障', wayIcon: 'ri-shield-keyhole-line' },
+    { subject: '能源管理', subjectIcon: 'ri-battery-2-charge-line', way: '稳定的动力', wayIcon: 'ri-pulse-ai-line' },
+    { subject: '现代制造', subjectIcon: 'ri-settings-5-line', way: '可靠的控制', wayIcon: 'ri-fingerprint-line' },
+    { subject: '智能科技', subjectIcon: 'ri-cpu-line', way: '智慧的互联', wayIcon: 'ri-link-m' },
 ]
 const currentScIndex = ref(0)
 let scTimer = null
@@ -290,26 +337,18 @@ const windowHeight = computed(() => eventStore.windowHeight)
 const windowWidth = computed(() => eventStore.windowWidth)
 const elApplication = ref(null)
 const elS3 = ref(null)
-let headerHeight, s3Height, s3Top, s3Bottom, itemLength, lastChildHeight, step
-// 这个函数通过s3元素的定位确定各元素的fixed状态，具体样式有css样式表定义
+let headerHeight, s3Height, itemLength, lastChildHeight, step
+
 function updateApplicationItem() {
     const { top: s3Top, bottom: s3Bottom } = elS3.value.getBoundingClientRect()
-    /**
-     * 从top高度为headerHeight开始为0，top-headerHeight为0时为起点
-     * 取反-(top-headerHeight) = headerHeight - top
-     * 为正时，向上取整则是满足fixed的元素的数量
-     */
-    const delta = headerHeight - s3Top + 50 // 100是为了提前触发fixed状态,因为scrollTop做了节流，响应较慢
-    // console.log('s3Bottom', s3Bottom, 'windowHeight', windowHeight)
-    if (s3Bottom <  windowHeight.value) {
-        // s3底部已超过窗口底部，所有元素都固定
-        elApplication.value.forEach((item, index) => {
+    const delta = headerHeight - s3Top
+    if (s3Bottom < windowHeight.value) {
+        elApplication.value.forEach((item) => {
             item.classList.remove('fixed-sticky')
             item.classList.add('absolute-sticky')
         })
-    } else if(delta < 0) {
-        // s3尚未接触到header底部
-        elApplication.value.forEach((item, index) => {
+    } else if (delta < 0) {
+        elApplication.value.forEach((item) => {
             item.classList.remove('fixed-sticky')
             item.classList.remove('absolute-sticky')
         })
@@ -325,111 +364,198 @@ function updateApplicationItem() {
         })
     }
 }
-// 滚动，宽度高度变化时需要进行刷新(这里选择仅仅滚动时刷新）
-watch(docScrollTop, (newScrollTop) => {
-    updateApplicationItem()
-})
 
-// 宽度高度变化时重置参数
-watch(windowHeight, (newWindowHeight) => {
-    initApplicationItem()
-})
-watch(windowWidth, (newWindowHeight) => {
-    initApplicationItem()
-})
+watch(windowHeight, initApplicationItem)
+watch(windowWidth, initApplicationItem)
 
-// 固定s3高度， 防止子元素设置fixed时布局混乱
+// 初始化前必须先重置所有 class，确保 getBoundingClientRect 读到正确的自然高度
 function initApplicationItem() {
-    headerHeight = windowWidth.value > 992 ? 92 : 70
-    const { height: s3Height } = elS3.value.getBoundingClientRect()
-    const itemLength = elApplication.value.length
+    headerHeight = windowWidth.value > 992 ? 72 : 70
+    elApplication.value?.forEach(item => {
+        item.classList.remove('fixed-sticky', 'absolute-sticky')
+    })
+    const { height } = elS3.value.getBoundingClientRect()
+    itemLength = elApplication.value.length
     lastChildHeight = elApplication.value[itemLength - 1].getBoundingClientRect().height
-    // 确定步长
     step = (windowHeight.value - headerHeight - lastChildHeight) / (itemLength - 1)
-    // console.log('s3Height', s3Height, 'step', step, 'windowHeight', windowHeight.value)
-    elS3.value.style.height = `${s3Height}px`
+    elS3.value.style.height = `${height}px`
+    // 初始化后立即同步当前滚动位置的状态（修复刷新在 s4/s5 时错乱的根因）
+    updateApplicationItem()
 }
 
 /***application end*****/
 
-/******glonet******/
-const elPointsLayer = ref(null)
-const statusPointLayer = ref(false)
-const gloPointsForHome = computed(() => {
-    // 进行偏移计算
-    const  { gloPoints }  = appConfig.clientConfig || {}
-    const res = []
-    gloPoints.forEach(item => {
-        const copy = JSON.parse(JSON.stringify(item))
-        const {left, top} = copy?.position || {}
-        // let le = parseFloat(left.replace('%', ''));
-        let to = (parseFloat(top.replace('%', ''))-14.5).toFixed(3);
-        copy.position.top = `${to}%`
-        res.push(copy)
-    })
-    return res
-})
-let glonetObserver = null
-function initGlonetObserver() {
-    // if (glonetObserver) return
-    glonetObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            const { intersectionRatio, isIntersecting } = entry
-            // console.log('statusPointLayer', statusPointLayer.value)
-            // console.log('intersectionRatio', intersectionRatio)
-            // if (statusPointLayer.value) {
-            //     // 已经激活
-            //     if (intersectionRatio < 0.3) {
-            //         // 小余0.3时，关闭
-            //         statusPointLayer.value = false
-            //     }
-            // } else {
-            //     if (intersectionRatio > 0.7) {
-            //         // 大于0.7时，激活
-            //         statusPointLayer.value = true
-            //     }
-            // }
-            if (isIntersecting) {
-                statusPointLayer.value = true
-            } else {
-                statusPointLayer.value = false
-            }
-        })
-    }, {
-        threshold: 0.3
-    })
-    glonetObserver.observe(elPointsLayer.value)
+/******全球服务 — 数据 & 投影******/
+const elS5Section = ref(null)
+const statusS5 = ref(false)
+const activeFilter = ref('all')
+
+const markerColors = { customer: '#FF6400', business: '#1E3296', rd: '#FFB432' }
+const filterCategories = [
+    { type: 'customer', color: '#FF6400', label: '全球客户', count: 26 },
+    { type: 'business', color: '#1E3296', label: '全球业务中心', count: 5 },
+    { type: 'rd', color: '#FFB432', label: '研发制造基地', count: 3 },
+]
+const statsCards = [
+    { value: '26+', color: '#FF6400', label: '服务国家/地区' },
+    { value: '5', color: '#1E3296', label: '全球业务中心' },
+    { value: '3', color: '#FFB432', label: '研发制造基地' },
+]
+
+// Natural Earth 1 (geoNaturalEarth1) — 源码 projection="geoNaturalEarth1" projectionConfig.center=[10,10] scale=160
+const NE_A1 = 0.8707, NE_A2 = -0.131979, NE_A3 = -0.013791, NE_A4 = 0.003971
+const NE_B1 = 1.007226, NE_B2 = 0.015085, NE_B3 = -0.044475, NE_B4 = 0.028874
+function _neRaw(lng, lat) {
+    const lam = lng * Math.PI / 180, phi = lat * Math.PI / 180
+    const phi2 = phi * phi, phi4 = phi2 * phi2
+    return [
+        lam * (NE_A1 + phi2 * (NE_A2 + phi2 * (NE_A3 + phi4 * NE_A4))),
+        phi * (NE_B1 + phi2 * (NE_B2 + phi2 * (NE_B3 + phi4 * NE_B4))),
+    ]
 }
-// 全局服务点位置调整
-const { gloPoints } = appConfig.clientConfig
-function convert() {
-    const res = []
-    for (let i = 0; i < gloPoints.length; i++) {
-        const item = gloPoints[i]
-        let top = parseFloat(item.position.top)
-        item.position.top = (top - 14.5).toFixed(3) + '%'
-        res.push(item)
+// center=[10,10]：使 [10,10] 出现在 translate [400,225] 处，计算偏移量
+const [_nc_x, _nc_y] = _neRaw(10, 10)
+const NE_TX = 400 - 160 * _nc_x   // ≈ 375.8
+const NE_TY = 225 + 160 * _nc_y   // ≈ 253.1
+function projectNE(lng, lat) {
+    const [x, y] = _neRaw(lng, lat)
+    return {
+        x: +(NE_TX + 160 * x).toFixed(2),
+        y: +(NE_TY - 160 * y).toFixed(2),
     }
-    console.log(JSON.stringify(res))
-    return res;
+}
+function getMarkerSize(type) {
+    if (type === 'rd') return 5
+    if (type === 'business') return 4.5
+    return 4
+}
+
+const allLocations = [
+    { name: '英国', coords: [-1.5, 52.5], type: 'customer' },
+    { name: '法国', coords: [2.3, 46.6], type: 'customer' },
+    { name: '德国', coords: [10.5, 51.2], type: 'customer' },
+    { name: '奥地利', coords: [14.5, 47.5], type: 'customer' },
+    { name: '波兰', coords: [19.4, 52], type: 'customer' },
+    { name: '西班牙', coords: [-3.7, 40.4], type: 'customer' },
+    { name: '斯洛文尼亚', coords: [14.8, 46.1], type: 'customer' },
+    { name: '斯洛伐克', coords: [19.7, 48.7], type: 'customer' },
+    { name: '意大利', coords: [12.5, 42.5], type: 'customer' },
+    { name: '罗马尼亚', coords: [25, 44.4], type: 'customer' },
+    { name: '土耳其', coords: [32.9, 39.9], type: 'customer' },
+    { name: '突尼斯', coords: [9.5, 34], type: 'customer' },
+    { name: '埃及', coords: [30.8, 26.8], type: 'customer' },
+    { name: '迪拜', coords: [55.3, 25.3], type: 'customer' },
+    { name: '印度', coords: [78.9, 22], type: 'customer' },
+    { name: '中国', coords: [104, 35], type: 'customer' },
+    { name: '日本', coords: [138.3, 36.2], type: 'customer' },
+    { name: '韩国', coords: [128, 36.5], type: 'customer' },
+    { name: '越南', coords: [108.3, 16], type: 'customer' },
+    { name: '马来西亚', coords: [101.7, 3.1], type: 'customer' },
+    { name: '印度尼西亚', coords: [117, -2.5], type: 'customer' },
+    { name: '菲律宾', coords: [120.9, 14.6], type: 'customer' },
+    { name: '台湾', coords: [121.5, 25], type: 'customer' },
+    { name: '美国', coords: [-95.7, 37.1], type: 'customer' },
+    { name: '墨西哥', coords: [-102.5, 23.6], type: 'customer' },
+    { name: '澳大利亚', coords: [145, -37.8], type: 'customer' },
+    { name: '匈牙利', coords: [19, 47.5], type: 'business' },
+    { name: '新加坡', coords: [103.8, 1.35], type: 'business' },
+    { name: '墨西哥', coords: [-99.1, 19.4], type: 'business' },
+    { name: '韩国', coords: [127, 37.5], type: 'business' },
+    { name: '香港', coords: [114.2, 22.3], type: 'business' },
+    { name: '中国', coords: [116.4, 31.2], type: 'rd' },
+    { name: '泰国', coords: [100.5, 13.8], type: 'rd' },
+]
+
+const projectedMarkers = computed(() =>
+    allLocations.map(loc => ({ ...projectNE(loc.coords[0], loc.coords[1]), name: loc.name, type: loc.type }))
+)
+const filteredMarkers = computed(() =>
+    activeFilter.value === 'all' ? projectedMarkers.value : projectedMarkers.value.filter(m => m.type === activeFilter.value)
+)
+
+let s5Observer = null
+function initS5Observer() {
+    s5Observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { statusS5.value = e.isIntersecting })
+    }, { threshold: 0.3 })
+    s5Observer.observe(elS5Section.value)
+}
+
+// 标记点交互状态
+const hoveredMarker = ref(null)
+const clickedKey = ref(null)
+let markerClickTimer = null
+const tooltipScreenPos = ref({ x: 0, y: 0 })
+const MAP_ZOOM = 1.2  // 与 CSS .s5-map-zoom scale() 保持同步
+
+function computeTooltipPos(marker) {
+    const mapWrap = elS5Section.value?.querySelector('.s5-map-wrap')
+    if (!mapWrap) return
+    const { width, height } = mapWrap.getBoundingClientRect()
+    const scale = Math.min(width / 800, height / 450)
+    const ox = (width - 800 * scale) / 2
+    const oy = (height - 450 * scale) / 2
+    // 未缩放前标记在容器中的位置
+    const ux = ox + marker.x * scale
+    const uy = oy + marker.y * scale
+    // scale(MAP_ZOOM) transform-origin: center center 后的实际坐标
+    const cx = width / 2
+    const cy = height / 2
+    tooltipScreenPos.value = {
+        x: cx + (ux - cx) * MAP_ZOOM,
+        y: cy + (uy - cy) * MAP_ZOOM,
+    }
+}
+
+function isMarkerActive(marker) {
+    const key = `${marker.name}-${marker.type}`
+    return hoveredMarker.value?.key === key || clickedKey.value === key
+}
+function onMarkerEnter(marker) {
+    clearTimeout(hoverClearTimer)
+    hoveredMarker.value = { key: `${marker.name}-${marker.type}`, ...marker }
+    computeTooltipPos(marker)
+}
+let hoverClearTimer = null
+function onMarkerLeave() {
+    hoverClearTimer = setTimeout(() => { hoveredMarker.value = null }, 60)
+}
+function onMarkerClick(marker) {
+    const key = `${marker.name}-${marker.type}`
+    clickedKey.value = key
+    hoveredMarker.value = { key, ...marker }
+    clearTimeout(markerClickTimer)
+    markerClickTimer = setTimeout(() => { clickedKey.value = null }, 300)
 }
 
 getRecommendNews()
 
-onMounted(() => {
-    setTimeout(() => {
-        initApplicationItem()
-        initGlonetObserver()
-        // convert()
-    }, 1000)
+let s3ScrollCleanup = null
+onMounted(async () => {
+    await nextTick()
+    initApplicationItem()
+    // 直接绑定 scroll + rAF，绕过 100ms 节流 store，每帧最多执行一次
+    let rafId = null
+    const onScroll = () => {
+        if (rafId) return
+        rafId = requestAnimationFrame(() => {
+            rafId = null
+            updateApplicationItem()
+        })
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    s3ScrollCleanup = () => {
+        window.removeEventListener('scroll', onScroll)
+        if (rafId) cancelAnimationFrame(rafId)
+    }
+    initS5Observer()
     scTimer = setInterval(() => {
         currentScIndex.value = (currentScIndex.value + 1) % scItems.length
     }, 1800)
 })
 onUnmounted(() => {
-    if (elPointsLayer.value) {
-        glonetObserver?.unobserve(elPointsLayer.value)
-    }
+    s3ScrollCleanup?.()
+    if (elS5Section.value) s5Observer?.unobserve(elS5Section.value)
     if (scTimer) clearInterval(scTimer)
 })
 
@@ -437,14 +563,14 @@ onUnmounted(() => {
 
 <style lang="scss">
 .swiper-horizontal > .swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal {
-    width: calc(100% - 80px * 2);
-    left: 80px;
+    width: calc(100% - #{tovw(80px)} * 2);
+    left: tovw(80px);
     bottom: 65px;
     height: 6px;
     text-align: left;
     @include full {
-        width: calc(100% - 20px * 2);
-        left: 20px;
+        width: calc(100% - 24px * 2);
+        left: 24px;
     }
     @include mo {
         bottom: 62px;
@@ -622,7 +748,7 @@ onUnmounted(() => {
             inset: 0;
             background: rgba(0,0,0,.4);
             .rect-1 {
-                width: calc(100vw - 170px);
+                width: calc(100vw - 11vw);
                 height: calc(100vh - 170px);
                 border-radius: 0 0 40px 0;
                 position: absolute;
@@ -688,9 +814,11 @@ onUnmounted(() => {
                 .t1 {
                     font-size: 36px;
                     font-weight: 300;
+                    margin-bottom: 16px;
                     @include mo {
                         font-size: 26px;
                         font-weight: bold;
+                        margin-bottom: 10px;
                     }
                 }
                 .t2,
@@ -892,7 +1020,7 @@ onUnmounted(() => {
             min-width: 210px;
         }
         .sc-provide {
-            margin-left: 16px;
+            margin-left: 6px;
         }
         .sc-pair {
             display: flex;
@@ -901,16 +1029,26 @@ onUnmounted(() => {
             gap: 10px;
         }
         .sc-icon-wrap {
-            width: 34px;
-            height: 34px;
+            width: 42px;
+            height: 42px;
             background: var(--main-orange);
-            border-radius: 10px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 18px;
+            font-size: 28px;
             flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            &::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
+                border-radius: inherit;
+                pointer-events: none;
+            }
         }
         b {
             font-size: 32px;
@@ -918,17 +1056,19 @@ onUnmounted(() => {
             color: var(--main-blue);
         }
     }
-    .sc-slide-enter-active,
+    .sc-slide-enter-active {
+        transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1), transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    }
     .sc-slide-leave-active {
-        transition: all 0.35s ease;
+        transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .sc-slide-enter-from {
         opacity: 0;
-        transform: translateY(16px);
+        transform: translateY(10px);
     }
     .sc-slide-leave-to {
         opacity: 0;
-        transform: translateY(-16px);
+        transform: translateY(-10px);
     }
     @include mo {
         //background: url("/images/home/solu-bg.jpg") no-repeat center / cover;
@@ -946,7 +1086,7 @@ onUnmounted(() => {
         width: 100%;
         padding: 40px 0;
         background-color: white;
-        transition: all .3s;
+        transition: background-color .4s cubic-bezier(.4, 0, .2, 1);
         .wrap {
             display: flex;
             flex-flow: row nowrap;
@@ -961,16 +1101,15 @@ onUnmounted(() => {
             justify-content: space-between;
             align-items: flex-start;
             border-right: 1px solid var(--main-orange);
-            transition: all .3s;
+            transition: border-color .4s cubic-bezier(.4, 0, .2, 1);
             .icon {
                 font-size: 40px;
                 color: var(--main-orange);
-                transition: color .3s;
+                transition: color .4s cubic-bezier(.4, 0, .2, 1);
                 line-height: 1;
                 flex-shrink: 0;
             }
             .cont {
-                //flex: none;
                 width: 460px;
                 height: inherit;
                 margin-left: 20px;
@@ -981,13 +1120,13 @@ onUnmounted(() => {
                     color: var(--main-blue, #1E3296);
                     font-size: 32px;
                     font-weight: 700;
-                    transition: color .3s;
+                    transition: color .4s cubic-bezier(.4, 0, .2, 1);
                 }
                 .region {
                     font-size: 18px;
                     line-height: 1.5;
                     color: #000;
-                    transition: color .3s;
+                    transition: color .4s cubic-bezier(.4, 0, .2, 1);
                     .c {
                         margin-top: 9px;
                         font-weight: 700;
@@ -1004,7 +1143,7 @@ onUnmounted(() => {
                 position: absolute;
                 top: -3px;
                 right: -3px;
-                transition: background-color .3s;
+                transition: background-color .4s cubic-bezier(.4, 0, .2, 1);
             }
         }
         .right {
@@ -1020,9 +1159,6 @@ onUnmounted(() => {
         @for $i from 1 through 7 {
             $header_height: var(--HEADER_HEIGHT);
             position: relative;
-            //&:nth-child(#{$i}) {
-            //    top: 0;
-            //}
             &.fixed-sticky:nth-child(#{$i}) {
                 background-color: lighten(#1E3296, 5% * $i);
                 position: fixed;
@@ -1059,182 +1195,258 @@ onUnmounted(() => {
     }
 }
 
+@keyframes s5-pulse-ring {
+    0%   { r: 4; opacity: 0.8; }
+    100% { r: 16; opacity: 0; }
+}
+
 .s5 {
     width: 100%;
-    height: auto;
+    height: 100vh;
     position: relative;
-    .bg {
-        width: 100%;
-        height: auto;
-        //max-height: calc(100vh - var(--HEADER_HEIGHT));
-        img {
-            width: 100%;
-            height: auto;
-            //max-height: inherit;
-            //object-fit: cover;
-        }
-    }
-    .point-layer {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    .s5-bg {
         position: absolute;
         inset: 0;
-        .item {
-            width: 1px;
-            height: 1px;
-            position: absolute;
-            &:hover {
-                z-index: 9;
-            }
-            &.orange {
-                .dot {
-                    background-color: var(--main-orange);
-                }
-                svg {
-                    path {
-                        fill: var(--main-orange);
-                    }
-                }
+        z-index: 0;
+        background: linear-gradient(to bottom, #f8fafc, #e2e8f0);
+    }
 
-            }
-            &.yellow {
-                .dot {
-                    background-color: var(--main-yellow);
-                }
-                svg {
-                    path {
-                        fill: var(--main-yellow);
-                    }
-                }
-            }
-            &.blue {
-                .dot {
-                    background-color: var(--main-blue);
-                }
-                svg {
-                    path {
-                        fill: var(--main-blue);
-                    }
-                }
-            }
-        }
-        &.active {
-            .dot {
-                transform: scale(1);
-            }
-            .cont-container {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        @for $i from 1 through 30 {
-            .item:nth-child(#{$i}) {
-                .dot,
-                .cont-container {
-                    transition: all .3s 0.05s * $i
-                }
-            }
-        }
-        .dot {
-            width: 4px;
-            height: 4px;
-            border-radius: 4px;
+    .s5-map-wrap {
+        position: relative;
+        flex: 1;
+        overflow: hidden;
+        z-index: 1;
+
+        .s5-map-zoom {
             position: absolute;
-            left: -2px;
-            top: -2px;
-            transform: scale(0);
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: scale(1.2);
+            transform-origin: center center;
         }
-        .cont-container {
+        .s5-map-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0.9;
+        }
+        .s5-markers-svg {
             position: absolute;
-            left: -13px;
-            top: -28px;
-            opacity: 0;
-            transform: translateY(-20px);
-            .name {
-                position: absolute;
-                width: 102px;
-                height: 33px;
-                border: 1px solid var(--main-light-gray);
-                border-radius: 6px;
-                text-align: center;
-                line-height: 31px;
-                font-size: 16px;
-                left: 50%;
-                transform: translateX(-50%) translateY(-10px);
-                top: -35px;
-                background-color: rgba(255, 255, 255, .4);
-                backdrop-filter: blur(3px);
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            /* 主标记点：初始不可见，进入视口后淡入 */
+            circle.marker-dot {
                 opacity: 0;
-                visibility: hidden;
-                transition: all .3s;
-            }
-            &:hover {
-                cursor: pointer;
-                .name {
-                    visibility: visible;
+                transition: opacity 0.5s ease, filter 0.15s ease-out;
+                &.marker-visible {
                     opacity: 1;
-                    transform: translateX(-50%) translateY(0px);
                 }
             }
+            .s5-marker-g {
+                cursor: pointer;
+                outline: none;
+                &:focus { outline: none; }
+            }
+            .s5-pulse-circle {
+                animation: s5-pulse-ring 1.2s ease-out infinite;
+            }
         }
+        .s5-tooltip-div {
+            position: absolute;
+            transform: translate(-50%, calc(-100% - 18px));
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            border: 1px solid rgba(200, 210, 220, 0.6);
+            color: #374151;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 100;
+            /* 底部三角箭头（旋转方块） */
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: -5px;
+                left: 50%;
+                transform: translateX(-50%) rotate(45deg);
+                width: 9px;
+                height: 9px;
+                background: rgba(255, 255, 255, 0.88);
+                border-right: 1px solid rgba(200, 210, 220, 0.6);
+                border-bottom: 1px solid rgba(200, 210, 220, 0.6);
+            }
+        }
+    }
 
+    .s5-header {
+        position: relative;
+        z-index: 10;
+        padding-top: calc(var(--HEADER_HEIGHT) + 20px);
+        padding-bottom: tovw(16px);
+        text-align: center;
+        flex-shrink: 0;
+        .s5-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .s5-desc {
+            font-size: 18px;
+            color: #475569;
+            max-width: 560px;
+            margin: 0 auto;
+        }
     }
-    .main {
-        width: 100%;
-        height: auto;
+
+    .s5-bottom {
         position: absolute;
-        top: tovw(100px);
-        left: 0;
-        display: flex;
-        flex-flow: column nowrap;
-        justify-content: center;
-        align-items: center;
-    }
-    .legend {
-        position: absolute;
+        bottom: tovw(100px);
         left: 50%;
         transform: translateX(-50%);
-        bottom: 48px;
         z-index: 10;
+        padding-bottom: 0;
+        pointer-events: none;
+        width: auto;
+        max-width: 100%;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .s5-filters {
         display: flex;
-        flex-flow: row nowrap;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        pointer-events: auto;
+    }
+
+    $glass-bg: rgba(255, 255, 255, 0.4);
+    $glass-border: rgba(255, 255, 255, 0.6);
+    $glass-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    $glass-blur: blur(4px) saturate(180%);
+
+    .s5-fbtn {
+        display: flex;
         align-items: center;
-        background: rgba(0, 0, 0, 0.3);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: 40px;
-        padding: 10px 6px;
-        .item {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            padding: 0 20px;
-            border-right: 1px solid rgba(255, 255, 255, 0.15);
-            &:last-child {
-                border-right: none;
-            }
-            .circle {
-                width: 10px;
-                height: 10px;
-                border-radius: 50%;
-                margin-right: 8px;
-                flex-shrink: 0;
-                &.customer {
-                    background-color: var(--main-orange);
-                }
-                &.sale {
-                    background-color: var(--main-blue);
-                }
-                &.base {
-                    background-color: var(--main-yellow);
-                }
-            }
-            .type-name {
-                font-size: 14px;
-                color: rgba(255, 255, 255, 0.9);
-                font-weight: 500;
-                white-space: nowrap;
-            }
+        gap: 8px;
+        padding: 10px 18px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: $glass-blur;
+        -webkit-backdrop-filter: $glass-blur;
+        cursor: pointer;
+        transition: all 0.3s;
+        &:hover {
+            background: $glass-bg;
+            box-shadow: $glass-shadow;
         }
+        &.active {
+            background: $glass-bg;
+            border-color: $glass-border;
+            box-shadow: $glass-shadow;
+            transform: scale(1.05);
+        }
+        svg {
+            width: 16px;
+            height: 16px;
+            color: #475569;
+        }
+    }
+    .s5-fdot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+    .s5-flabel {
+        font-size: 14px;
+        color: #374151;
+        font-weight: 500;
+    }
+    .s5-fcount {
+        font-size: 12px;
+        color: #6b7280;
+    }
+
+    .s5-stats {
+        margin-top: 16px;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        pointer-events: auto;
+    }
+
+    .s5-stat {
+        text-align: center;
+        padding: 16px 32px;
+        background: $glass-bg;
+        border-radius: 16px;
+        border: 1px solid $glass-border;
+        box-shadow: $glass-shadow;
+        backdrop-filter: $glass-blur;
+        -webkit-backdrop-filter: $glass-blur;
+        transition: all 0.3s;
+        &:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+    }
+    .s5-stat-num {
+        font-size: 42px;
+        font-weight: 600;
+        font-family: SpaceGrotesk, sans-serif;
+        line-height: 1.1;
+    }
+    .s5-stat-txt {
+        font-size: 15px;
+        color: #475569;
+        margin-top: 4px;
+    }
+
+    @include mo {
+        height: auto;
+        min-height: 80vh;
+        .s5-header {
+            padding-top: 32px;
+            .s5-title { font-size: 24px; }
+            .s5-desc { font-size: 14px; padding: 0 24px; }
+        }
+        .s5-bottom {
+            position: relative;
+            left: 0;
+            transform: none;
+            padding-bottom: 24px;
+        }
+        .s5-stat {
+            padding: 10px 16px;
+        }
+        .s5-stat-num {
+            font-size: 28px;
+        }
+        .s5-stat-txt {
+            font-size: 13px;
+        }
+        .s5-fbtn {
+            padding: 8px 12px;
+            gap: 6px;
+        }
+        .s5-flabel { font-size: 12px; }
+        .s5-fcount { font-size: 11px; }
+        .s5-fdot { width: 10px; height: 10px; }
     }
 }
 
