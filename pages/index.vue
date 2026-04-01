@@ -101,34 +101,24 @@
                     <span>澳弘电子持续创新，我们研发的PCB产品，适用于多领域多场景的应用需求。</span>
                 </div>
                 <div class="sc">
-                    <span>为</span>
-                    <svg class="s" width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="1" y="1" width="32" height="32" rx="10" fill="#FF6400"/>
-                        <rect x="1" y="1" width="32" height="32" rx="10" fill="url(#paint0_linear_2352_355)" fill-opacity="0.2"/>
-                        <rect x="1" y="1" width="32" height="32" rx="10" stroke="#FF6400"/>
-                        <path d="M14.97 23.0002H19.02C19.15 21.7902 19.76 20.8002 20.76 19.7202C20.87 19.5902 21.59 18.8502 21.67 18.7402C22.51 17.6802 22.98 16.3702 22.98 14.9802C22.98 11.6602 20.29 8.98023 16.98 8.98023C13.66 8.98023 10.98 11.6602 10.98 14.9802C10.98 16.3602 11.44 17.6702 12.29 18.7202C12.37 18.8202 13.09 19.5702 13.2 19.6902C14.19 20.7702 14.8 21.7602 14.94 22.9602L14.97 23.0002ZM18.99 25.0002H14.99V26.0002H18.99V25.0002ZM10.74 19.9902C9.64001 18.6202 8.98001 16.8802 8.98001 14.9902C8.98001 10.5702 12.56 6.99023 16.98 6.99023C21.39 6.99023 24.98 10.5702 24.98 14.9902C24.98 16.8802 24.32 18.6202 23.22 19.9902C22.59 20.7602 20.97 21.9802 20.97 23.4802V25.9802C20.97 27.0802 20.07 27.9802 18.97 27.9802H14.97C13.86 27.9802 12.97 27.0802 12.97 25.9802V23.4802C12.97 21.9802 11.34 20.7502 10.72 19.9702L10.74 19.9902ZM17.98 14.9902H20.48L15.98 20.9902V16.9902H13.48L17.98 10.9802V14.9802V14.9902Z" fill="white"/>
-                        <defs>
-                            <linearGradient id="paint0_linear_2352_355" x1="23" y1="32" x2="23" y2="1.5" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="white" stop-opacity="0"/>
-                                <stop offset="1" stop-color="white"/>
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                    <b>便利的方式</b>
-                    <span class="s">提供</span>
-                    <svg class="s" width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="1" y="1" width="32" height="32" rx="10" fill="#FF6400"/>
-                        <rect x="1" y="1" width="32" height="32" rx="10" fill="url(#paint0_linear_2352_146)" fill-opacity="0.2"/>
-                        <rect x="1" y="1" width="32" height="32" rx="10" stroke="#FF6400"/>
-                        <path d="M11.38 10.9602C12.91 9.72023 14.87 8.99023 16.99 8.99023C19.115 8.99023 21.06 9.72023 22.6 10.9502L24.05 9.49023L25.46 10.9002L24 12.3502C25.23 13.8802 25.96 15.8402 25.96 17.9602C25.96 22.9302 21.93 26.9602 16.96 26.9602C11.98 26.9602 7.96002 22.9302 7.96002 17.9602C7.96002 15.8302 8.69002 13.8802 9.92002 12.3402L8.46002 10.8802L9.87002 9.46023L11.32 10.9102L11.38 10.9602ZM16.99 24.9902C20.85 24.9902 23.99 21.8502 23.99 17.9902C23.99 14.1202 20.85 10.9902 16.99 10.9902C13.12 10.9902 9.99002 14.1202 9.99002 17.9902C9.99002 21.8502 13.12 24.9902 16.99 24.9902ZM17.99 16.9902H20.99L15.99 23.4902V18.9902H12.99L17.99 12.4802V16.9802V16.9902ZM12.99 5.99023H20.99V7.99023H12.99V5.99023Z" fill="white"/>
-                        <defs>
-                            <linearGradient id="paint0_linear_2352_146" x1="23" y1="32" x2="23" y2="1.5" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="white" stop-opacity="0"/>
-                                <stop offset="1" stop-color="white"/>
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                    <b>智慧生活</b>
+                    <span class="sc-for">为</span>
+                    <div class="sc-slot">
+                        <Transition name="sc-slide" mode="out-in">
+                            <div class="sc-pair" :key="'subject-' + currentScIndex">
+                                <div class="sc-icon-wrap"><i :class="scItems[currentScIndex].subjectIcon"></i></div>
+                                <b>{{ scItems[currentScIndex].subject }}</b>
+                            </div>
+                        </Transition>
+                    </div>
+                    <span class="sc-provide">提供</span>
+                    <div class="sc-slot">
+                        <Transition name="sc-slide" mode="out-in">
+                            <div class="sc-pair" :key="'way-' + currentScIndex">
+                                <div class="sc-icon-wrap"><i :class="scItems[currentScIndex].wayIcon"></i></div>
+                                <b>{{ scItems[currentScIndex].way }}</b>
+                            </div>
+                        </Transition>
+                    </div>
                 </div>
             </div>
         </section>
@@ -141,7 +131,7 @@
             >
                 <div class="wrap">
                     <div class="left">
-                        <div class="icon" v-html="item.icon"></div>
+                        <i :class="['icon', item.iconClass]"></i>
                         <div class="cont">
                             <div class="name">{{item.name}}</div>
                             <div class="region">
@@ -252,6 +242,16 @@ const runtimeConfig = useRuntimeConfig()
 
 const bannerSlides = ref(appConfig.clientConfig.indexBanner)
 const indexApplication = ref(appConfig.clientConfig.indexApplication)
+
+const scItems = [
+    { subject: '智慧生活', subjectIcon: 'ri-home-3-line', way: '便利的方式', wayIcon: 'ri-lightbulb-line' },
+    { subject: '大众出行', subjectIcon: 'ri-car-line', way: '安全的保障', wayIcon: 'ri-shield-line' },
+    { subject: '能源管理', subjectIcon: 'ri-flashlight-line', way: '稳定的动力', wayIcon: 'ri-battery-charge-line' },
+    { subject: '现代制造', subjectIcon: 'ri-tools-line', way: '可靠的控制', wayIcon: 'ri-settings-line' },
+    { subject: '智能科技', subjectIcon: 'ri-cpu-line', way: '智慧的互联', wayIcon: 'ri-global-line' },
+]
+const currentScIndex = ref(0)
+let scTimer = null
 const newsList = ref([])
 const loadingNews = ref(false)
 
@@ -422,11 +422,15 @@ onMounted(() => {
         initGlonetObserver()
         // convert()
     }, 1000)
+    scTimer = setInterval(() => {
+        currentScIndex.value = (currentScIndex.value + 1) % scItems.length
+    }, 1800)
 })
 onUnmounted(() => {
     if (elPointsLayer.value) {
         glonetObserver?.unobserve(elPointsLayer.value)
     }
+    if (scTimer) clearInterval(scTimer)
 })
 
 </script>
@@ -519,10 +523,7 @@ onUnmounted(() => {
             .left {
                 border-right: 1px solid white !important;
                 .icon {
-                    path {
-                        fill: white !important;
-                        stroke: white !important;
-                    }
+                    color: white !important;
                 }
                 .cont {
                     .name,
@@ -860,7 +861,10 @@ onUnmounted(() => {
         img {
             position: absolute;
             inset: 0;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
+            object-position: center bottom;
         }
     }
     .wrap {
@@ -875,19 +879,56 @@ onUnmounted(() => {
         flex-flow: row nowrap;
         justify-content: flex-start;
         align-items: center;
-        span {
+        .sc-for,
+        .sc-provide {
             font-size: 30px;
             color: var(--main-dark-gray);
+            flex-shrink: 0;
         }
-        .s {
-            margin-left: 24px;
+        .sc-slot {
+            margin-left: 12px;
+            display: inline-flex;
+            align-items: center;
+            min-width: 210px;
+        }
+        .sc-provide {
+            margin-left: 16px;
+        }
+        .sc-pair {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            gap: 10px;
+        }
+        .sc-icon-wrap {
+            width: 34px;
+            height: 34px;
+            background: var(--main-orange);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            flex-shrink: 0;
         }
         b {
-            margin-left: 9px;
             font-size: 32px;
             font-weight: 700;
             color: var(--main-blue);
         }
+    }
+    .sc-slide-enter-active,
+    .sc-slide-leave-active {
+        transition: all 0.35s ease;
+    }
+    .sc-slide-enter-from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    .sc-slide-leave-to {
+        opacity: 0;
+        transform: translateY(-16px);
     }
     @include mo {
         //background: url("/images/home/solu-bg.jpg") no-repeat center / cover;
@@ -921,6 +962,13 @@ onUnmounted(() => {
             align-items: flex-start;
             border-right: 1px solid var(--main-orange);
             transition: all .3s;
+            .icon {
+                font-size: 40px;
+                color: var(--main-orange);
+                transition: color .3s;
+                line-height: 1;
+                flex-shrink: 0;
+            }
             .cont {
                 //flex: none;
                 width: 460px;
@@ -929,11 +977,6 @@ onUnmounted(() => {
                 display: flex;
                 flex-flow: column nowrap;
                 justify-content: space-between;
-                .icon {
-                    path {
-                        transition: fill .3s, stroke .3s;
-                    }
-                }
                 .name {
                     color: var(--main-blue, #1E3296);
                     font-size: 32px;
@@ -1147,35 +1190,49 @@ onUnmounted(() => {
     }
     .legend {
         position: absolute;
-        left: 100px;
-        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 48px;
         z-index: 10;
         display: flex;
-        flex-flow: column nowrap;
-        gap: 15px;
+        flex-flow: row nowrap;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 40px;
+        padding: 10px 6px;
         .item {
             display: flex;
             justify-content: flex-start;
             align-items: center;
+            padding: 0 20px;
+            border-right: 1px solid rgba(255, 255, 255, 0.15);
+            &:last-child {
+                border-right: none;
+            }
             .circle {
-                width: 18px;
-                height: 18px;
+                width: 10px;
+                height: 10px;
                 border-radius: 50%;
-                border: 2px solid currentColor;
-                margin-right: 5px;;
+                margin-right: 8px;
+                flex-shrink: 0;
                 &.customer {
-                    color: var(--main-orange);
+                    background-color: var(--main-orange);
                 }
                 &.sale {
-                    color: var(--main-blue);
+                    background-color: var(--main-blue);
                 }
                 &.base {
-                    color: var(--main-yellow);
+                    background-color: var(--main-yellow);
                 }
             }
             .type-name {
-                font-size: 20px;
-                color: var(--main-dark-gray);
+                font-size: 14px;
+                color: rgba(255, 255, 255, 0.9);
+                font-weight: 500;
+                white-space: nowrap;
             }
         }
     }

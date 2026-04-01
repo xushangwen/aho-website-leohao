@@ -188,7 +188,7 @@ const scrollTopHandler = throttle((scrollTop) => {
         return
     }
     // 滚动距离超过页面高度则取消透明
-    transparentStatus.value = !(scrollTop > (windowHeight.value - 100))
+    transparentStatus.value = !(scrollTop > 0)
 }, 200)
 watch(docScrollTop, (newScrollTop) => {
     scrollTopHandler(newScrollTop)
@@ -205,8 +205,7 @@ function navLeave() {
         transparentStatus.value = false
         return
     }
-    if (docScrollTop.value < (windowHeight.value - 100)) {
-        // 滚动距离尚未超过页面高度，仍然可以设置透明度
+    if (docScrollTop.value <= 0) {
         transparentStatus.value = true
     }
 }
@@ -297,15 +296,17 @@ nav.norm {
         height: 100%;
         @include flex-r(nowrap);
         align-items: center;
-        gap: 16px;
+        gap: 12px;
         svg {
+            width: 200px;
+            height: auto;
             path {
                 transition: all .3s;
             }
         }
         .l {
-            height: 32px;
-            width: 1px;
+            height: 28px;
+            width: 0.5px;
             background-color: var(--main-dark-gray);
             transition: all .3s;
         }
@@ -317,19 +318,19 @@ nav.norm {
             transition: all .3s;
         }
         .code {
-            font-size: 18px;
+            font-size: 14px;
             leading-trim: both;
             text-edge: cap;
             font-style: normal;
             font-weight: 700;
-            line-height: 130%; /* 23.4px */
+            line-height: 130%;
             text-align: justify;
         }
         .label {
-            font-size: 15px;
+            font-size: 12px;
             font-style: normal;
             font-weight: 400;
-            line-height: 130%; /* 19.175px */
+            line-height: 130%;
             text-align: justify;
         }
     }
