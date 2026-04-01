@@ -6,7 +6,7 @@
         <NuxtLayout>
             <NuxtPage />
         </NuxtLayout>
-        <!-- Hello -->
+        <CommonPreloader />
     </div>
 </template>
 
