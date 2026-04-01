@@ -242,7 +242,7 @@
                     <button class="s5-fbtn" :class="{ active: activeFilter === 'all' }" @click="activeFilter = 'all'">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4zM4 16h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"/></svg>
                         <span class="s5-flabel">全部</span>
-                        <span class="s5-fcount">33</span>
+                        <span class="s5-fcount">34</span>
                     </button>
                     <button v-for="cat in filterCategories" :key="cat.type" class="s5-fbtn" :class="{ active: activeFilter === cat.type }" @click="activeFilter = cat.type">
                         <span class="s5-fdot" :style="{ backgroundColor: cat.color, boxShadow: `0 0 8px ${cat.color}50` }"></span>
@@ -392,12 +392,12 @@ const activeFilter = ref('all')
 
 const markerColors = { customer: '#FF6400', business: '#1E3296', rd: '#FFB432' }
 const filterCategories = [
-    { type: 'customer', color: '#FF6400', label: '全球客户', count: 26 },
+    { type: 'customer', color: '#FF6400', label: '全球客户', count: 27 },
     { type: 'business', color: '#1E3296', label: '全球业务中心', count: 5 },
     { type: 'rd', color: '#FFB432', label: '研发制造基地', count: 3 },
 ]
 const statsCards = [
-    { value: '26+', color: '#FF6400', label: '服务国家/地区' },
+    { value: '27+', color: '#FF6400', label: '服务国家/地区' },
     { value: '5', color: '#1E3296', label: '全球业务中心' },
     { value: '3', color: '#FFB432', label: '研发制造基地' },
 ]
@@ -456,6 +456,7 @@ const allLocations = [
     { name: '台湾', coords: [121.5, 25], type: 'customer' },
     { name: '美国', coords: [-95.7, 37.1], type: 'customer' },
     { name: '墨西哥', coords: [-102.5, 23.6], type: 'customer' },
+    { name: '巴西', coords: [-47.9, -2.0], type: 'customer' },
     { name: '澳大利亚', coords: [145, -37.8], type: 'customer' },
     { name: '匈牙利', coords: [19, 47.5], type: 'business' },
     { name: '新加坡', coords: [103.8, 1.35], type: 'business' },
@@ -1165,13 +1166,13 @@ onUnmounted(() => {
             $header_height: var(--HEADER_HEIGHT);
             position: relative;
             &.fixed-sticky:nth-child(#{$i}) {
-                background-color: lighten(#1E3296, 5% * $i);
+                background-color: lighten(#1E3296, 5% * ($i - 1));
                 position: fixed;
                 left: 0;
                 top: calc(#{$header_height} + (#{$i} - 1) * (100vh - #{$header_height} - #{$itemHeight}) / 6);
             }
             &.absolute-sticky:nth-child(#{$i}) {
-                background-color: lighten(#1E3296, 5% * $i);
+                background-color: lighten(#1E3296, 5% * ($i - 1));
                 position: absolute;
                 left: 0;
                 top: unset;
@@ -1402,7 +1403,6 @@ onUnmounted(() => {
         background: $glass-bg;
         border-radius: 16px;
         border: 1px solid $glass-border;
-        box-shadow: $glass-shadow;
         backdrop-filter: $glass-blur;
         -webkit-backdrop-filter: $glass-blur;
         transition: all 0.3s;
