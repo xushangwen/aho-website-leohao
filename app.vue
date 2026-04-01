@@ -100,12 +100,10 @@ watch(navData, (newNav) => {
     /*@import '@/assets/style/_construct.scss';*/
     body::-webkit-scrollbar {
         width: 6px;
-        background-color: rgba(30, 50, 150, 0.5);
+        background-color: rgba(220, 220, 220, 0.3);
     }
     body::-webkit-scrollbar-thumb {
-        //background-color: rgba(167, 30, 63, 0.8);
-        background-color: rgba(30, 50, 150, 0.8);
-        border-radius: 2px;
+        background-color: #FF6A00;
     }
     body::-webkit-scrollbar-track {
         -webkit-box-shadow: inset 0 0 6px rgba(217, 217, 217, 0.1);

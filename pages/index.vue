@@ -568,13 +568,10 @@ onUnmounted(() => {
     bottom: 65px;
     height: 6px;
     text-align: left;
-    @include full {
-        width: calc(100% - 24px * 2);
-        left: 24px;
-    }
     @include mo {
         bottom: 62px;
-        padding-left: 24px;
+        width: calc(100% - 24px * 2);
+        left: 24px;
         text-align: left;
     }
 }
@@ -606,10 +603,13 @@ onUnmounted(() => {
             width: 120px !important;
         }
         .proc {
-            width: 100%;
-            transition: 12s all linear;
+            animation: banner-proc-fill 12s linear forwards;
         }
     }
+}
+@keyframes banner-proc-fill {
+    from { width: 0; }
+    to   { width: 100%; }
 }
 .main-banner {
     .swiper-slide {
@@ -746,9 +746,13 @@ onUnmounted(() => {
         .mask {
             position: absolute;
             inset: 0;
-            background: rgba(0,0,0,.4);
+            background: 
+                radial-gradient(circle, rgba(255,255,255,.08) 1px, transparent 1px),
+                rgba(0,0,0,.4);
+            background-size: 4px 4px, 100% 100%;
+            background-position: 0 0, 0 0;
             .rect-1 {
-                width: calc(100vw - 11vw);
+                width: calc(100vw - 14vw);
                 height: calc(100vh - 170px);
                 border-radius: 0 0 40px 0;
                 position: absolute;
@@ -761,8 +765,8 @@ onUnmounted(() => {
                 transition: transform 2s ease-in-out, opacity .3s ease-in-out;
             }
             .rect-2 {
-                width: 150px;
-                height: 150px;
+                width: 14vw;
+                height: 170px;
                 border-radius: 40px 0 0 0;
                 position: absolute;
                 right: 0;
@@ -1108,6 +1112,7 @@ onUnmounted(() => {
                 transition: color .4s cubic-bezier(.4, 0, .2, 1);
                 line-height: 1;
                 flex-shrink: 0;
+                margin-top: -4px;
             }
             .cont {
                 width: 460px;
@@ -1118,7 +1123,7 @@ onUnmounted(() => {
                 justify-content: space-between;
                 .name {
                     color: var(--main-blue, #1E3296);
-                    font-size: 32px;
+                    font-size: 28px;
                     font-weight: 700;
                     transition: color .4s cubic-bezier(.4, 0, .2, 1);
                 }
@@ -1263,12 +1268,12 @@ onUnmounted(() => {
             position: absolute;
             transform: translate(-50%, calc(-100% - 18px));
             background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(12px) saturate(180%);
-            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid rgba(200, 210, 220, 0.6);
             color: #374151;
             padding: 6px 14px;
-            border-radius: 6px;
+            border-radius: 4px;
             font-size: 13px;
             font-weight: 500;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
