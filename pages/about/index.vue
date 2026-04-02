@@ -118,7 +118,7 @@
             <div class="close" @click="closeVideo">
                 <i class="icon ri-close-large-line"></i>
             </div>
-            <video src="/videos/intro-720p.mp4" controls ref="elVideo"></video>
+            <video src="/videos/intro-720p-optimized.mp4?v=2" controls ref="elVideo"></video>
         </div>
     </main>
 </template>
@@ -143,7 +143,18 @@ function openVideo() {
     elVideo.value.play()
 }
 
+function handleKeydown(e) {
+    if (e.key === 'Escape' && statusVideo.value) {
+        closeVideo()
+    }
+}
+
 onMounted(() => {
+    window.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeydown)
 })
 </script>
 
@@ -293,11 +304,15 @@ onMounted(() => {
     align-items: center;
     .close {
         position: absolute;
-        right: 0;
-        top: 0;
+        right: 24px;
+        top: 24px;
         color: white;
-        font-size: 100px;
+        font-size: 40px;
         cursor: pointer;
+        transition: transform 0.2s ease;
+        &:hover {
+            transform: scale(1.1);
+        }
     }
     &.active {
         opacity: 1;
