@@ -50,7 +50,7 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-    $max_height: 800px;
+    $max_height: 550px;
     .cover {
         width: 100%;
         height: 100vh;

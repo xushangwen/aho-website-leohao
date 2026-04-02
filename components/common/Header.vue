@@ -43,7 +43,7 @@
                         :to="item.link"
                         @mouseenter="activeNav(index)" @mouseleave="closeSubNav()"
                     >
-                        <span class="cn">{{ item.cn }}</span>
+                        <span class="cn" :data-text="item.cn">{{ item.cn }}</span>
                         <i class="icon ri-arrow-down-s-line"></i>
                     </NuxtLink>
                     <NuxtLink
@@ -179,27 +179,28 @@ const windowHeight = computed(() => eventStore.windowHeight)
  *监听scrollTop变化并进行处理
  */
 const transparentStatus = ref(!keepSolid)
+const isNavHovered = ref(false)
 
 const scrollTopHandler = throttle((scrollTop) => {
     // 保持不透明
-    // console.log(keepSolid)
     if (keepSolid) {
         transparentStatus.value = false
         return
     }
+    // 鼠标悬停在导航上时不干预，避免覆盖 hover 状态
+    if (isNavHovered.value) return
     // 滚动距离超过页面高度则取消透明
     transparentStatus.value = !(scrollTop > 0)
 }, 200)
 watch(docScrollTop, (newScrollTop) => {
     scrollTopHandler(newScrollTop)
 })
-watch(windowHeight, (newWindowHeight) => {
-    scrollTopHandler(docScrollTop.value)
-})
 function navEnter() {
+    isNavHovered.value = true
     transparentStatus.value = false
 }
 function navLeave() {
+    isNavHovered.value = false
     // 保持不透明
     if (keepSolid) {
         transparentStatus.value = false
@@ -354,7 +355,18 @@ nav.norm {
             position: relative;
             transition: all .3s;
             .cn {
-                transition: all .3s;
+                transition: color .3s;
+                position: relative;
+                // 预留粗体宽度，防止 font-weight 切换时引起布局移位
+                &::after {
+                    content: attr(data-text);
+                    font-weight: 700;
+                    height: 0;
+                    overflow: hidden;
+                    visibility: hidden;
+                    display: block;
+                    pointer-events: none;
+                }
             }
 
             //.line {
@@ -497,8 +509,7 @@ nav.norm {
     .mask {
         background-color: white;
         position: absolute;
-        //border-bottom: 0.5px solid var(--main-light-gray, #DCDCDC);
-        border-bottom: 0.5px solid rgba(255, 255, 255, .6);
+        border-bottom: 0.5px solid var(--main-light-gray, #DCDCDC);
         inset: 0;
         z-index: 2;
         transition: background-color .3s, border-bottom .3s;
@@ -531,9 +542,6 @@ nav.norm {
         .tools {
             .btn {
                 color: white;
-                .icon {
-
-                }
             }
         }
         .mask {

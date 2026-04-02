@@ -669,25 +669,28 @@ onUnmounted(() => {
             }
             .cus {
                 margin-top: 12px;
-                column-count: 2;
             }
             .cus-name {
-                min-width: 108px;
                 display: flex;
                 flex-flow: row nowrap;
                 justify-content: flex-start;
-                align-items: center;
-                margin-bottom: 8px;
-                white-space: nowrap;
+                align-items: flex-start;
+                margin-bottom: 6px;
                 color: #231815;
                 font-size: 12px;
+                line-height: 1.5;
+                white-space: normal;
+                word-break: break-all;
                 &::before {
                     content: '';
                     display: block;
-                    width: 6px;
-                    height: 6px;
+                    flex: none;
+                    width: 4px;
+                    height: 4px;
+                    border-radius: 50%;
                     background-color: var(--main-orange);
-                    margin-right: 8px;
+                    margin-right: 6px;
+                    margin-top: 5px;
                 }
             }
         }

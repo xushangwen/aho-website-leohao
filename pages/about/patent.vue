@@ -12,6 +12,18 @@
         <section class="s1">
             <div class="wrap">
                 <div class="t">资质专利</div>
+                <div class="tab-switcher">
+                    <div
+                        class="tab-item"
+                        :class="{active: activeTab === 'patent'}"
+                        @click="switchTab('patent')"
+                    >专利证书</div>
+                    <div
+                        class="tab-item"
+                        :class="{active: activeTab === 'cert'}"
+                        @click="switchTab('cert')"
+                    >资质证书</div>
+                </div>
                 <div class="top" v-if="patentBanner.length > 0">
                     <div class="left">
                         <ClientOnly>
@@ -162,7 +174,8 @@ async function getListData(pageNum = 1) {
     try {
         const params = {
             page_num: pageNum,
-            per_page: pageSize
+            per_page: pageSize,
+            category: activeTab.value
         }
         
         const { data } = await useFetch(appConfig.api('/cert/list'), {
@@ -193,6 +206,8 @@ async function getListData(pageNum = 1) {
     }
 }
 
+const activeTab = ref('patent')
+
 // 使用 useAsyncData 获取推荐数据
 const { data: patentBanner } = await useAsyncData(
     'patent-recommend',
@@ -214,6 +229,16 @@ watch(initialListData, (newData) => {
         page.value = 2
     }
 }, { immediate: true })
+
+// 切换 tab，重置并重新加载
+async function switchTab(tab: string) {
+    if (activeTab.value === tab) return
+    activeTab.value = tab
+    patentList.value = []
+    noMore.value = false
+    page.value = 1
+    await refreshList()
+}
 
 // 加载更多数据
 async function loadMore() {
@@ -430,6 +455,48 @@ function slideNext() {
         }
     }
 
+    .tab-switcher {
+        display: flex;
+        gap: 0;
+        margin-top: 40px;
+        position: relative;
+        // 灰色底线（伪元素）
+        &::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--main-light-gray);
+        }
+        .tab-item {
+            padding: 12px 32px;
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--main-dark-gray);
+            cursor: pointer;
+            position: relative;
+            transition: color .2s;
+            // 橙色选中线（3px，垂直居中在灰线上）
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: -1px;
+                left: 0;
+                width: 100%;
+                height: 3px;
+                background: var(--main-orange);
+                transform: scaleX(0);
+                transition: transform .2s;
+            }
+            &.active {
+                color: var(--main-blue);
+                font-weight: 700;
+                &::after { transform: scaleX(1); }
+            }
+        }
+    }
     .patent-list {
         display: grid;
         grid-template-columns: repeat(3, 1fr);

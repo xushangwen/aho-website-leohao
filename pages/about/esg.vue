@@ -243,11 +243,39 @@
                     </div>
                 </div>
             </div>
+
+            <div class="wrap" v-if="esgReport">
+                <div class="report-card">
+                    <div class="card-img">
+                        <img src="/images/about/esg/esg-img.jpg" alt="ESG报告">
+                    </div>
+                    <div class="card-info">
+                        <div class="tag">ESG Report</div>
+                        <div class="title">{{ esgReport.title }}</div>
+                        <div class="year">{{ esgReport.year }}</div>
+                        <a
+                            v-if="esgReport.url"
+                            :href="esgReport.url"
+                            target="_blank"
+                            class="dl-btn"
+                            download
+                        >
+                            <i class="ri-download-2-line"></i>
+                            下载 ESG 报告
+                        </a>
+                        <div class="dl-btn disabled" v-else>
+                            <i class="ri-time-line"></i>
+                            报告准备中
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 </template>
 
 <script setup lang="ts">
+const appConfig = useAppConfig()
 const breadcrumb = ref([
     {
         name: '关于澳弘',
@@ -257,6 +285,7 @@ const breadcrumb = ref([
         link: ''
     }
 ])
+const esgReport = computed(() => appConfig.clientConfig?.esgReport || null)
 </script>
 
 <style scoped lang="scss">
@@ -354,6 +383,86 @@ const breadcrumb = ref([
             img {
                 width: 100%;
                 height: auto;
+            }
+        }
+    }
+    .report-card {
+        margin-top: 64px;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: stretch;
+        max-width: 100%;
+        border-top: 1px solid var(--main-orange);
+        background: #fff;
+        overflow: hidden;
+        .card-img {
+            width: 480px;
+            height: 280px;
+            flex: none;
+            overflow: hidden;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+        }
+        .card-info {
+            flex: auto;
+            padding: 0 48px;
+            display: flex;
+            flex-flow: column nowrap;
+            justify-content: center;
+            gap: 16px;
+            .tag {
+                display: inline-block;
+                padding: 4px 14px;
+                background: var(--main-blue);
+                color: #fff;
+                font-size: 12px;
+                font-family: 'SpaceGrotesk', sans-serif;
+                letter-spacing: 0.08em;
+                align-self: flex-start;
+            }
+            .title {
+                font-size: 24px;
+                font-weight: 700;
+                color: #000;
+                line-height: 1.3;
+            }
+            .year {
+                font-size: 48px;
+                font-weight: 800;
+                font-family: 'SpaceGrotesk', sans-serif;
+                color: #F0F0F0;
+                line-height: 1;
+                margin-top: -8px;
+            }
+            .dl-btn {
+                margin-top: 8px;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                align-self: flex-start;
+                padding: 12px 28px;
+                background: var(--main-orange);
+                color: #fff;
+                font-size: 15px;
+                font-weight: 600;
+                text-decoration: none;
+                transition: background .2s, transform .2s;
+                cursor: pointer;
+                &:hover {
+                    background: darken(#FF7B00, 8%);
+                    transform: translateY(-2px);
+                }
+                &.disabled {
+                    background: var(--main-light-gray);
+                    color: var(--main-dark-gray);
+                    cursor: default;
+                    &:hover { transform: none; }
+                }
+                i { font-size: 18px; }
             }
         }
     }
