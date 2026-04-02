@@ -11,7 +11,6 @@
 
         <section class="s1">
             <div class="wrap">
-                <div class="t">资质专利</div>
                 <div class="tab-switcher">
                     <div
                         class="tab-item"
@@ -340,11 +339,6 @@ function slideNext() {
 .s1 {
     padding: 100px 0;
     .wrap {
-        > .t {
-            color: #000;
-            font-size: 38px;
-            font-weight: 700;
-        }
     }
     .top {
         display: flex;
@@ -457,6 +451,7 @@ function slideNext() {
 
     .tab-switcher {
         display: flex;
+        justify-content: center;
         gap: 0;
         margin-top: 40px;
         position: relative;
@@ -471,8 +466,8 @@ function slideNext() {
             background: var(--main-light-gray);
         }
         .tab-item {
-            padding: 12px 32px;
-            font-size: 18px;
+            padding: 16px 80px;
+            font-size: 28px;
             font-weight: 500;
             color: var(--main-dark-gray);
             cursor: pointer;

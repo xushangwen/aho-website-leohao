@@ -36,7 +36,8 @@
                 <div class="point-layer">
                     <div
                         class="item"
-                        :class="[item.type]"
+                        ref="elGloPoints"
+                        :class="[item.type, {active: gloActiveCard !== -1 && gloFactoryCards[gloActiveCard]?.pointIndex === index}]"
                         v-for="(item, index) in gloPoints"
                         :key="index"
                         :style="{
@@ -92,11 +93,56 @@
                 <div class="item">
                     <div class="circle base"></div>
                     <div class="type-name">生产基地</div>
+            </div>
+        </div>
+            <!-- 工厂线条 -->
+            <div class="glo-line-group">
+                <svg :width="gloLineGroupWidth" :height="gloLineGroupHeight">
+                    <path
+                        class="line-path"
+                        :class="{active: gloActiveCard === index}"
+                        v-for="(path, index) in gloLineGroup"
+                        :key="`glo-line-${index}`"
+                        :d="path"
+                        fill="none"
+                    />
+                    <circle
+                        class="line-dot"
+                        :class="{active: gloActiveCard === index}"
+                        v-for="(dot, index) in gloLineDots"
+                        :key="`glo-dot-${index}`"
+                        :cx="dot.x"
+                        :cy="dot.y"
+                        r="4"
+                    />
+                </svg>
+            </div>
+            <!-- 工厂卡片 -->
+            <div class="glo-factory-cards">
+                <div
+                    class="glo-card"
+                    ref="elGloCards"
+                    v-for="(card, index) in gloFactoryCards"
+                    :key="`glo-card-${index}`"
+                    :class="{active: gloActiveCard === index}"
+                    @mouseenter="gloCardEnter(index)"
+                    @mouseleave="gloCardLeave()"
+                >
+                    <div class="card-body">
+                        <div class="card-header">
+                            <i class="ri-building-line card-icon"></i>
+                        </div>
+                        <div class="card-type">{{ card.type }}</div>
+                        <div class="card-name" v-html="card.name.replace(/电子/, '<br>电子')"></div>
+                    </div>
+                    <div class="card-img">
+                        <img :src="card.image" :alt="card.name">
+                    </div>
                 </div>
             </div>
-            </div>
-            <div
-                ref="elChina"
+        </div>
+        <div
+            ref="elChina"
                 class="china"
                 :class="{active: indexPlate === 1}"
             >
@@ -178,6 +224,20 @@ const runtimeConfig = useRuntimeConfig()
 const appConfig = useAppConfig()
 const chinaPoints = ref(appConfig.clientConfig.chinaPoints)
 const gloPoints = ref(appConfig.clientConfig.gloPoints)
+
+// 工厂卡片数据（pointIndex 对应 gloPoints 中的索引：23=常州, 24=泰国）
+const gloFactoryCards = [
+    { name: '常州澳弘电子股份有限公司', type: '双面 / 多层 / HDI板', image: '/images/home/about-bg.jpg', pointIndex: 23 },
+    { name: '常州海弘电子有限公司', type: '单面PCB', image: '/images/contact/haihong.png', pointIndex: 23 },
+    { name: '澳弘（泰国）电子有限公司', type: '单面 / 双面 / 多层 / HDI', image: '/images/contact/thailand.png', pointIndex: 24 },
+]
+const gloLineGroup = ref<string[]>([])
+const gloLineDots = ref<{x: number, y: number}[]>([])
+const gloLineGroupWidth = ref(0)
+const gloLineGroupHeight = ref(0)
+const gloActiveCard = ref(-1)
+const elGloCards = ref<HTMLElement[] | null>(null)
+const elGloPoints = ref<HTMLElement[] | null>(null)
 const eventStore = useEventStore()
 
 const windowWidth = computed(() => eventStore.windowWidth)
@@ -216,6 +276,9 @@ function changePlateIndex(index: number) {
         // 0时为世界
         const { height } = elGlo.value.getBoundingClientRect()
         plateHeight.value = height
+        nextTick(() => {
+            calcGloLines()
+        })
     }
     if (index === 1) {
         const { width, height } = elChina.value.getBoundingClientRect()
@@ -301,6 +364,46 @@ function findPointEle(col: number, row: number) {
     return elChinaPoints.value[index]
 }
 
+function calcGloLines() {
+    if (!elGloCards.value?.length || !elGloPoints.value?.length || !elGlo.value) return
+    const gloEl = elGlo.value as unknown as HTMLElement
+    const { left: baseLeft, top: baseTop, width, height } = gloEl.getBoundingClientRect()
+    gloLineGroupWidth.value = width
+    gloLineGroupHeight.value = height
+    const lines: string[] = []
+    const dots: {x: number, y: number}[] = []
+    elGloCards.value.forEach((cardEl: HTMLElement, index: number) => {
+        const card = gloFactoryCards[index]
+        const pointEl = elGloPoints.value![card.pointIndex]
+        if (!pointEl) return
+        const dotEl = pointEl.querySelector('.dot') as HTMLElement || pointEl
+        const { left: dL, top: dT, width: dW, height: dH } = dotEl.getBoundingClientRect()
+        const { left: cL, top: cT, width: cW, height: cH } = cardEl.getBoundingClientRect()
+        const start = { x: dL - baseLeft + dW / 2, y: dT - baseTop + dH / 2 }
+        const end = { x: cL - baseLeft + cW / 2, y: cT - baseTop + cH }
+        
+        // 只有第一张卡片(index=0)用横→竖拐法，其他都用竖→横→竖
+        if (index === 0) {
+            const midX = end.x
+            const midY1 = start.y
+            const midY2 = end.y
+            lines.push(`M${start.x.toFixed(1)},${start.y.toFixed(1)} L${midX.toFixed(1)},${midY1.toFixed(1)} L${midX.toFixed(1)},${midY2.toFixed(1)}`)
+        } else {
+            const midY = start.y + (end.y - start.y) * 0.6
+            lines.push(`M${start.x.toFixed(1)},${start.y.toFixed(1)} L${start.x.toFixed(1)},${midY.toFixed(1)} L${end.x.toFixed(1)},${midY.toFixed(1)} L${end.x.toFixed(1)},${end.y.toFixed(1)}`)
+        }
+        dots.push({ x: end.x, y: end.y })
+    })
+    gloLineGroup.value = lines
+    gloLineDots.value = dots
+}
+function gloCardEnter(index: number) {
+    gloActiveCard.value = index
+}
+function gloCardLeave() {
+    gloActiveCard.value = -1
+}
+
 function plateHeightInit() {
     changePlateIndex(0)
 }
@@ -326,21 +429,22 @@ onMounted(() => {
         plateHeightInit()
     }, 1000)
     const lineResizeObserver = new ResizeObserver(entries => {
-        const requestAnimationFrame = window.requestAnimationFrame(() => {
-            const { width, height } = entries[0].contentRect;
-            lineGroupWidth.value = width
-            lineGroupHeight.value = height
-            changeChinaLine()
+        window.requestAnimationFrame(() => {
+            for (const entry of entries) {
+                if (entry.target === elChina.value) {
+                    const { width, height } = entry.contentRect
+                    lineGroupWidth.value = width
+                    lineGroupHeight.value = height
+                    changeChinaLine()
+                }
+                if (entry.target === elGlo.value) {
+                    calcGloLines()
+                }
+            }
         })
-
-        // for (let entry of entries) {
-        //     const { width, height } = entries.contentRect;
-        //     lineGroupWidth.value = width
-        //     lineGroupHeight.value = height
-        //     changeChinaLine()
-        // }
     })
-    lineResizeObserver.observe(elChina.value);
+    lineResizeObserver.observe(elChina.value)
+    lineResizeObserver.observe(elGlo.value)
 })
 onUnmounted(() => {
     clearTimeout(timerInitPlateHeight)
@@ -515,15 +619,14 @@ onUnmounted(() => {
                 height: inherit;
                 display: flex;
                 flex-flow: row nowrap;
-                justify-content: space-between;
                 align-items: center;
                 margin: 0 auto;
+                gap: 16px;
             }
             .item {
                 padding: 20px;
                 height: inherit;
-                width: auto;
-                min-width: 270px;
+                flex: 1;
                 background-color: rgba(255, 255, 255, .3);
                 &::before {
                     content: '';
@@ -616,6 +719,119 @@ onUnmounted(() => {
             }
         }
     }
+        // 线条SVG层
+        .glo-line-group {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 5;
+            svg {
+                path {
+                    stroke-dasharray: 3 3;
+                    stroke-width: 1;
+                    stroke: #b5b5b5;
+                    transition: all .3s;
+                }
+                path.active {
+                    stroke-dasharray: 5 3;
+                    stroke-width: 1.5;
+                    stroke: var(--main-yellow);
+                    animation: stroke-animate 10s linear infinite;
+                }
+                circle {
+                    fill: var(--main-yellow);
+                    stroke: #fff;
+                    stroke-width: 2;
+                    transition: all .3s;
+                }
+                circle.active {
+                    fill: var(--main-orange);
+                    r: 5;
+                }
+            }
+        }
+        // 工厂卡片组 — 与上方 profile 数据区等宽居中
+        .glo-factory-cards {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 1000px;
+            top: calc(#{tovw(100px)} + 260px);
+            display: flex;
+            flex-direction: row;
+            gap: 16px;
+            z-index: 10;
+        }
+        .glo-card {
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(6px);
+            border-right: 3px solid var(--main-yellow);
+            cursor: pointer;
+            transition: all .3s;
+            position: relative;
+            &:hover,
+            &.active {
+                border-right-color: var(--main-orange);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+                transform: translateX(-4px);
+            }
+            .card-img {
+                width: 150px;
+                flex: none;
+                overflow: hidden;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    display: block;
+                    transition: transform .4s;
+                }
+            }
+            &:hover .card-img img,
+            &.active .card-img img {
+                transform: scale(1.06);
+            }
+            .card-body {
+                padding: 12px 18px;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                gap: 6px;
+            }
+            .card-header {
+                display: flex;
+                align-items: center;
+                margin-bottom: 4px;
+            }
+            .card-icon {
+                font-size: 20px;
+                color: var(--main-yellow);
+            }
+            .card-type {
+                font-size: 11px;
+                color: var(--main-yellow);
+                font-weight: 600;
+                letter-spacing: 0.02em;
+                line-height: 1.4;
+            }
+            .card-name {
+                font-size: 15px;
+                font-weight: 700;
+                color: var(--main-blue);
+                line-height: 1.3;
+                margin-top: 2px;
+            }
+        }
+        // 悬停卡片时高亮对应地图点位
+        .point-layer .item.active .dot {
+            transform: scale(2.5) !important;
+            background-color: var(--main-orange) !important;
+        }
     }
 
     .china {
