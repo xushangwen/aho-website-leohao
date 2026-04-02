@@ -24,7 +24,7 @@
                     <div class="card-overlay"></div>
                     <div class="card-content">
                         <i class="card-icon ri-line-chart-line"></i>
-                        <div class="card-en">Stock Information</div>
+                        <div class="card-en" v-if="locale !== 'en'">Stock Information</div>
                         <div class="card-cn">{{ $t('invest.stockInfo') }}</div>
                         <div class="_btn">
                             <div class="_str">{{ $t('invest.learnMore') }}</div>
@@ -46,7 +46,7 @@
                     <div class="card-overlay"></div>
                     <div class="card-content">
                         <i class="card-icon ri-file-list-3-line"></i>
-                        <div class="card-en">Periodic Announcements</div>
+                        <div class="card-en" v-if="locale !== 'en'">Periodic Announcements</div>
                         <div class="card-cn">{{ $t('invest.announcements') }}</div>
                         <div class="_btn">
                             <div class="_str">{{ $t('invest.learnMore') }}</div>
@@ -60,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const breadcrumb = computed(() => [
     { name: t('invest.coverTitle'), link: '' }
 ])
