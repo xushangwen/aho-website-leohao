@@ -3,7 +3,7 @@
         <EleDefaultCover
             image="/images/news/cover.jpg"
             image-mobile="/images/news/cover-m.jpg"
-            text="新闻中心"
+            :text="$t('news.coverTitle')"
         ></EleDefaultCover>
         <EleBreadcrumb
             :navigate="breadcrumb"
@@ -17,7 +17,7 @@
                         :class="{active: !route.query.type}"
                         @click="switchCate('')"
                     >
-                        <span>所有新闻</span>
+                        <span>{{ $t('news.allNews') }}</span>
                         <div class="num">{{ totalCount }}</div>
                     </div>
                     <div 
@@ -49,17 +49,17 @@
                     </div>
                     <div class="info">
                         <div class="date">{{ recommendPost.pub_time }}</div>
-                        <div class="t1">智导世界，互联未来</div>
+                        <div class="t1">{{ $t('news.recommendSlogan') }}</div>
                         <div class="t2">{{ recommendPost.title }}</div>
                         <div class="abst">{{ recommendPost.abst }}</div>
                         <div class="_btn">
-                            <div class="_str">查看更多</div>
+                            <div class="_str">{{ $t('news.readMore') }}</div>
                             <div class="_icon ri-arrow-right-line"></div>
                         </div>
                     </div>
                 </NuxtLink>
 
-                <div v-if="loading" class="loading">加载中...</div>
+                <div v-if="loading" class="loading">{{ $t('common.loading') }}</div>
                 <EleNewsList v-else class="news-list" :news-list="postList"></EleNewsList>
                 <ElePagination
                     v-if="!loading"
@@ -82,11 +82,11 @@ const route = useRoute()
 const router = useRouter()
 const appStore = useAppStore()
 
-const breadcrumb = ref([
-    {
-        name: '新闻中心',
-        link: '/news'
-    }
+const { t } = useI18n()
+const breadcrumb = computed(() => [{
+    name: t('news.coverTitle'),
+    link: '/news'
+}
 ])
 
 // 分类统计数据
@@ -191,6 +191,9 @@ const postList = computed(() => {
 <style scoped lang="scss">
 .s1 {
     padding: 100px 0;
+    @include mo {
+        padding: 40px 0 60px;
+    }
     .wrap {
 
     }
@@ -198,6 +201,10 @@ const postList = computed(() => {
         @include flex-r();
         align-items: flex-start;
         gap: 24px;
+        @include mo {
+            flex-wrap: wrap;
+            gap: 12px;
+        }
         .item {
             padding: 4px 10px;
             color: #000;
@@ -233,11 +240,17 @@ const postList = computed(() => {
         @include flex-r(nowrap);
         transition: all .3s;
         overflow: hidden;
+        @include mo {
+            flex-direction: column;
+        }
         .cover {
             width: 50%;
             flex: none;
             position: relative;
             overflow: hidden;
+            @include mo {
+                width: 100%;
+            }
             img {
                 width: 100%;
                 height: auto;
@@ -297,6 +310,9 @@ const postList = computed(() => {
             @include flex-c(nowrap);
             justify-content: center;
             align-items: flex-start;
+            @include mo {
+                padding: 24px;
+            }
             color: var(--main-dark-gray);
             .date {
                 font-size: 14px;

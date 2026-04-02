@@ -6,14 +6,14 @@
                  :key="`item-${index}`"
                  v-fade-in="{ mode: 'delay' }"
             >
-                <div class="label">{{item.label}}</div>
+                <div class="label">{{ locale === 'en' ? item.labelEn : item.label }}</div>
                 <div class="data">
                     <div class="num">{{item.num}}</div>
                     <div class="unit">{{item.unit}}</div>
                 </div>
                 <div class="abst">
                     <p
-                        v-for="(abstItem, abstIndex) in item.abst"
+                        v-for="(abstItem, abstIndex) in (locale === 'en' ? item.abstEn : item.abst)"
                         :key="`abstItem-${abstIndex}`"
                     >{{abstItem}}</p>
                 </div>
@@ -27,7 +27,7 @@
 const runtimeConfig = useRuntimeConfig()
 const appConfig = useAppConfig()
 const profileData = ref(appConfig.clientConfig.profileData)
-
+const { locale } = useI18n()
 </script>
 
 <style scoped lang="scss">
@@ -36,10 +36,21 @@ const profileData = ref(appConfig.clientConfig.profileData)
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-between;
+        @include mo {
+            flex-flow: row wrap;
+            gap: 0;
+        }
     }
     .item {
         width: 305px;
         height: 226px;
+        @include mo {
+            width: 50%;
+            height: auto;
+            min-height: 160px;
+            padding: 16px 16px 20px;
+            margin-bottom: 0;
+        }
         padding-left: 20px;
         border-left: 1px solid var(--main-light-gray);
         position: relative;
@@ -50,9 +61,12 @@ const profileData = ref(appConfig.clientConfig.profileData)
         }
         .data {
             text-edge: cap;
-            font-family: SpaceGrotesk;
+            font-family: 'Google Sans', SpaceGrotesk, sans-serif;
             font-size: 60px;
             font-weight: 700;
+            @include mo {
+                font-size: 40px;
+            }
             display: flex;
             flex-flow: row nowrap;
             justify-content: flex-start;

@@ -2,39 +2,39 @@
     <div class="_feedback">
         <div class="form">
             <div class="form-control name" required>
-                <div class="label">姓名</div>
+                <div class="label">{{ $t('feedback.nameLabel') }}</div>
                 <div class="input"><input type="text"></div>
             </div>
             <div class="form-control tel" required>
-                <div class="label">电话</div>
+                <div class="label">{{ $t('feedback.telLabel') }}</div>
                 <div class="input"><input type="tel"></div>
             </div>
             <div class="form-control comp" required>
-                <div class="label">公司</div>
+                <div class="label">{{ $t('feedback.companyLabel') }}</div>
                 <div class="input"><input type="text"></div>
             </div>
             <div class="form-control email" required>
-                <div class="label">邮箱</div>
+                <div class="label">{{ $t('feedback.emailLabel') }}</div>
                 <div class="input"><input type="email"></div>
             </div>
             <div class="form-control disc span-full" required>
-                <div class="label">项目需求描述</div>
-                <div class="input"><input type="tel"></div>
+                <div class="label">{{ $t('feedback.descLabel') }}</div>
+                <div class="input"><input type="text"></div>
             </div>
             <div class="form-control capt">
-                <div class="label">验证码</div>
+                <div class="label">{{ $t('feedback.captchaLabel') }}</div>
                 <div class="input"><input type="tel"></div>
             </div>
             <div class="form-control capt no-border">
                 <div class="label"><input type="radio"></div>
                 <div class="input">
-                    <span>我已阅读并同意隐私声明</span>
+                    <span>{{ $t('feedback.agreeText') }}</span>
                 </div>
             </div>
         </div>
         <div class="tool">
             <div class="_btn">
-                <div class="_str">提交</div>
+                <div class="_str">{{ $t('feedback.submitBtn') }}</div>
                 <div class="_icon ri-mail-send-line"></div>
             </div>
         </div>

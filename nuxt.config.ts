@@ -37,6 +37,7 @@ export default defineNuxtConfig({
         // 'swiper/swiper-bundle.css',
         // 'element-plus/theme-chalk/index.css'
         './public/fonts/remixicon/remixicon.css',
+        './public/fonts/Goolge_Sans/GoogleSans.css',
         './public/fonts/HarmonyOS_Sans/HarmonyOS_Sans.css',
         './public/fonts/SpaceGrotesk/SpaceGrotesk.css',
         './public/fonts/TT_Fors/TT_Fors.css',
@@ -57,9 +58,22 @@ export default defineNuxtConfig({
     modules: [
         'nuxt-swiper',
         '@pinia/nuxt',
+        '@nuxtjs/i18n',
         // "nuxt-security"
         // "./modules/gridjs/gridjs-module",
     ],
+
+    i18n: {
+        locales: [
+            { code: 'zh', iso: 'zh-CN', name: '中文', file: 'zh.json' },
+            { code: 'en', iso: 'en-US', name: 'English', file: 'en.json' },
+        ],
+        lazy: true,
+        langDir: 'locales/',
+        defaultLocale: 'zh',
+        strategy: 'prefix_except_default',
+        vueI18n: './i18n.config.ts',
+    },
 
     // security: {
     //     csp: {

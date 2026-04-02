@@ -116,6 +116,14 @@ onMounted(() => {
                     visibility: visible;
                 }
             }
+            .wrap {
+                height: 240px;
+                max-height: 240px;
+                .text {
+                    font-size: 24px;
+                    bottom: 24px;
+                }
+            }
         }
     }
 </style>

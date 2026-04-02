@@ -3,7 +3,7 @@
         <EleDefaultCover
             image="/images/about/profile/cover.jpg"
             image-mobile="/images/about/profile/cover-m.jpg"
-            text="公司简介"
+            :text="$t('about.coverTitle')"
         ></EleDefaultCover>
         <EleBreadcrumb
             :navigate="breadcrumb"
@@ -12,20 +12,20 @@
         <section class="s1">
             <div class="wrap">
                 <div class="left">
-                    <div class="s-t">
-                        关于澳弘
+                    <div class=”s-t”>
+                        {{ $t('about.profileTitle') }}
                     </div>
-                    <div class="t2">澳弘电子是专业的PCB研发和生产企业，2020年在上交所挂牌上市。</div>
-                    <div class="abst">
-                        <p class="s-a">产品应用于消费办公、汽车电子、电源能源、工控医疗、AI算力、卫星互联网、通讯安防等领域。服务于全球20多个国家和地区的品牌客户。</p>
-                        <p class="s-a">我们的使命是“承载数字科技，赋能智慧生活”。</p>
+                    <div class=”t2”>{{ $t('about.profileDesc') }}</div>
+                    <div class=”abst”>
+                        <p class=”s-a”>{{ $t('about.profileContent1') }}</p>
+                        <p class=”s-a”>{{ $t('about.profileContent2') }}</p>
                     </div>
                 </div>
                 <div class="right">
                     <img class="bg" src="/images/about/profile/video-bg.jpg" alt="">
                     <div class="mask" @click="openVideo">
                         <img src="/images/layout/icon/video-play.png" alt="">
-                        <div class="t">播放完整影片</div>
+                        <div class="t">{{ $t('about.videoPlayBtn') }}</div>
                     </div>
                 </div>
             </div>
@@ -37,10 +37,10 @@
             <div class="wrap">
                 <div class="r">
                     <MotionGlareHover>
-                        <NuxtLink class="item" to="/about/history">
+                        <NuxtLink class="item" :to="localePath('/about/history')">
                             <img src="/images/about/profile/link/1.jpg" alt="" class="bg">
                             <div class="mask">
-                                <div class="name">发展历程</div>
+                                <div class="name">{{ $t('about.historyLink') }}</div>
                                 <div class="icon">
                                     <i class="ri-arrow-right-up-line"></i>
                                 </div>
@@ -48,10 +48,10 @@
                         </NuxtLink>
                     </MotionGlareHover>
                     <MotionGlareHover>
-                        <NuxtLink class="item" to="/about/culture">
+                        <NuxtLink class="item" :to="localePath('/about/culture')">
                             <img src="/images/about/profile/link/2.jpg" alt="" class="bg">
                             <div class="mask">
-                                <div class="name">企业文化</div>
+                                <div class="name">{{ $t('about.cultureLink') }}</div>
                                 <div class="icon">
                                     <i class="ri-arrow-right-up-line"></i>
                                 </div>
@@ -61,10 +61,10 @@
                 </div>
                 <div class="r">
                     <MotionGlareHover>
-                        <NuxtLink class="item" to="/about/glonet">
+                        <NuxtLink class="item" :to="localePath('/about/glonet')">
                             <img src="/images/about/profile/link/3.jpg" alt="" class="bg">
                             <div class="mask">
-                                <div class="name">全球网络布局</div>
+                                <div class="name">{{ $t('about.networkLink') }}</div>
                                 <div class="icon">
                                     <i class="ri-arrow-right-up-line"></i>
                                 </div>
@@ -72,10 +72,10 @@
                         </NuxtLink>
                     </MotionGlareHover>
                     <MotionGlareHover>
-                        <NuxtLink class="item" to="/about/patent">
+                        <NuxtLink class="item" :to="localePath('/about/patent')">
                             <img src="/images/about/profile/link/4.jpg" alt="" class="bg">
                             <div class="mask">
-                                <div class="name">资质专利</div>
+                                <div class="name">{{ $t('about.patentLink') }}</div>
                                 <div class="icon">
                                     <i class="ri-arrow-right-up-line"></i>
                                 </div>
@@ -83,10 +83,10 @@
                         </NuxtLink>
                     </MotionGlareHover>
                     <MotionGlareHover>
-                        <NuxtLink class="item" to="/about/honor">
+                        <NuxtLink class="item" :to="localePath('/about/honor')">
                             <img src="/images/about/profile/link/5.jpg" alt="" class="bg">
                             <div class="mask blue">
-                                <div class="name">澳弘荣誉</div>
+                                <div class="name">{{ $t('about.honorLink') }}</div>
                                 <div class="icon">
                                     <i class="ri-arrow-right-up-line"></i>
                                 </div>
@@ -96,10 +96,10 @@
                 </div>
                 <div class="r">
                     <MotionGlareHover>
-                        <NuxtLink class="item" to="/about/esg">
+                        <NuxtLink class="item" :to="localePath('/about/esg')">
                             <img src="/images/about/profile/link/6.jpg" alt="" class="bg">
                             <div class="mask">
-                                <div class="name">ESG</div>
+                                <div class="name">{{ $t('nav.aboutEsg') }}</div>
                                 <div class="icon">
                                     <i class="ri-arrow-right-up-line"></i>
                                 </div>
@@ -124,11 +124,14 @@
 </template>
 
 <script setup>
-const breadcrumb = ref([{
-    name: '关于澳弘',
+const { t, locale } = useI18n()
+const localePath = useLocalePath()
+
+const breadcrumb = computed(() => [{
+    name: t('nav.about'),
     link: '/about'
 }, {
-    name: '公司简介',
+    name: t('about.coverTitle'),
     link: ''
 }])
 
@@ -166,9 +169,16 @@ onUnmounted(() => {
         flex-flow: row nowrap;
         justify-content: space-between;
         gap: tovw(120px);
+        @include mo {
+            flex-direction: column;
+            gap: 32px;
+        }
     }
     .left {
         width: 50%;
+        @include mo {
+            width: 100%;
+        }
     }
     .right {
         width: auto;
@@ -176,6 +186,9 @@ onUnmounted(() => {
         position: relative;
         border-radius: 10px;
         overflow: hidden;
+        @include mo {
+            width: 100%;
+        }
         &:hover {
             >img {
                 transform: scale(1.03);
@@ -209,11 +222,30 @@ onUnmounted(() => {
         font-weight: 700;
         line-height: 130%;
         margin-top: tovw(48px);
+        @include mo {
+            font-size: 20px;
+            margin-top: 20px;
+        }
     }
     .abst {
+        margin-top: tovw(32px);
         p {
-            margin-top: tovw(32px);
+            color: var(--main-dark-gray, #3C3C3C);
+            font-size: 18px;
+            line-height: 1.75;
+            & + p {
+                margin-top: tovw(20px);
+            }
+            @include mo {
+                font-size: 16px;
+                & + p {
+                    margin-top: 12px;
+                }
+            }
         }
+    }
+    @include mo {
+        padding: 40px 0;
     }
 }
 
@@ -221,6 +253,10 @@ onUnmounted(() => {
     margin-top: tovw(100px);
     padding: tovw(100px) 0;
     background: #FAFAFA;
+    @include mo {
+        margin-top: 40px;
+        padding: 40px 0;
+    }
     .wrap {
         .r {
             display: flex;
@@ -228,6 +264,9 @@ onUnmounted(() => {
             justify-content: space-between;
             gap: 20px;
             margin-bottom: 20px;
+            @include mo {
+                flex-direction: column;
+            }
         }
         .item {
             display: block;

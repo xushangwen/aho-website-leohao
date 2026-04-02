@@ -3,7 +3,7 @@
         <EleDefaultCover
             image="/images/about/history/cover.jpg"
             image-mobile="/images/about/history/cover-m.jpg"
-            text="发展历程"
+            :text="$t('history.coverTitle')"
         ></EleDefaultCover>
         <EleBreadcrumb
             :navigate="breadcrumb"
@@ -21,7 +21,7 @@
                         :key="`nav-${item.sectionName}`"
                         @click="indexSection = index"
                     >
-                        <div class="slogan">{{item.sectionSlogan}}</div>
+                        <div class="slogan">{{ locale === 'en' ? item.sectionSloganEn : item.sectionSlogan }}</div>
                         <div class="name">{{item.sectionName}}</div>
                     </div>
                 </div>
@@ -33,21 +33,21 @@
                             <div class="year">{{item.year}}</div>
                             <div class="t1">
                                 <div
-                                    v-if="typeof item.t1 === 'object'"
+                                    v-if="typeof (locale === 'en' ? item.t1En : item.t1) === 'object'"
                                     class="li"
                                 >
-                                    <div v-for="(t1Item, t1Index) in item.t1" :key="`t1Index${t1Index}`"> {{ t1Item }}</div>
+                                    <div v-for="(t1Item, t1Index) in (locale === 'en' ? item.t1En : item.t1)" :key="`t1Index${t1Index}`"> {{ t1Item }}</div>
                                 </div>
-                                <span v-else> {{item.t1}}</span>
+                                <span v-else> {{ locale === 'en' ? item.t1En : item.t1 }}</span>
                             </div>
                             <div class="t2">
                                 <div
-                                    v-if="typeof item.t2 === 'object'"
+                                    v-if="typeof (locale === 'en' ? item.t2En : item.t2) === 'object'"
                                     class="li"
                                 >
-                                    <div v-for="(t2Item, t2Index) in item.t2" :key="`t2Index${t2Index}`"> {{ t2Item }}</div>
+                                    <div v-for="(t2Item, t2Index) in (locale === 'en' ? item.t2En : item.t2)" :key="`t2Index${t2Index}`"> {{ t2Item }}</div>
                                 </div>
-                                <span v-else> {{item.t2}}</span>
+                                <span v-else> {{ locale === 'en' ? item.t2En : item.t2 }}</span>
                             </div>
                             <div class="images">
                                 <img :src="item.images" alt="">
@@ -76,14 +76,10 @@ const indexPage = ref(0)
 const statusPrev = ref(false)
 const statusNext = ref(false)
 
-const breadcrumb = ref([
-    {
-        name: '关于澳弘',
-        link: '/about'
-    }, {
-        name: '发展历程',
-        link: ''
-    }
+const { t, locale } = useI18n()
+const breadcrumb = computed(() => [
+    { name: t('nav.about'), link: '/about' },
+    { name: t('history.coverTitle'), link: '' }
 ])
 
 const historyDisplay = ref([])
@@ -144,8 +140,17 @@ onMounted(() => {
             justify-content: space-between;
             align-items: flex-start;
             height: 108px;
+            @include mo {
+                overflow-x: auto;
+                &::-webkit-scrollbar { display: none; }
+            }
             .item {
                 width: 277px;
+                @include mo {
+                    width: 160px;
+                    flex-shrink: 0;
+                    margin: 0 8px;
+                }
                 margin: 0 12px;
                 flex-flow: column nowrap;
                 justify-content: flex-start;
@@ -193,6 +198,11 @@ onMounted(() => {
             height: 610px;
             max-width: 1150px;
             margin: tovw(120px) auto 0;
+            @include mo {
+                height: auto;
+                overflow-x: auto;
+                &::-webkit-scrollbar { display: none; }
+            }
             position: relative;
             @include lap {
                 width: 88%;

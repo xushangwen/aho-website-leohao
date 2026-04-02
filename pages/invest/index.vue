@@ -3,7 +3,7 @@
         <EleDefaultCover
             image="/images/prod/cover.jpg"
             image-mobile="/images/prod/cover-m.jpg"
-            text="投资者关系"
+            :text="$t('invest.coverTitle')"
         ></EleDefaultCover>
         <EleBreadcrumb
             :navigate="breadcrumb"
@@ -25,9 +25,9 @@
                     <div class="card-content">
                         <i class="card-icon ri-line-chart-line"></i>
                         <div class="card-en">Stock Information</div>
-                        <div class="card-cn">股票信息</div>
+                        <div class="card-cn">{{ $t('invest.stockInfo') }}</div>
                         <div class="_btn">
-                            <div class="_str">了解更多</div>
+                            <div class="_str">{{ $t('invest.learnMore') }}</div>
                             <div class="_icon ri-arrow-right-line"></div>
                         </div>
                     </div>
@@ -47,9 +47,9 @@
                     <div class="card-content">
                         <i class="card-icon ri-file-list-3-line"></i>
                         <div class="card-en">Periodic Announcements</div>
-                        <div class="card-cn">定期公告</div>
+                        <div class="card-cn">{{ $t('invest.announcements') }}</div>
                         <div class="_btn">
-                            <div class="_str">了解更多</div>
+                            <div class="_str">{{ $t('invest.learnMore') }}</div>
                             <div class="_icon ri-arrow-right-line"></div>
                         </div>
                     </div>
@@ -60,22 +60,26 @@
 </template>
 
 <script setup lang="ts">
-// 注意cover图片需要替换
-const breadcrumb = ref([
-    {
-        name: '投资者关系',
-        link: ''
-    }
+const { t } = useI18n()
+const breadcrumb = computed(() => [
+    { name: t('invest.coverTitle'), link: '' }
 ])
 </script>
 
 <style scoped lang="scss">
 .s1 {
     padding: 80px 0 100px;
+    @include mo {
+        padding: 40px 0 60px;
+    }
     .wrap {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 32px;
+        @include mo {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
     }
 }
 

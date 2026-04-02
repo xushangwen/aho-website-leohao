@@ -3,7 +3,7 @@
         <EleDefaultCover
             image="/images/about/culture/cover.jpg"
             image-mobile="/images/about/culture/cover-m.jpg"
-            text="企业文化"
+            :text="$t('culture.coverTitle')"
         ></EleDefaultCover>
         <EleBreadcrumb
             :navigate="breadcrumb"
@@ -17,7 +17,7 @@
         </section>
         <section class="s2">
             <div class="wrap">
-                <div class="t">核心价值观</div>
+                <div class="t">{{ $t('culture.coreValuesTitle') }}</div>
                 <div class="list">
                     <div
                         class="item"
@@ -40,47 +40,25 @@
 </template>
 
 <script setup lang="ts">
-const breadcrumb = ref([
-    {
-        name: '关于澳弘',
-        link: '/about'
-    }, {
-        name: '企业文化',
-        link: ''
-    }
+const { t } = useI18n()
+const breadcrumb = computed(() => [
+    { name: t('nav.about'), link: '/about' },
+    { name: t('culture.coverTitle'), link: '' }
 ])
-const valueList = ref([
-    {
-        cover: '/images/about/culture/value/1.jpg',
-        t1: '市场为王',
-        abst: '坚持市场导向，追求稳健和均衡的市场运营'
-    },
-    {
-        cover: '/images/about/culture/value/2.jpg',
-        t1: '专注品质',
-        abst: '坚持市场导向，追求稳健和均衡的市场运营'
-    },
-    {
-        cover: '/images/about/culture/value/3.jpg',
-        t1: '提高效率',
-        abst: '坚持市场导向，追求稳健和均衡的市场运营'
-    },
-    {
-        cover: '/images/about/culture/value/4.jpg',
-        t1: '注重团队',
-        abst: '坚持市场导向，追求稳健和均衡的市场运营'
-    },
-    {
-        cover: '/images/about/culture/value/5.jpg',
-        t1: '遵守法规',
-        abst: '坚持市场导向，追求稳健和均衡的市场运营'
-    },
-    {
-        cover: '/images/about/culture/value/6.jpg',
-        t1: '社会责任',
-        abst: '坚持市场导向，追求稳健和均衡的市场运营'
-    },
-])
+const valueCovers = [
+    '/images/about/culture/value/1.jpg',
+    '/images/about/culture/value/2.jpg',
+    '/images/about/culture/value/3.jpg',
+    '/images/about/culture/value/4.jpg',
+    '/images/about/culture/value/5.jpg',
+    '/images/about/culture/value/6.jpg',
+]
+const valueKeys = ['value1', 'value2', 'value3', 'value4', 'value5', 'value6']
+const valueList = computed(() => valueKeys.map((key, i) => ({
+    cover: valueCovers[i],
+    t1: t(`culture.${key}Title`),
+    abst: t(`culture.${key}Desc`),
+})))
 const indexValue = ref(0)
 function indexValueUpdate(index) {
     indexValue.value = index
@@ -99,9 +77,15 @@ function indexValueUpdate(index) {
 }
 .s2 {
     padding: 100px 0;
+    @include mo {
+        padding: 48px 0;
+    }
     .t {
         font-size: 38px;
         font-weight: bold;
+        @include mo {
+            font-size: 26px;
+        }
     }
     .list {
         height: 523px;
@@ -112,6 +96,11 @@ function indexValueUpdate(index) {
         align-items: flex-start;
         border-radius: 10px;
         overflow: hidden;
+        @include mo {
+            height: auto;
+            flex-direction: column;
+            gap: 2px;
+        }
         .item {
             width: 12.6%;
             height: 100%;
@@ -124,6 +113,16 @@ function indexValueUpdate(index) {
             justify-content: flex-end;
             align-items: center;
             gap: 14px;
+            @include mo {
+                width: 100% !important;
+                height: 60px;
+                padding: 16px 24px;
+                justify-content: center;
+                align-items: flex-start;
+                &.active {
+                    height: 260px;
+                }
+            }
             .t1 {
                 color: white;
                 font-size: 24px;

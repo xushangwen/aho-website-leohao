@@ -3,7 +3,7 @@
         <EleDefaultCover
             image="/images/about/patent/cover.jpg"
             image-mobile="/images/about/patent/cover-m.jpg"
-            text="资质专利"
+            :text="$t('patent.coverTitle')"
         ></EleDefaultCover>
         <EleBreadcrumb
             :navigate="breadcrumb"
@@ -16,12 +16,12 @@
                         class="tab-item"
                         :class="{active: activeTab === 'patent'}"
                         @click="switchTab('patent')"
-                    >专利证书</div>
+                    >{{ $t('patent.patentTab') }}</div>
                     <div
                         class="tab-item"
                         :class="{active: activeTab === 'cert'}"
                         @click="switchTab('cert')"
-                    >资质证书</div>
+                    >{{ $t('patent.certTab') }}</div>
                 </div>
                 <div class="top" v-if="patentBanner.length > 0">
                     <div class="left">
@@ -110,8 +110,8 @@
                             </div>
                         </EleRatioWrapper>
                     </MotionGlareHover>
-                    <div class="loading" v-if="loading">加载中...</div>
-                    <div class="no-more" v-if="noMore && patentList.length > 0">没有更多数据</div>
+                    <div class="loading" v-if="loading">{{ $t('common.loading') }}</div>
+                    <div class="no-more" v-if="noMore && patentList.length > 0">{{ $t('common.noMore') }}</div>
                 </div>
             </div>
         </section>
@@ -127,14 +127,10 @@ const eventStore = useEventStore()
 const route = useRoute()
 const docScrollTop = computed(() => eventStore.docScrollTop)
 
-const breadcrumb = ref([
-    {
-        name: '关于澳弘',
-        link: '/about'
-    }, {
-        name: '资质专利',
-        link: ''
-    }
+const { t } = useI18n()
+const breadcrumb = computed(() => [
+    { name: t('nav.about'), link: '/about' },
+    { name: t('patent.coverTitle'), link: '' }
 ])
 
 // 推荐数据
@@ -497,6 +493,13 @@ function slideNext() {
         grid-template-columns: repeat(3, 1fr);
         gap: 48px;
         margin-top: 48px;
+        @include lap {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @include mo {
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
         .item-wrapper {
             border-radius: 10px;
             overflow: hidden;

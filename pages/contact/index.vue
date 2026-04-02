@@ -3,7 +3,7 @@
         <EleDefaultCover
             image="/images/contact/cover.jpg"
             image-mobile="/images/contact/cover_m.jpg"
-            text="联系我们"
+            :text="$t('contact.coverTitle')"
         ></EleDefaultCover>
         <EleBreadcrumb :navigate="breadcrumb" />
 
@@ -24,11 +24,11 @@
                             <div class="factory-name">{{ company.name }}</div>
                             <div class="factory-meta">
                                 <div class="meta-item">
-                                    <span class="label">地址</span>
+                                    <span class="label">{{ $t('contact.addressLabel') }}</span>
                                     <span class="value">{{ company.address }}</span>
                                 </div>
                                 <div class="meta-item" v-if="company.zip">
-                                    <span class="label">邮编</span>
+                                    <span class="label">{{ $t('contact.zipLabel') }}</span>
                                     <span class="value">{{ company.zip }}</span>
                                 </div>
                             </div>
@@ -38,7 +38,7 @@
                     <!-- 联系方式卡片 -->
                     <div class="factory-card contact-card">
                         <div class="contact-body">
-                            <div class="contact-title">联系方式</div>
+                            <div class="contact-title">{{ $t('contact.contactTitle') }}</div>
                             <div class="contact-list">
                                 <div class="contact-item" v-for="(item, index) in contactInfo" :key="index">
                                     <i :class="['contact-icon', item.icon]"></i>
@@ -57,7 +57,7 @@
         <!-- 留言表单 -->
         <section class="s2">
             <div class="wrap">
-                <div class="section-name">如您有需求，请与我们联系</div>
+                <div class="section-name">{{ $t('contact.inquiryTitle') }}</div>
                 <EleFeedback class="feedback"></EleFeedback>
             </div>
         </section>
@@ -65,18 +65,18 @@
         <!-- 销售处及海外代表处 -->
         <section class="s3">
             <div class="wrap">
-                <div class="section-name">销售处及海外代表处</div>
+                <div class="section-name">{{ $t('contact.salesTitle') }}</div>
                 <div class="pos-list">
                     <div
                         class="item"
                         v-for="(item, index) in salesPoints"
                         :key="`${item.pointName}-${index}`"
                     >
-                        <div class="name">{{ item.pointName }}</div>
+                        <div class="name">{{ locale === 'en' ? (item.pointNameEn || item.pointName) : item.pointName }}</div>
                         <div class="contact-info">
                             <div class="subitem">
                                 <i class="icon ri-map-pin-5-line"></i>
-                                <div class="value">{{ item.address }}</div>
+                                <div class="value">{{ locale === 'en' ? (item.addressEn || item.address) : item.address }}</div>
                             </div>
                         </div>
                         <div class="contact-info">
@@ -101,58 +101,41 @@
 <script setup>
 const appConfig = useAppConfig()
 const salesPoints = reactive(appConfig.clientConfig.salesPoints)
+const { t, locale } = useI18n()
 
-const breadcrumb = ref([{ name: '联系我们', link: '' }])
+const breadcrumb = computed(() => [{ name: t('contact.coverTitle'), link: '' }])
 
-const companies = [
-    {
-        name: '常州澳弘电子股份有限公司',
-        type: '双面 / 多层 / HDI板制造基地',
-        address: '江苏省常州市新北区电子产业园新科路15号',
-        zip: '213000',
-        image: '/images/home/about-bg.jpg',
-    },
-    {
-        name: '常州海弘电子有限公司',
-        type: '单面PCB制造基地',
-        address: '江苏省常州市滨江经济开发区兴塘路16号',
-        zip: '213000',
-        image: '/images/contact/haihong.png',
-    },
-    {
-        name: '澳弘（泰国）电子有限公司',
-        type: '单面 / 双面 / 多层 / HDI板制造基地',
-        address: '555 Moo 1, Soi Industry 5, Digital Park, Chachoengsao',
-        zip: '24000',
-        image: '/images/contact/thailand.png',
-    },
-    {
-        name: 'Elite Prospect Singapore Pte. Ltd.',
-        type: '离岸公司（新加坡）',
-        address: '10 Marina Boulevard, Marina Bay Financial Centre, Singapore',
-        zip: '018983',
-        image: '/images/contact/singapore.png',
-    },
-    {
-        name: 'Elite Prospect Trading Co. Ltd',
-        type: '离岸公司（香港）',
-        address: 'S602 Block A PMQ, 35 Aberdeen Street Central',
-        zip: '999077',
-        image: '/images/contact/hongkong.jpg',
-    },
+const companyImages = [
+    '/images/home/about-bg.jpg',
+    '/images/contact/haihong.png',
+    '/images/contact/thailand.png',
+    '/images/contact/singapore.png',
+    '/images/contact/hongkong.jpg',
 ]
+const companyKeys = ['company1', 'company2', 'company3', 'company4', 'company5']
 
-const contactInfo = [
-    { icon: 'ri-user-voice-line', label: '联系人', value: '耿克非' },
-    { icon: 'ri-phone-line', label: '电话', value: '0519-69887878 转 9666' },
-    { icon: 'ri-mail-line', label: '邮箱', value: 'gengkf@czaohong.com' },
-]
+const companies = computed(() => companyKeys.map((key, i) => ({
+    name: t(`contact.${key}Name`),
+    type: t(`contact.${key}Type`),
+    address: t(`contact.${key}Address`),
+    zip: t(`contact.${key}Zip`),
+    image: companyImages[i],
+})))
+
+const contactInfo = computed(() => [
+    { icon: 'ri-user-voice-line', label: t('contact.contactPersonLabel'), value: t('contact.contactPerson') },
+    { icon: 'ri-phone-line', label: t('contact.phoneLabel'), value: t('contact.phoneNumber') },
+    { icon: 'ri-mail-line', label: t('contact.emailLabel'), value: t('contact.emailAddress') },
+])
 </script>
 
 <style scoped lang="scss">
 /* ===== Section 1: 制造基地 ===== */
 .s1 {
     padding: tovw(100px) 0 tovw(80px);
+    @include mo {
+        padding: 40px 0 32px;
+    }
 
     .section-hd {
         margin-bottom: tovw(48px);
@@ -169,6 +152,13 @@ const contactInfo = [
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: tovw(32px);
+        @include lap {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @include mo {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
     }
 
     .factory-card {
@@ -388,6 +378,11 @@ const contactInfo = [
     .feedback {
         margin-top: 60px;
     }
+    @include mo {
+        padding: 48px 0;
+        .section-name { font-size: 26px; }
+        .feedback { margin-top: 32px; }
+    }
 }
 
 /* ===== Section 3: 销售处 ===== */
@@ -398,12 +393,21 @@ const contactInfo = [
         font-weight: 700;
         text-align: center;
     }
+    @include mo {
+        padding: 48px 0;
+        .section-name { font-size: 26px; }
+    }
     .pos-list {
         margin-top: tovw(60px);
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-column-gap: tovw(60px);
         grid-row-gap: 0;
+        @include mo {
+            grid-template-columns: 1fr;
+            grid-column-gap: 0;
+            margin-top: 32px;
+        }
         .item {
             padding: 32px 12px;
             border-top: 1px solid var(--main-light-gray);

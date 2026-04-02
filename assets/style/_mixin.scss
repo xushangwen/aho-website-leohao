@@ -197,5 +197,9 @@ $breakpoints: (
 }
 
 %ff-number {
-    font-family: SpaceGrotesk;
+    font-family: 'Google Sans', SpaceGrotesk, sans-serif;
+}
+
+%ff-english {
+    font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
 }

@@ -3,7 +3,7 @@
         <EleDefaultCover
             image="/images/about/honor/cover.jpg"
             image-mobile="/images/about/honor/cover-m.jpg"
-            text="澳弘荣誉"
+            :text="$t('honor.coverTitle')"
         ></EleDefaultCover>
         <EleBreadcrumb
             :navigate="breadcrumb"
@@ -11,7 +11,7 @@
 
         <section class="s1">
             <div class="wrap">
-                <div class="t">澳弘荣誉</div>
+                <div class="t">{{ $t('honor.title') }}</div>
                 <div class="patent-list">
                     <MotionGlareHover
                         class="item-wrapper"
@@ -31,8 +31,8 @@
                             </div>
                         </EleRatioWrapper>
                     </MotionGlareHover>
-                    <div class="loading" v-if="loading">加载中...</div>
-                    <div class="no-more" v-if="noMore && honorList.length > 0">没有更多数据</div>
+                    <div class="loading" v-if="loading">{{ $t('common.loading') }}</div>
+                    <div class="no-more" v-if="noMore && honorList.length > 0">{{ $t('common.noMore') }}</div>
                 </div>
             </div>
         </section>
@@ -47,14 +47,10 @@ const appConfig = useAppConfig()
 const eventStore = useEventStore()
 const docScrollTop = computed(() => eventStore.docScrollTop)
 
-const breadcrumb = ref([
-    {
-        name: '关于澳弘',
-        link: '/about'
-    }, {
-        name: '澳弘荣誉',
-        link: ''
-    }
+const { t } = useI18n()
+const breadcrumb = computed(() => [
+    { name: t('nav.about'), link: '/about' },
+    { name: t('honor.coverTitle'), link: '' }
 ])
 
 // 列表数据
@@ -169,6 +165,13 @@ watch(docScrollTop, () => {
         grid-template-columns: repeat(3, 1fr);
         gap: 48px;
         margin-top: 48px;
+        @include lap {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @include mo {
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
         .item-wrapper {
             border-radius: 10px;
             overflow: hidden;

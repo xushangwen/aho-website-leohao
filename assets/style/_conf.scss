@@ -4,8 +4,14 @@
 /*引入compass的模块*/
 
 html {
-    font-family: -apple-system, SpaceGrotesk, HarmonyOS_Sans, BlinkMacSystemFont, SF UI Text, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Arial, sans-serif;
+    /* Google Sans 优先处理英文/数字，中文回退至 HarmonyOS_Sans */
+    font-family: -apple-system, 'Google Sans', SpaceGrotesk, HarmonyOS_Sans, BlinkMacSystemFont, SF UI Text, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Arial, sans-serif;
     overflow-x: hidden;
+}
+
+/* 英文版全站使用 Google Sans */
+html[lang="en"] body {
+    font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
 }
 body {
     overflow-x: hidden;

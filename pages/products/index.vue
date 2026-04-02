@@ -3,7 +3,7 @@
         <EleDefaultCover
             image="/images/prod/cover.jpg"
             image-mobile="/images/prod/cover-m.jpg"
-            text="产品中心"
+            :text="$t('products.coverTitle')"
         ></EleDefaultCover>
         <EleBreadcrumb
             :navigate="breadcrumb"
@@ -19,7 +19,7 @@
                         class="aside-wrapper"
                         :class="{fixed: statusAsideFixed}"
                     >
-                        <div class="cate-name">产品类别</div>
+                        <div class="cate-name">{{ $t('products.categoryLabel') }}</div>
                         <NuxtLink
                             class="item"
                             :class="{active: `${indexCate}` === `${index}`}"
@@ -59,11 +59,11 @@
                     </div>
                     <!-- 加载状态 -->
                     <div class="loading" v-if="loading">
-                        加载中...
+                        {{ $t('common.loading') }}
                     </div>
                     <!-- 没有更多数据 -->
                     <div class="no-more" v-if="noMore && prod.length > 0">
-                        没有更多数据
+                        {{ $t('common.noMore') }}
                     </div>
                 </div>
             </div>
@@ -87,11 +87,9 @@ const prodNav = computed(() => {
     return appStore.prodCate || []
 })
 
-const breadcrumb = ref([
-    {
-        name: '产品中心',
-        link: '/products'
-    }
+const { t } = useI18n()
+const breadcrumb = computed(() => [
+    { name: t('products.coverTitle'), link: '/products' }
 ])
 
 const indexCate = ref(-1)
@@ -239,16 +237,26 @@ onMounted(() => {
 .s1 {
     padding: 100px 0;
     background-color: #F8F8F8;
+    @include mo {
+        padding: 40px 0 60px;
+    }
     .wrap {
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-between;
         align-items: flex-start;
         gap: tovw(60px);
+        @include mo {
+            flex-direction: column;
+            gap: 24px;
+        }
     }
     aside {
         width: 216px;
         flex: none;
+        @include mo {
+            width: 100%;
+        }
         height: auto;
         min-height: 1px;
         .aside-wrapper {
@@ -259,14 +267,30 @@ onMounted(() => {
                 position: fixed;
                 top: 100px;
             }
+            @include mo {
+                &.fixed {
+                    position: relative;
+                    top: 0;
+                }
+            }
         }
         .cate-name {
             color: var(--main-orange, #FF6400);
             font-size: 12px;
             margin-bottom: 12px;
         }
+        @include mo {
+            .cate-name { display: none; }
+            display: flex;
+            flex-flow: row nowrap;
+            overflow-x: auto;
+            gap: 8px;
+            padding-bottom: 8px;
+            &::-webkit-scrollbar { display: none; }
+        }
         .item:first-child {
             border-top: 1px solid var(--main-light-gray, #DCDCDC);
+            @include mo { border-top: none; }
         }
         .item {
             padding: 14px 0;
@@ -278,6 +302,19 @@ onMounted(() => {
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
+            @include mo {
+                flex-shrink: 0;
+                padding: 8px 16px;
+                border: 1px solid var(--main-light-gray);
+                border-radius: 20px;
+                font-size: 14px;
+                &.active {
+                    background: var(--main-blue);
+                    color: white;
+                    border-color: var(--main-blue);
+                }
+                .icon { display: none; }
+            }
             &.active {
                 font-weight: 700;
             }
@@ -303,6 +340,12 @@ onMounted(() => {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-gap: 30px;
+        @include lap {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @include mo {
+            grid-template-columns: 1fr;
+        }
         .item {
             background-color: white;
             border: 1px solid var(--main-light-gray, #DCDCDC);

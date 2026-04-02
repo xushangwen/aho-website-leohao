@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="wrap" v-else-if="loading">
-        <div class="loading">加载中...</div>
+        <div class="loading">{{ $t('common.loading') }}</div>
     </div>
     <div class="wrap" v-else>
         <div class="not-found">404 - 新闻不存在</div>

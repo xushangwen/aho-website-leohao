@@ -32,7 +32,7 @@
                                 </clipPath>
                             </defs>
                         </svg>
-                        <div class="name">安全</div>
+                        <div class="name">{{ $t('esg.safety') }}</div>
                     </div>
                     <div class="po">
                         <div class="top">
@@ -47,12 +47,12 @@
                                     </clipPath>
                                 </defs>
                             </svg>
-                            <div class="t1">安全生产管理技术</div>
+                            <div class="t1">{{ $t('esg.safetyMgmtTitle') }}</div>
                             <div class="ab">
-                                <div><span>粉尘防爆设计</span></div>
-                                <div><span>药水管道防漏报警</span></div>
-                                <div><span>粉尘防爆设计</span></div>
-                                <div><span>设备低液位、高温</span></div>
+                                <div><span>{{ $t('esg.dustproofDesign') }}</span></div>
+                                <div><span>{{ $t('esg.pipelineLeakAlarm') }}</span></div>
+                                <div><span>{{ $t('esg.dustproofDesign') }}</span></div>
+                                <div><span>{{ $t('esg.deviceLowLevelHighTemp') }}</span></div>
                             </div>
                         </div>
                         <img src="/images/about/esg/1-1.jpg" alt="">
@@ -75,10 +75,10 @@
                                     </clipPath>
                                 </defs>
                             </svg>
-                            <div class="t1">蚀刻液在线循环系统</div>
-                            <div class="ab">
-                                <div><span>蚀刻液“零”排放</span></div>
-                                <div><span>减少90%以上的HCl、NaClO2等耗用</span></div>
+                            <div class=”t1”>{{ $t('esg.etchantCirculationTitle') }}</div>
+                            <div class=”ab”>
+                                <div><span>{{ $t('esg.zeroEtchantEmission') }}</span></div>
+                                <div><span>{{ $t('esg.reduceChemicalUsage') }}</span></div>
                             </div>
                         </div>
                         <img src="/images/about/esg/1-2.jpg" alt="">
@@ -101,7 +101,7 @@
                                 </clipPath>
                             </defs>
                         </svg>
-                        <div class="name">环保</div>
+                        <div class="name">{{ $t('esg.environment') }}</div>
                     </div>
                     <div class="po">
                         <div class="top">
@@ -120,12 +120,12 @@
                                     </clipPath>
                                 </defs>
                             </svg>
-                            <div class="t1">污水预处理设施</div>
-                            <div class="ab">
-                                <div><span>污水预处理设施</span></div>
-                                <div><span>自动分析加药</span></div>
-                                <div><span>在线监测</span></div>
-                                <div><span>氮磷实现“零”排放</span></div>
+                            <div class=”t1”>{{ $t('esg.wastewaterTitle') }}</div>
+                            <div class=”ab”>
+                                <div><span>{{ $t('esg.wastewaterFacility') }}</span></div>
+                                <div><span>{{ $t('esg.autoDosing') }}</span></div>
+                                <div><span>{{ $t('esg.onlineMonitoring') }}</span></div>
+                                <div><span>{{ $t('esg.nitrogenPhosphorusZero') }}</span></div>
                             </div>
                         </div>
                         <img src="/images/about/esg/2-1.jpg" alt="">
@@ -147,10 +147,10 @@
                                     </clipPath>
                                 </defs>
                             </svg>
-                            <div class="t1">废气处理系统</div>
+                            <div class="t1">{{ $t('esg.gasEmissionTitle') }}</div>
                             <div class="ab">
-                                <div><span>废气+环抽有组织排放</span></div>
-                                <div><span>采用废气排放中央集成控制系统</span></div>
+                                <div><span>{{ $t('esg.gasOrganizedEmission') }}</span></div>
+                                <div><span>{{ $t('esg.gasControlSystem') }}</span></div>
                             </div>
                         </div>
                         <img src="/images/about/esg/2-2.jpg" alt="">
@@ -180,7 +180,7 @@
                                 </clipPath>
                             </defs>
                         </svg>
-                        <div class="name">节能</div>
+                        <div class="name">{{ $t('esg.energySaving') }}</div>
                     </div>
                     <div class="po">
                         <div class="top">
@@ -202,11 +202,11 @@
                                     </clipPath>
                                 </defs>
                             </svg>
-                            <div class="t1">超高效机房</div>
+                            <div class="t1">{{ $t('esg.highEfficiencyTitle') }}</div>
                             <div class="ab">
-                                <div><span>冰水+空压+水源热泵+能量回收联动</span></div>
-                                <div><span>COP>5.5，中央能耗监控</span></div>
-                                <div><span>江苏省首家超高效机房</span></div>
+                                <div><span>{{ $t('esg.highEfficiencyFeature') }}</span></div>
+                                <div><span>{{ $t('esg.copRating') }}</span></div>
+                                <div><span>{{ $t('esg.provinceFirst') }}</span></div>
                             </div>
                         </div>
                         <img src="/images/about/esg/3-1.jpg" alt="">
@@ -233,10 +233,10 @@
                                     </clipPath>
                                 </defs>
                             </svg>
-                            <div class="t1">能量回收系统</div>
+                            <div class="t1">{{ $t('esg.energyRecoveryTitle') }}</div>
                             <div class="ab">
-                                <div><span>燃气锅炉替代电加热</span></div>
-                                <div><span>热回收系统节能降耗</span></div>
+                                <div><span>{{ $t('esg.gasBoilerReplacement') }}</span></div>
+                                <div><span>{{ $t('esg.heatRecoverySystem') }}</span></div>
                             </div>
                         </div>
                         <img src="/images/about/esg/3-2.jpg" alt="">
@@ -261,11 +261,11 @@
                             download
                         >
                             <i class="ri-download-2-line"></i>
-                            下载 ESG 报告
+                            {{ $t('esg.downloadReport') }}
                         </a>
                         <div class="dl-btn disabled" v-else>
                             <i class="ri-time-line"></i>
-                            报告准备中
+                            {{ $t('esg.reportPreparing') }}
                         </div>
                     </div>
                 </div>
@@ -276,14 +276,10 @@
 
 <script setup lang="ts">
 const appConfig = useAppConfig()
-const breadcrumb = ref([
-    {
-        name: '关于澳弘',
-        link: '/about'
-    }, {
-        name: 'ESG',
-        link: ''
-    }
+const { t } = useI18n()
+const breadcrumb = computed(() => [
+    { name: t('nav.about'), link: '/about' },
+    { name: 'ESG', link: '' }
 ])
 const esgReport = computed(() => appConfig.clientConfig?.esgReport || null)
 </script>
@@ -316,9 +312,24 @@ const esgReport = computed(() => appConfig.clientConfig?.esgReport || null)
         justify-content: space-between;
         align-items: stretch;
         gap: 16px;
+        @include mo {
+            height: auto;
+            flex-direction: column;
+        }
         .cate {
             width: 150px;
             flex: none;
+            @include mo {
+                width: 100%;
+                height: 60px;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                padding: 0 20px;
+                gap: 16px;
+                svg { margin-top: 0; }
+                .name { font-size: 18px; }
+            }
             display: flex;
             flex-flow: column nowrap;
             align-items: center;
@@ -395,10 +406,17 @@ const esgReport = computed(() => appConfig.clientConfig?.esgReport || null)
         border-top: 1px solid var(--main-orange);
         background: #fff;
         overflow: hidden;
+        @include mo {
+            flex-direction: column;
+        }
         .card-img {
             width: 480px;
             height: 280px;
             flex: none;
+            @include mo {
+                width: 100%;
+                height: 200px;
+            }
             overflow: hidden;
             img {
                 width: 100%;

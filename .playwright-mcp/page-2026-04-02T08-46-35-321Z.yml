@@ -1,0 +1,340 @@
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - banner:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - link "605058 股票代码" [ref=e7] [cursor=pointer]:
+            - /url: /
+            - img [ref=e8]
+            - generic [ref=e18]:
+              - generic [ref=e19]: "605058"
+              - generic [ref=e20]: 股票代码
+          - generic [ref=e21]:
+            - link "首页" [ref=e22] [cursor=pointer]:
+              - /url: /
+              - generic [ref=e23]: 首页
+            - link "关于澳弘 " [ref=e24] [cursor=pointer]:
+              - /url: /about
+              - generic [ref=e25]: 关于澳弘
+              - generic [ref=e26]: 
+            - link "产品中心 " [ref=e27] [cursor=pointer]:
+              - /url: /products
+              - generic [ref=e28]: 产品中心
+              - generic [ref=e29]: 
+            - link "行业应用 " [ref=e30] [cursor=pointer]:
+              - /url: /application
+              - generic [ref=e31]: 行业应用
+              - generic [ref=e32]: 
+            - link "投资者关系 " [ref=e33] [cursor=pointer]:
+              - /url: /invest
+              - generic [ref=e34]: 投资者关系
+              - generic [ref=e35]: 
+            - link "新闻中心 " [ref=e36] [cursor=pointer]:
+              - /url: /news
+              - generic [ref=e37]: 新闻中心
+              - generic [ref=e38]: 
+            - link "联系我们 " [ref=e39] [cursor=pointer]:
+              - /url: /contact
+              - generic [ref=e40]: 联系我们
+              - generic [ref=e41]: 
+          - generic [ref=e42]:
+            - generic [ref=e43] [cursor=pointer]:
+              - generic [ref=e44]: 
+              - generic [ref=e45]: 中文
+            - generic [ref=e47] [cursor=pointer]: 
+      - navigation [ref=e49]:
+        - generic [ref=e51]:
+          - link [ref=e52] [cursor=pointer]:
+            - /url: /
+            - img [ref=e53]
+          - generic [ref=e62]:
+            - generic [ref=e64]: 
+            - generic [ref=e66]: 
+        - generic [ref=e68]:
+          - generic [ref=e69]:
+            - link "关于澳弘 " [ref=e70] [cursor=pointer]:
+              - /url: javascript:;
+              - generic [ref=e71]: 关于澳弘
+              - generic [ref=e72]: 
+            - generic:
+              - link "公司简介":
+                - /url: /about
+              - link "发展历程":
+                - /url: /about/history
+              - link "企业文化":
+                - /url: /about/culture
+              - link "全球网络布局":
+                - /url: /about/glonet
+              - link "资质专利":
+                - /url: /about/patent
+              - link "澳弘荣誉":
+                - /url: /about/honor
+              - link "ESG":
+                - /url: /about/esg
+          - generic [ref=e73]:
+            - link "产品中心 " [ref=e74] [cursor=pointer]:
+              - /url: javascript:;
+              - generic [ref=e75]: 产品中心
+              - generic [ref=e76]: 
+            - generic:
+              - link "单⾯板":
+                - /url: /products?cate=17f6kC900EP91S44
+              - link "双⾯多层板":
+                - /url: /products?cate=176jf90wM0r9E137
+              - link "HDI板":
+                - /url: /products?cate=1076v9YRe1009130
+              - link "特种PCB板":
+                - /url: /products?cate=KGi17V690Xz09115
+          - generic [ref=e77]:
+            - link "行业应用 " [ref=e78] [cursor=pointer]:
+              - /url: javascript:;
+              - generic [ref=e79]: 行业应用
+              - generic [ref=e80]: 
+            - generic:
+              - link "智能家居":
+                - /url: /application
+              - link "汽车电子":
+                - /url: /application
+              - link "电源能源":
+                - /url: /application
+              - link "消费办公":
+                - /url: /application
+              - link "通讯安防":
+                - /url: /application
+              - link "工业控制":
+                - /url: /application
+              - link "其他应用":
+                - /url: /application
+          - generic [ref=e81]:
+            - link "投资者关系 " [ref=e82] [cursor=pointer]:
+              - /url: javascript:;
+              - generic [ref=e83]: 投资者关系
+              - generic [ref=e84]: 
+            - generic:
+              - link "股票信息":
+                - /url: https://www.cninfo.com.cn/new/disclosure/stock?stockCode=605058&orgId=9900039836#latestAnnouncement
+              - link "定期公告":
+                - /url: https://www.cninfo.com.cn/new/disclosure/stock?stockCode=605058&orgId=9900039836#latestAnnouncement
+          - generic [ref=e85]:
+            - link "新闻中心 " [ref=e86] [cursor=pointer]:
+              - /url: javascript:;
+              - generic [ref=e87]: 新闻中心
+              - generic [ref=e88]: 
+            - generic:
+              - link "企业新闻":
+                - /url: /news?type=c1
+              - link "行业动态":
+                - /url: /news?type=c2
+          - generic [ref=e89]:
+            - link "联系我们 " [ref=e90] [cursor=pointer]:
+              - /url: javascript:;
+              - generic [ref=e91]: 联系我们
+              - generic [ref=e92]: 
+            - generic:
+              - link "加入我们":
+                - /url: /contact
+              - link "公司信息":
+                - /url: /contact
+          - generic [ref=e93]:
+            - generic [ref=e94]: 
+            - generic [ref=e95]:
+              - link "中文" [ref=e96] [cursor=pointer]:
+                - /url: javascript:;
+              - text: /
+              - link "English" [ref=e97] [cursor=pointer]:
+                - /url: javascript:;
+    - main [ref=e98]:
+      - generic [ref=e102]: 全球网络布局
+      - generic [ref=e104]:
+        - link "" [ref=e105] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e106]: 
+        - generic [ref=e107]:
+          - generic [ref=e108]: 
+          - link "关于澳弘" [ref=e109] [cursor=pointer]:
+            - /url: /about
+        - generic [ref=e110]:
+          - generic [ref=e111]: 
+          - generic [ref=e112]: 全球网络布局
+      - navigation [ref=e113]:
+        - generic [ref=e114] [cursor=pointer]: 全球网络布局
+        - generic [ref=e115] [cursor=pointer]: 国内市场
+      - generic [ref=e116]:
+        - generic [ref=e117]:
+          - img [ref=e121]
+          - img [ref=e126]
+          - img [ref=e131]
+          - img [ref=e136]
+          - img [ref=e141]
+          - img [ref=e146]
+          - img [ref=e151]
+          - img [ref=e156]
+          - img [ref=e161]
+          - img [ref=e166]
+          - img [ref=e171]
+          - img [ref=e176]
+          - img [ref=e181]
+          - img [ref=e186]
+          - img [ref=e191]
+          - img [ref=e196]
+          - img [ref=e201]
+          - img [ref=e206]
+          - img [ref=e211]
+          - img [ref=e216]
+          - img [ref=e221]
+          - img [ref=e226]
+          - img [ref=e231]
+          - img [ref=e236]
+          - img [ref=e241]
+          - img [ref=e246]
+          - img [ref=e251]
+          - img [ref=e256]
+          - img [ref=e261]
+          - img [ref=e266]
+          - img [ref=e271]
+          - img [ref=e276]
+          - img [ref=e281]
+        - generic [ref=e284]:
+          - generic [ref=e285]:
+            - generic [ref=e286]: 研发制造基地
+            - generic [ref=e287]: "3"
+            - generic [ref=e288]: 个研发制造基地，
+            - generic [ref=e289]: 常州澳弘、常州海弘、泰国澳弘。
+            - generic [ref=e290]: 
+          - generic [ref=e291]:
+            - generic [ref=e292]: 全球业务中心
+            - generic [ref=e293]: "5"
+            - generic [ref=e294]: 个全球业务中心，
+            - generic [ref=e295]: 新加坡、香港、韩国、匈牙利、墨西哥。
+            - generic [ref=e296]: 
+          - generic [ref=e297]:
+            - generic [ref=e298]: 全球客户
+            - generic [ref=e299]: 20+
+            - generic [ref=e300]: 遍布20多个国家和地区的全球客户
+            - generic [ref=e301]: 亚洲、欧洲、北美洲、南美洲、大洋洲、非洲
+            - generic [ref=e302]: 
+        - generic [ref=e303]:
+          - generic [ref=e306]: 客户
+          - generic [ref=e309]: 海外销售
+          - generic [ref=e312]: 生产基地
+        - generic:
+          - img
+        - generic [ref=e313]:
+          - generic [ref=e314] [cursor=pointer]:
+            - generic [ref=e315]:
+              - generic [ref=e317]: 
+              - generic [ref=e318]: 双面 / 多层 / HDI板
+              - generic [ref=e319]:
+                - text: 常州澳弘
+                - text: 电子股份有限公司
+            - img "常州澳弘电子股份有限公司" [ref=e321]
+          - generic [ref=e322] [cursor=pointer]:
+            - generic [ref=e323]:
+              - generic [ref=e325]: 
+              - generic [ref=e326]: 单面PCB
+              - generic [ref=e327]:
+                - text: 常州海弘
+                - text: 电子有限公司
+            - img "常州海弘电子有限公司" [ref=e329]
+          - generic [ref=e330] [cursor=pointer]:
+            - generic [ref=e331]:
+              - generic [ref=e333]: 
+              - generic [ref=e334]: 单面 / 双面 / 多层 / HDI
+              - generic [ref=e335]:
+                - text: 澳弘（泰国）
+                - text: 电子有限公司
+            - img "澳弘（泰国）电子有限公司" [ref=e337]
+    - contentinfo [ref=e338]:
+      - generic [ref=e343]:
+        - img [ref=e345]
+        - generic [ref=e350]:
+          - generic [ref=e351]: 智导世界 互联未来
+          - generic [ref=e352]: Connect Smart World for Better Future
+      - generic [ref=e354]:
+        - generic [ref=e355]:
+          - generic [ref=e356]: 
+          - generic [ref=e357]:
+            - link "邮箱：" [ref=e359] [cursor=pointer]:
+              - /url: "mailto: {{ orgInfo.email }}"
+            - generic [ref=e360]: 地址：
+        - generic [ref=e361]:
+          - generic [ref=e362]:
+            - link "关于澳弘" [ref=e363] [cursor=pointer]:
+              - /url: /about
+            - link "公司简介" [ref=e364] [cursor=pointer]:
+              - /url: /about
+            - link "发展历程" [ref=e365] [cursor=pointer]:
+              - /url: /about/history
+            - link "企业文化" [ref=e366] [cursor=pointer]:
+              - /url: /about/culture
+            - link "全球网络布局" [ref=e367] [cursor=pointer]:
+              - /url: /about/glonet
+            - link "资质专利" [ref=e368] [cursor=pointer]:
+              - /url: /about/patent
+            - link "澳弘荣誉" [ref=e369] [cursor=pointer]:
+              - /url: /about/honor
+            - link "ESG" [ref=e370] [cursor=pointer]:
+              - /url: /about/esg
+          - generic [ref=e371]:
+            - link "产品中心" [ref=e372] [cursor=pointer]:
+              - /url: /products
+            - link "单⾯板" [ref=e373] [cursor=pointer]:
+              - /url: /products?cate=17f6kC900EP91S44
+            - link "双⾯多层板" [ref=e374] [cursor=pointer]:
+              - /url: /products?cate=176jf90wM0r9E137
+            - link "HDI板" [ref=e375] [cursor=pointer]:
+              - /url: /products?cate=1076v9YRe1009130
+            - link "特种PCB板" [ref=e376] [cursor=pointer]:
+              - /url: /products?cate=KGi17V690Xz09115
+          - generic [ref=e377]:
+            - link "行业应用" [ref=e378] [cursor=pointer]:
+              - /url: /application
+            - link "智能家居" [ref=e379] [cursor=pointer]:
+              - /url: /application
+            - link "汽车电子" [ref=e380] [cursor=pointer]:
+              - /url: /application
+            - link "电源能源" [ref=e381] [cursor=pointer]:
+              - /url: /application
+            - link "消费办公" [ref=e382] [cursor=pointer]:
+              - /url: /application
+            - link "通讯安防" [ref=e383] [cursor=pointer]:
+              - /url: /application
+            - link "工业控制" [ref=e384] [cursor=pointer]:
+              - /url: /application
+            - link "其他应用" [ref=e385] [cursor=pointer]:
+              - /url: /application
+          - generic [ref=e386]:
+            - link "投资者关系" [ref=e387] [cursor=pointer]:
+              - /url: /invest
+            - link "股票信息" [ref=e388] [cursor=pointer]:
+              - /url: https://www.cninfo.com.cn/new/disclosure/stock?stockCode=605058&orgId=9900039836#latestAnnouncement
+            - link "定期公告" [ref=e389] [cursor=pointer]:
+              - /url: https://www.cninfo.com.cn/new/disclosure/stock?stockCode=605058&orgId=9900039836#latestAnnouncement
+          - generic [ref=e390]:
+            - link "新闻中心" [ref=e391] [cursor=pointer]:
+              - /url: /news
+            - link "企业新闻" [ref=e392] [cursor=pointer]:
+              - /url: /news?type=c1
+            - link "行业动态" [ref=e393] [cursor=pointer]:
+              - /url: /news?type=c2
+          - generic [ref=e394]:
+            - link "联系我们" [ref=e395] [cursor=pointer]:
+              - /url: /contact
+            - link "加入我们" [ref=e396] [cursor=pointer]:
+              - /url: /contact
+            - link "公司信息" [ref=e397] [cursor=pointer]:
+              - /url: /contact
+        - generic [ref=e399]:
+          - generic [ref=e400]: 
+          - generic [ref=e401]:
+            - text: 扫一扫关注
+            - text: 微信公众号
+      - generic [ref=e404]:
+        - generic [ref=e405]:
+          - link:
+            - /url: https://beian.miit.gov.cn/
+          - generic [ref=e406]: © 2026 All Rights Reserved.
+        - generic [ref=e408] [cursor=pointer]:
+          - generic [ref=e409]: 回到顶部
+          - generic [ref=e410]: 
+  - img [ref=e413]

@@ -21,7 +21,7 @@
                     </svg>
                 </div>
                 <div class="slogan">
-                    <div class="cn">智导世界 互联未来</div>
+                    <div class="cn">{{ $t('footer.slogan') }}</div>
                     <div class="en">Connect Smart World for Better Future</div>
                 </div>
             </div>
@@ -34,8 +34,8 @@
                         <span>{{ orgInfo.telephone }}</span>
                     </div>
                     <div class="w">
-                        <div class="item"><a href="mailto: {{ orgInfo.email }}">邮箱：{{ orgInfo.email }}</a></div>
-                        <div class="item"><span>地址：{{ orgInfo.address }}</span></div>
+                        <div class="item"><a href="mailto: {{ orgInfo.email }}">{{ $t('footer.emailLabel') }}：{{ orgInfo.email }}</a></div>
+                        <div class="item"><span>{{ $t('footer.addressLabel') }}：{{ orgInfo.address }}</span></div>
                     </div>
                 </div>
                 <div class="sl l2"></div>
@@ -45,20 +45,20 @@
                         v-for="(item, index) in menu"
                         :key="item.cn"
                     >
-                        <NuxtLink class="name cate-name" :to="item.link">{{item.cn}}</NuxtLink>
+                        <NuxtLink class="name cate-name" :to="localePath(item.link)">{{ locale === 'en' ? item.en : item.cn }}</NuxtLink>
                         <NuxtLink
                             class="item"
                             v-for="(subItem, subIndex) in item.children"
                             :key="subItem.cn"
-                            :to="subItem.link"
-                        >{{subItem.cn}}</NuxtLink>
+                            :to="localePath(subItem.link)"
+                        >{{ locale === 'en' ? (subItem.en || subItem.cn) : subItem.cn }}</NuxtLink>
                     </div>
                 </div>
                 <div class="sl l3"></div>
                 <div class="wc">
                     <div class="la">
                         <i class="icon ri-wechat-fill"></i>
-                        <span>扫一扫关注<br>微信公众号</span>
+                        <span>{{ $t('footer.wechatLabel') }}</span>
                     </div>
                     <div class="qr">
                         <img src="/images/wechat.jpg" alt="">
@@ -79,7 +79,7 @@
                 </div>
                 <div class="right">
                     <div class="backtop" @click="backtop()">
-                        <span>回到顶部</span>
+                        <span>{{ $t('footer.backToTop') }}</span>
                         <i class="icon ri-arrow-up-line"></i>
                     </div>
                 </div>
@@ -91,6 +91,8 @@
 
 <script setup>
     import useLayoutStore from "@/stores/layout";
+    const { locale } = useI18n()
+    const localePath = useLocalePath()
     const date = new Date()
     const year = ref(date.getFullYear())
     const runtimeConfig = useRuntimeConfig()
@@ -138,6 +140,11 @@ footer {
             align-items: center;
             padding-bottom: 32px;
             border-bottom: 0.5px solid var(--main-blue, #1E3296);
+            @include mo {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
         }
         .slogan {
             font-size: 30px;
@@ -145,6 +152,10 @@ footer {
             text-align: right;
             .en {
                 font-family: TTFors;
+            }
+            @include mo {
+                font-size: 18px;
+                text-align: left;
             }
         }
     }

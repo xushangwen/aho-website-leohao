@@ -26,42 +26,42 @@
                     <div class="l"></div>
                     <div class="stock-code">
                         <div class="code">605058</div>
-                        <div class="label">股票代码</div>
+                        <div class="label">{{ locale === 'en' ? 'Stock Code' : '股票代码' }}</div>
                     </div>
                 </NuxtLink>
                 <div class="top-menu">
                     <NuxtLink
-                        to="/"
+                        :to="localePath('/')"
                         class="item home"
                     >
-                        <span class="cn">首页</span>
+                        <span class="cn">{{ $t('nav.home') }}</span>
                     </NuxtLink>
                     <NuxtLink
                         :class="['item', { 'active': index === indexNav }]"
                         v-for="(item, index) in menuDisplay"
                         :key="`top-fi-${index}`"
-                        :to="item.link"
+                        :to="localePath(item.link)"
                         @mouseenter="activeNav(index)" @mouseleave="closeSubNav()"
                     >
-                        <span class="cn" :data-text="item.cn">{{ item.cn }}</span>
+                        <span class="cn" :data-text="locale === 'en' ? item.en : item.cn">{{ locale === 'en' ? item.en : item.cn }}</span>
                         <i class="icon ri-arrow-down-s-line"></i>
                     </NuxtLink>
                     <NuxtLink
-                        to="/contact"
+                        :to="localePath('/contact')"
                         class="item contact"
                     >
-                        <span class="cn">联系我们</span>
+                        <span class="cn">{{ $t('nav.contact') }}</span>
                         <i class="icon ri-arrow-right-line"></i>
                     </NuxtLink>
                 </div>
                 <div class="tools">
                     <div class="btn lang">
                         <i class="icon ri-global-line"></i>
-                        <span>中文</span>
+                        <span>{{ locale === 'zh' ? '中文' : 'EN' }}</span>
                         <div class="subc">
                             <div class="sub">
-                                <NuxtLink class="item">中文</NuxtLink>
-                                <NuxtLink class="item">EN</NuxtLink>
+                                <NuxtLink class="item" :class="{ active: locale === 'zh' }" :to="switchLocalePath('zh')">中文</NuxtLink>
+                                <NuxtLink class="item" :class="{ active: locale === 'en' }" :to="switchLocalePath('en')">EN</NuxtLink>
                             </div>
                         </div>
                     </div>
@@ -81,9 +81,9 @@
                     </div>
                     <div class="mid">
                         <NuxtLink class="item" v-for="(subItem, subIndex) in item.children" :key="`subItem-${subIndex}`"
-                                  :to="subItem.link" :target="subItem.target ? subItem.target : '_self'">
+                                  :to="localePath(subItem.link)" :target="subItem.target ? subItem.target : '_self'">
                             <i class="icon ri-arrow-right-long-line"></i>
-                            <span>{{ subItem.cn }}</span>
+                            <span>{{ locale === 'en' ? (subItem.en || subItem.cn) : subItem.cn }}</span>
                             <div class="dot"></div>
                         </NuxtLink>
                     </div>
@@ -131,19 +131,19 @@
                 <div class="wrap">
                     <div class="sub-menu" :class="{ 'active': indexMenu === index }" :key="`sub-menu-${index}`"
                          v-for="(item, index) in menu">
-                        <NuxtLink class="name" @click="toggleSubMenuItem(index)" :to="item.children.length === 0 ? '/contact' : 'javascript:;'"><span>{{ item.cn }}</span> <i
+                        <NuxtLink class="name" @click="toggleSubMenuItem(index)" :to="item.children.length === 0 ? localePath('/contact') : 'javascript:;'"><span>{{ locale === 'en' ? item.en : item.cn }}</span> <i
                             class="icon ri-arrow-down-s-line"></i></NuxtLink>
                         <div class="list" v-if="item.children.length > 0">
                             <NuxtLink class="item" v-for="(subItem, subIndex) in item.children"
-                                      :key="`sub-menu-item-${subIndex}`" :to="subItem.link">{{ subItem.cn }}</NuxtLink>
+                                      :key="`sub-menu-item-${subIndex}`" :to="localePath(subItem.link)">{{ locale === 'en' ? (subItem.en || subItem.cn) : subItem.cn }}</NuxtLink>
                         </div>
                     </div>
                     <div class="lang">
                         <i class="icon ri-global-line"></i>
                         <div class="switcher">
-                            <NuxtLink class="link active" to="javascript:;">中文</NuxtLink>
+                            <NuxtLink class="link" :class="{ active: locale === 'zh' }" :to="switchLocalePath('zh')">中文</NuxtLink>
                             &nbsp;&nbsp;/&nbsp;&nbsp;
-                            <NuxtLink class="link" to="javascript:;">English</NuxtLink>
+                            <NuxtLink class="link" :class="{ active: locale === 'en' }" :to="switchLocalePath('en')">English</NuxtLink>
                         </div>
                     </div>
                 </div>
@@ -157,6 +157,9 @@ import useEventStore from "@/stores/event";
 import useLayoutStore from "@/stores/layout";
 const runtimeConfig = useRuntimeConfig()
 const appConfig = useAppConfig()
+const { locale } = useI18n()
+const switchLocalePath = useSwitchLocalePath()
+const localePath = useLocalePath()
 const layoutStore = useLayoutStore()
 const eventStore = useEventStore()
 const {throttle} = useCommon()

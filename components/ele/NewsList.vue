@@ -25,7 +25,7 @@
                 </div>
                 <div class="right">
                     <div class="more">
-                        <span>了解更多</span>
+                        <span>{{ $t('common.learnMore') }}</span>
                         <i class="icon ri-arrow-right-line"></i>
                     </div>
                 </div>
@@ -61,6 +61,13 @@ function getCategoryName(type) {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 60px;
+    @include lap {
+        gap: tovw(32px);
+    }
+    @include mo {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
     .item {
         display: flex;
         flex-direction: column;

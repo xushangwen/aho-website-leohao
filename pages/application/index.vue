@@ -3,7 +3,7 @@
         <EleDefaultCover
             image="/images/prod/cover.jpg"
             image-mobile="/images/prod/cover-m.jpg"
-            text="行业应用"
+            :text="$t('application.coverTitle')"
         ></EleDefaultCover>
         <EleBreadcrumb
             :navigate="breadcrumb"
@@ -20,10 +20,10 @@
                         <div class="c">
                             <div class="icon" v-html="item.contentIcon"></div>
                             <div class="cont">
-                                <div class="name">{{item.name}}</div>
+                                <div class="name">{{ locale === 'en' ? item.nameEn : item.name }}</div>
                                 <div class="region">
-                                    <div class="leb">产品应用于：</div>
-                                    <div class="c">{{item.region}}</div>
+                                    <div class="leb">{{ $t('application.regionLabel') }}</div>
+                                    <div class="c">{{ locale === 'en' ? item.regionEn : item.region }}</div>
                                 </div>
                             </div>
                         </div>
@@ -40,11 +40,9 @@ const appConfig = useAppConfig()
 
 const application = ref(appConfig.clientConfig.indexApplication)
 // 注意cover图片需要替换
-const breadcrumb = ref([
-    {
-        name: '行业应用',
-        link: '/application'
-    }
+const { t, locale } = useI18n()
+const breadcrumb = computed(() => [
+    { name: t('application.coverTitle'), link: '/application' }
 ])
 </script>
 
@@ -60,6 +58,9 @@ const breadcrumb = ref([
         width: 100%;
         height: 400px;
         position: relative;
+        @include mo {
+            height: 260px;
+        }
         > .bg,
         > .c {
             position: absolute;
@@ -78,10 +79,19 @@ const breadcrumb = ref([
             justify-content: space-between;
             align-items: flex-end;
             gap: 110px;
+            @include mo {
+                padding: 24px;
+                gap: 16px;
+                align-items: flex-end;
+            }
             .icon {
                 width: 40px;
                 height: 40px;
                 flex: none;
+                @include mo {
+                    width: 28px;
+                    height: 28px;
+                }
             }
             .cont {
                 width: 100%;
@@ -90,18 +100,30 @@ const breadcrumb = ref([
                 justify-content: space-between;
                 align-items: flex-end;
                 gap: 91px;
+                @include mo {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 8px;
+                }
                 .name {
                     font-size: 32px;
                     color: white;
                     font-weight: bold;
                     width: 225px;
                     flex: none;
+                    @include mo {
+                        font-size: 22px;
+                        width: auto;
+                    }
                 }
                 .region {
                     width: 100%;
                     color: white;
                     font-size: 18px;
                     line-height: 1.5;
+                    @include mo {
+                        font-size: 13px;
+                    }
                 }
             }
         }

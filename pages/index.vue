@@ -36,15 +36,15 @@
                     </div>
                     <div :class="`info wrap ${item.styleClass}`">
                         <div class="cont">
-                            <div class="t1" v-if="item.t1 && item.t1.length > 0">
+                            <div class="t1" v-if="locale !== 'en' && item.t1 && item.t1.length > 0">
                                 <span
                                     v-for="(nameItem, nameIndex) in item.t1"
                                     :key="`t1-${nameIndex}`"
                                 >{{nameItem}}</span>
                             </div>
-                            <div class="t2" v-if="item.t2 && item.t2.length > 0">
+                            <div class="t2" v-if="locale === 'en' ? (item.t2En && item.t2En.length > 0) : (item.t2 && item.t2.length > 0)">
                                 <span
-                                    v-for="(nameItem, nameIndex) in item.t2"
+                                    v-for="(nameItem, nameIndex) in (locale === 'en' ? item.t2En : item.t2)"
                                     :key="`t2-${nameIndex}`"
                                 >{{nameItem}}</span>
                             </div>
@@ -74,15 +74,15 @@
             <div class="wrap">
                 <div class="left">
                     <div class="s-t">
-                        关于澳弘
+                        {{ $t('home.aboutTitle') }}
                     </div>
-                    <div class="t2">澳弘电子是专业的PCB研发和生产企业，2020年在上交所挂牌上市。</div>
+                    <div class="t2">{{ $t('home.aboutDesc') }}</div>
                     <div class="abst">
-                        <p class="s-a">产品应用于消费办公、汽车电子、电源能源、工控医疗、AI算力、卫星互联网、通讯安防等领域。服务于全球20多个国家和地区的品牌客户。</p>
-                        <p class="s-a">我们的使命是“承载数字科技，赋能智慧生活”。</p>
+                        <p class="s-a">{{ $t('home.aboutContent1') }}</p>
+                        <p class="s-a">{{ $t('home.aboutContent2') }}</p>
                     </div>
-                    <NuxtLink class="_btn" to="/about">
-                        <div class="_str">查看更多</div>
+                    <NuxtLink class="_btn" :to="aboutPath">
+                        <div class="_str">{{ $t('home.aboutBtn') }}</div>
                         <div class="_icon ri-arrow-right-line"></div>
                     </NuxtLink>
                 </div>
@@ -96,12 +96,12 @@
                 <img src="/images/home/application_bg.jpg" alt="">
             </div>
             <div class="wrap">
-                <div class="s-t">行业应用</div>
+                <div class="s-t">{{ $t('home.applicationTitle') }}</div>
                 <div class="s-a">
-                    <span>澳弘电子持续创新，我们研发的PCB产品，适用于多领域多场景的应用需求。</span>
+                    <span>{{ $t('home.applicationDesc') }}</span>
                 </div>
                 <div class="sc">
-                    <span class="sc-for">为</span>
+                    <span class="sc-for">{{ $t('home.applicationFor') }}</span>
                     <div class="sc-slot">
                         <Transition name="sc-slide" mode="out-in">
                             <div class="sc-pair" :key="'subject-' + currentScIndex">
@@ -110,7 +110,7 @@
                             </div>
                         </Transition>
                     </div>
-                    <span class="sc-provide">提供</span>
+                    <span class="sc-provide">{{ $t('home.applicationProvide') }}</span>
                     <div class="sc-slot">
                         <Transition name="sc-slide" mode="out-in">
                             <div class="sc-pair" :key="'way-' + currentScIndex">
@@ -133,10 +133,10 @@
                     <div class="left">
                         <i :class="['icon', item.iconClass]"></i>
                         <div class="cont">
-                            <div class="name">{{item.name}}</div>
+                            <div class="name">{{ locale === 'en' ? (item.nameEn || item.name) : item.name }}</div>
                             <div class="region">
-                                <div class="leb">产品应用于：</div>
-                                <div class="c">{{item.region}}</div>
+                                <div class="leb">{{ $t('application.regionLabel') }}</div>
+                                <div class="c">{{ locale === 'en' ? (item.regionEn || item.region) : item.region }}</div>
                             </div>
                         </div>
                         <div class="l"></div>
@@ -150,15 +150,15 @@
 
         <section class="s4">
             <div class="wrap">
-                <div class="s-t">新闻中心</div>
+                <div class="s-t">{{ $t('home.newsTitle') }}</div>
                 <div class="s-a">
-                    <span>跟踪澳弘电子的最新动态，探索科技创新与行业发展新机遇</span>
+                    <span>{{ $t('home.newsDesc') }}</span>
                 </div>
-                <div class="loading" v-if="loadingNews">加载中...</div>
+                <div class="loading" v-if="loadingNews">{{ $t('common.loading') }}</div>
                 <EleNewsList v-else class="news-list" :news-list="newsList"></EleNewsList>
                 <div class="tools">
-                    <NuxtLink class="_btn" to="/news">
-                        <div class="_str">浏览所有新闻</div>
+                    <NuxtLink class="_btn" :to="newsPath">
+                        <div class="_str">{{ $t('home.newsBtn') }}</div>
                         <div class="_icon ri-arrow-right-line"></div>
                     </NuxtLink>
                 </div>
@@ -168,8 +168,8 @@
         <section class="s5" ref="elS5Section">
             <div class="s5-bg"></div>
             <div class="s5-header">
-                <div class="s5-title">我们的全球服务</div>
-                <div class="s5-desc">澳弘电子与全球领先企业深度合作，推动科技创新与行业发展</div>
+                <div class="s5-title">{{ $t('home.serviceTitle') }}</div>
+                <div class="s5-desc">{{ $t('home.serviceDesc') }}</div>
             </div>
             <div class="s5-map-wrap">
                 <div class="s5-map-zoom">
@@ -241,7 +241,7 @@
                 <div class="s5-filters">
                     <button class="s5-fbtn" :class="{ active: activeFilter === 'all' }" @click="activeFilter = 'all'">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4zM4 16h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"/></svg>
-                        <span class="s5-flabel">全部</span>
+                        <span class="s5-flabel">{{ $t('home.serviceAllLabel') }}</span>
                         <span class="s5-fcount">34</span>
                     </button>
                     <button v-for="cat in filterCategories" :key="cat.type" class="s5-fbtn" :class="{ active: activeFilter === cat.type }" @click="activeFilter = cat.type">
@@ -272,6 +272,10 @@ import {setPageLayout} from "#app";
 
 const eventStore = useEventStore()
 const {throttle} = useCommon()
+const { t, locale } = useI18n()
+const localePath = useLocalePath()
+const aboutPath = computed(() => localePath('/about'))
+const newsPath = computed(() => localePath('/news'))
 
 definePageMeta({
     layout: 'home',
@@ -290,13 +294,18 @@ const runtimeConfig = useRuntimeConfig()
 const bannerSlides = ref(appConfig.clientConfig.indexBanner)
 const indexApplication = ref(appConfig.clientConfig.indexApplication)
 
-const scItems = [
-    { subject: '智慧生活', subjectIcon: 'ri-lightbulb-flash-line', way: '便利的方式', wayIcon: 'ri-timer-flash-line' },
-    { subject: '大众出行', subjectIcon: 'ri-route-line', way: '安全的保障', wayIcon: 'ri-shield-keyhole-line' },
-    { subject: '能源管理', subjectIcon: 'ri-battery-2-charge-line', way: '稳定的动力', wayIcon: 'ri-pulse-ai-line' },
-    { subject: '现代制造', subjectIcon: 'ri-settings-5-line', way: '可靠的控制', wayIcon: 'ri-fingerprint-line' },
-    { subject: '智能科技', subjectIcon: 'ri-cpu-line', way: '智慧的互联', wayIcon: 'ri-link-m' },
+const scIcons = [
+    { subjectIcon: 'ri-lightbulb-flash-line', wayIcon: 'ri-timer-flash-line' },
+    { subjectIcon: 'ri-route-line', wayIcon: 'ri-shield-keyhole-line' },
+    { subjectIcon: 'ri-battery-2-charge-line', wayIcon: 'ri-pulse-ai-line' },
+    { subjectIcon: 'ri-settings-5-line', wayIcon: 'ri-fingerprint-line' },
+    { subjectIcon: 'ri-cpu-line', wayIcon: 'ri-link-m' },
 ]
+const scItems = computed(() => scIcons.map((icon, i) => ({
+    ...icon,
+    subject: t('home.sc' + i + 'Subject'),
+    way: t('home.sc' + i + 'Way'),
+})))
 const currentScIndex = ref(0)
 let scTimer = null
 const newsList = ref([])
@@ -340,6 +349,7 @@ const elS3 = ref(null)
 let headerHeight, s3Height, itemLength, lastChildHeight, step
 
 function updateApplicationItem() {
+    if (windowWidth.value <= 992) return
     const { top: s3Top, bottom: s3Bottom } = elS3.value.getBoundingClientRect()
     const delta = headerHeight - s3Top
     if (s3Bottom < windowHeight.value) {
@@ -370,7 +380,15 @@ watch(windowWidth, initApplicationItem)
 
 // 初始化前必须先重置所有 class，确保 getBoundingClientRect 读到正确的自然高度
 function initApplicationItem() {
-    headerHeight = windowWidth.value > 992 ? 72 : 70
+    // 移动端禁用 sticky 滚动效果
+    if (windowWidth.value <= 992) {
+        elS3.value.style.height = ''
+        elApplication.value?.forEach(item => {
+            item.classList.remove('fixed-sticky', 'absolute-sticky')
+        })
+        return
+    }
+    headerHeight = 72
     elApplication.value?.forEach(item => {
         item.classList.remove('fixed-sticky', 'absolute-sticky')
     })
@@ -391,16 +409,16 @@ const statusS5 = ref(false)
 const activeFilter = ref('all')
 
 const markerColors = { customer: '#FF6400', business: '#1E3296', rd: '#FFB432' }
-const filterCategories = [
-    { type: 'customer', color: '#FF6400', label: '全球客户', count: 27 },
-    { type: 'business', color: '#1E3296', label: '全球业务中心', count: 5 },
-    { type: 'rd', color: '#FFB432', label: '研发制造基地', count: 3 },
-]
-const statsCards = [
-    { value: '27+', color: '#FF6400', label: '服务国家/地区' },
-    { value: '5', color: '#1E3296', label: '全球业务中心' },
-    { value: '3', color: '#FFB432', label: '研发制造基地' },
-]
+const filterCategories = computed(() => [
+    { type: 'customer', color: '#FF6400', label: t('home.catCustomer'), count: 27 },
+    { type: 'business', color: '#1E3296', label: t('home.catBusiness'), count: 5 },
+    { type: 'rd', color: '#FFB432', label: t('home.catRd'), count: 3 },
+])
+const statsCards = computed(() => [
+    { value: '27+', color: '#FF6400', label: t('home.statRegions') },
+    { value: '5', color: '#1E3296', label: t('home.catBusiness') },
+    { value: '3', color: '#FFB432', label: t('home.catRd') },
+])
 
 // Natural Earth 1 (geoNaturalEarth1) — 源码 projection="geoNaturalEarth1" projectionConfig.center=[10,10] scale=160
 const NE_A1 = 0.8707, NE_A2 = -0.131979, NE_A3 = -0.013791, NE_A4 = 0.003971
@@ -431,44 +449,48 @@ function getMarkerSize(type) {
 }
 
 const allLocations = [
-    { name: '英国', coords: [-1.5, 52.5], type: 'customer' },
-    { name: '法国', coords: [2.3, 46.6], type: 'customer' },
-    { name: '德国', coords: [10.5, 51.2], type: 'customer' },
-    { name: '奥地利', coords: [14.5, 47.5], type: 'customer' },
-    { name: '波兰', coords: [19.4, 52], type: 'customer' },
-    { name: '西班牙', coords: [-3.7, 40.4], type: 'customer' },
-    { name: '斯洛文尼亚', coords: [14.8, 46.1], type: 'customer' },
-    { name: '斯洛伐克', coords: [19.7, 48.7], type: 'customer' },
-    { name: '意大利', coords: [12.5, 42.5], type: 'customer' },
-    { name: '罗马尼亚', coords: [25, 44.4], type: 'customer' },
-    { name: '土耳其', coords: [32.9, 39.9], type: 'customer' },
-    { name: '突尼斯', coords: [9.5, 34], type: 'customer' },
-    { name: '埃及', coords: [30.8, 26.8], type: 'customer' },
-    { name: '迪拜', coords: [55.3, 25.3], type: 'customer' },
-    { name: '印度', coords: [78.9, 22], type: 'customer' },
-    { name: '中国', coords: [104, 35], type: 'customer' },
-    { name: '日本', coords: [138.3, 36.2], type: 'customer' },
-    { name: '韩国', coords: [128, 36.5], type: 'customer' },
-    { name: '越南', coords: [108.3, 16], type: 'customer' },
-    { name: '马来西亚', coords: [101.7, 3.1], type: 'customer' },
-    { name: '印度尼西亚', coords: [117, -2.5], type: 'customer' },
-    { name: '菲律宾', coords: [120.9, 14.6], type: 'customer' },
-    { name: '台湾', coords: [121.5, 25], type: 'customer' },
-    { name: '美国', coords: [-95.7, 37.1], type: 'customer' },
-    { name: '墨西哥', coords: [-102.5, 23.6], type: 'customer' },
-    { name: '巴西', coords: [-47.9, -2.0], type: 'customer' },
-    { name: '澳大利亚', coords: [145, -37.8], type: 'customer' },
-    { name: '匈牙利', coords: [19, 47.5], type: 'business' },
-    { name: '新加坡', coords: [103.8, 1.35], type: 'business' },
-    { name: '墨西哥', coords: [-99.1, 19.4], type: 'business' },
-    { name: '韩国', coords: [127, 37.5], type: 'business' },
-    { name: '香港', coords: [114.2, 22.3], type: 'business' },
-    { name: '中国', coords: [116.4, 31.2], type: 'rd' },
-    { name: '泰国', coords: [100.5, 13.8], type: 'rd' },
+    { name: '英国', nameEn: 'UK', coords: [-1.5, 52.5], type: 'customer' },
+    { name: '法国', nameEn: 'France', coords: [2.3, 46.6], type: 'customer' },
+    { name: '德国', nameEn: 'Germany', coords: [10.5, 51.2], type: 'customer' },
+    { name: '奥地利', nameEn: 'Austria', coords: [14.5, 47.5], type: 'customer' },
+    { name: '波兰', nameEn: 'Poland', coords: [19.4, 52], type: 'customer' },
+    { name: '西班牙', nameEn: 'Spain', coords: [-3.7, 40.4], type: 'customer' },
+    { name: '斯洛文尼亚', nameEn: 'Slovenia', coords: [14.8, 46.1], type: 'customer' },
+    { name: '斯洛伐克', nameEn: 'Slovakia', coords: [19.7, 48.7], type: 'customer' },
+    { name: '意大利', nameEn: 'Italy', coords: [12.5, 42.5], type: 'customer' },
+    { name: '罗马尼亚', nameEn: 'Romania', coords: [25, 44.4], type: 'customer' },
+    { name: '土耳其', nameEn: 'Turkey', coords: [32.9, 39.9], type: 'customer' },
+    { name: '突尼斯', nameEn: 'Tunisia', coords: [9.5, 34], type: 'customer' },
+    { name: '埃及', nameEn: 'Egypt', coords: [30.8, 26.8], type: 'customer' },
+    { name: '迪拜', nameEn: 'Dubai', coords: [55.3, 25.3], type: 'customer' },
+    { name: '印度', nameEn: 'India', coords: [78.9, 22], type: 'customer' },
+    { name: '中国', nameEn: 'China', coords: [104, 35], type: 'customer' },
+    { name: '日本', nameEn: 'Japan', coords: [138.3, 36.2], type: 'customer' },
+    { name: '韩国', nameEn: 'South Korea', coords: [128, 36.5], type: 'customer' },
+    { name: '越南', nameEn: 'Vietnam', coords: [108.3, 16], type: 'customer' },
+    { name: '马来西亚', nameEn: 'Malaysia', coords: [101.7, 3.1], type: 'customer' },
+    { name: '印度尼西亚', nameEn: 'Indonesia', coords: [117, -2.5], type: 'customer' },
+    { name: '菲律宾', nameEn: 'Philippines', coords: [120.9, 14.6], type: 'customer' },
+    { name: '台湾', nameEn: 'Taiwan', coords: [121.5, 25], type: 'customer' },
+    { name: '美国', nameEn: 'USA', coords: [-95.7, 37.1], type: 'customer' },
+    { name: '墨西哥', nameEn: 'Mexico', coords: [-102.5, 23.6], type: 'customer' },
+    { name: '巴西', nameEn: 'Brazil', coords: [-47.9, -2.0], type: 'customer' },
+    { name: '澳大利亚', nameEn: 'Australia', coords: [145, -37.8], type: 'customer' },
+    { name: '匈牙利', nameEn: 'Hungary', coords: [19, 47.5], type: 'business' },
+    { name: '新加坡', nameEn: 'Singapore', coords: [103.8, 1.35], type: 'business' },
+    { name: '墨西哥', nameEn: 'Mexico', coords: [-99.1, 19.4], type: 'business' },
+    { name: '韩国', nameEn: 'South Korea', coords: [127, 37.5], type: 'business' },
+    { name: '香港', nameEn: 'Hong Kong', coords: [114.2, 22.3], type: 'business' },
+    { name: '中国', nameEn: 'China', coords: [116.4, 31.2], type: 'rd' },
+    { name: '泰国', nameEn: 'Thailand', coords: [100.5, 13.8], type: 'rd' },
 ]
 
 const projectedMarkers = computed(() =>
-    allLocations.map(loc => ({ ...projectNE(loc.coords[0], loc.coords[1]), name: loc.name, type: loc.type }))
+    allLocations.map(loc => ({
+        ...projectNE(loc.coords[0], loc.coords[1]),
+        name: locale.value === 'en' ? (loc.nameEn || loc.name) : loc.name,
+        type: loc.type
+    }))
 )
 const filteredMarkers = computed(() =>
     activeFilter.value === 'all' ? projectedMarkers.value : projectedMarkers.value.filter(m => m.type === activeFilter.value)
@@ -977,10 +999,48 @@ onUnmounted(() => {
             overflow: hidden;
         }
     }
+    @include lap {
+        .left {
+            width: 50%;
+        }
+        .right {
+            min-width: 0;
+        }
+    }
+    @include mo {
+        .wrap {
+            min-height: unset;
+        }
+        .left {
+            width: 100%;
+            padding: 40px 0 280px;
+        }
+        .t2 {
+            font-size: 22px;
+            margin-top: 24px;
+        }
+        ._btn {
+            margin-top: 32px;
+        }
+        .right {
+            position: absolute;
+            bottom: 0;
+            top: unset;
+            height: 260px;
+            width: 100%;
+            min-width: 0;
+            .bg {
+                border-radius: 0;
+            }
+        }
+    }
 }
 
 .el-profile-data {
     margin: 120px 0 0;
+    @include mo {
+        margin: 48px 0 0;
+    }
 }
 
 .s2 {
@@ -1076,7 +1136,22 @@ onUnmounted(() => {
         transform: translateY(-10px);
     }
     @include mo {
-        //background: url("/images/home/solu-bg.jpg") no-repeat center / cover;
+        margin-top: 48px;
+        padding: 48px 0;
+        .sc {
+            flex-wrap: wrap;
+            gap: 8px;
+            .sc-for,
+            .sc-provide {
+                font-size: 20px;
+            }
+            .sc-slot {
+                min-width: 160px;
+            }
+            b {
+                font-size: 22px;
+            }
+        }
     }
 }
 
@@ -1179,6 +1254,37 @@ onUnmounted(() => {
                 bottom: calc((7 - #{$i}) * (100vh - #{$header_height} - #{$itemHeight}) / 6);
             }
         }
+        @include mo {
+            height: auto !important;
+            position: static !important;
+            bottom: unset !important;
+            top: unset !important;
+            background-color: white !important;
+            .wrap {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .left {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--main-orange);
+                padding-bottom: 16px;
+                .cont {
+                    width: auto;
+                    flex: 1;
+                    .name { font-size: 20px; }
+                    .region { font-size: 14px; }
+                }
+            }
+            .right {
+                width: 100%;
+                img { width: 100%; }
+            }
+        }
+    }
+    @include mo {
+        height: auto !important;
     }
 }
 
@@ -1198,6 +1304,15 @@ onUnmounted(() => {
     .tools {
         margin-top: tovw(80px);
         text-align: center;
+    }
+    @include mo {
+        padding: 48px 0 64px;
+        .news-list {
+            margin-top: 32px;
+        }
+        .tools {
+            margin-top: 32px;
+        }
     }
 }
 

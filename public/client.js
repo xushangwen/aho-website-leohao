@@ -1,7 +1,7 @@
 const nav = [
     {
         cn: '关于澳弘',
-        en: 'about',
+        en: 'About AOH',
         link: '/about',
         cover: [
             '/images/layout/nav/about.jpg'
@@ -9,58 +9,58 @@ const nav = [
         children: [
             {
                 cn: '公司简介',
-                en: 'profile',
+                en: 'Brief Introduction',
                 link: '/about',
             },
             {
                 cn: '发展历程',
-                en: 'history',
+                en: 'Milestones',
                 link: '/about/history',
             },
             {
                 cn: '企业文化',
-                en: 'culture',
+                en: 'Corporate Culture',
                 link: '/about/culture',
             },
             {
                 cn: '全球网络布局',
-                en: 'glonet',
+                en: 'Global Network Layout',
                 link: '/about/glonet',
             },
             {
                 cn: '资质专利',
-                en: 'patent',
+                en: 'Certifications & Patents',
                 link: '/about/patent',
             },
             {
                 cn: '澳弘荣誉',
-                en: 'honor',
+                en: 'AOH Honours',
                 link: '/about/honor',
             },
             {
                 cn: 'ESG',
-                en: 'esg',
+                en: 'ESG',
                 link: '/about/esg',
             }
         ]
     },
     {
         cn: '产品中心',
-        en: 'products',
+        en: 'Products',
         link: '/products',
         cover: [
             '/images/layout/nav/products.jpg'
         ],
         children: [
-            { "cn": "单⾯板", "en": "单⾯板", "link": "/products?cate=17f6kC900EP91S44"},
-            { "cn": "双⾯多层板", "en": "双⾯多层板", "link": "/products?cate=176jf90wM0r9E137"},
-            { "cn": "HDI板", "en": "HDI板", "link": "/products?cate=1076v9YRe1009130"},
-            { "cn": "特种PCB板", "en": "特种PCB板", "link": "/products?cate=KGi17V690Xz09115"}
+            { "cn": "单⾯板", "en": "Single-sided PCB", "link": "/products?cate=17f6kC900EP91S44"},
+            { "cn": "双⾯多层板", "en": "Double-sided / Multi-layer PCB", "link": "/products?cate=176jf90wM0r9E137"},
+            { "cn": "HDI板", "en": "HDI PCB", "link": "/products?cate=1076v9YRe1009130"},
+            { "cn": "特种PCB板", "en": "Special PCB", "link": "/products?cate=KGi17V690Xz09115"}
         ]
     },
     {
         cn: '行业应用',
-        en: 'applications',
+        en: 'Applications',
         link: '/application',
         cover: [
             '/images/layout/nav/applications.jpg'
@@ -68,37 +68,37 @@ const nav = [
         children: [
             {
                 cn: '智能家居',
-                en: '智能家居',
+                en: 'Smart Home',
                 link: '/application',
             },
             {
                 cn: '汽车电子',
-                en: '汽车电子',
+                en: 'Automotive Electronics',
                 link: '/application',
             },
             {
                 cn: '电源能源',
-                en: '电源能源',
+                en: 'Power & Energy',
                 link: '/application',
             },
             {
                 cn: '消费办公',
-                en: '消费办公',
+                en: 'Consumer & Office',
                 link: '/application',
             },
             {
                 cn: '通讯安防',
-                en: '通讯安防',
+                en: 'Communications & Security',
                 link: '/application',
             },
             {
                 cn: '工业控制',
-                en: '工业控制',
+                en: 'Industrial Control',
                 link: '/application',
             },
             {
                 cn: '其他应用',
-                en: '其他应用',
+                en: 'Other Applications',
                 link: '/application',
             },
         ]
@@ -113,13 +113,13 @@ const nav = [
         children: [
             {
                 cn: '股票信息',
-                en: '股票信息',
+                en: 'Stock Information',
                 link: 'https://www.cninfo.com.cn/new/disclosure/stock?stockCode=605058&orgId=9900039836#latestAnnouncement',
                 target: '_blank'
             },
             {
                 cn: '定期公告',
-                en: '定期公告',
+                en: 'Regular Announcements',
                 link: 'https://www.cninfo.com.cn/new/disclosure/stock?stockCode=605058&orgId=9900039836#latestAnnouncement',
                 target: '_blank'
             },
@@ -127,27 +127,27 @@ const nav = [
     },
     {
         cn: '新闻中心',
-        en: 'news',
+        en: 'News Center',
         link: '/news',
         cover: [
             '/images/layout/nav/news.jpg'
         ],
-        children: [{"cn":"企业新闻","en":"企业新闻","link":"/news?type=c1"},{"cn":"行业动态","en":"行业动态","link":"/news?type=c2"}]
+        children: [{"cn":"企业新闻","en":"Corporate News","link":"/news?type=c1"},{"cn":"行业动态","en":"Industry Trends","link":"/news?type=c2"}]
     },
     {
         cn: '联系我们',
-        en: 'contact',
+        en: 'Contact Us',
         link: '/contact',
         cover: [],
         children: [
             {
                 cn: '加入我们',
-                en: '加入我们',
+                en: 'Join Us',
                 link: '/contact',
             },
             {
                 cn: '公司信息',
-                en: '公司信息',
+                en: 'Company Information',
                 link: '/contact',
             },
         ]
@@ -163,6 +163,7 @@ const indexBanner = [
         name: [''],
         t1: [''],
         t2: ['智导世界 互联未来'],
+        t2En: ['Connect Smart World for Better Future'],
         t2m: [],
         abst: [
             'Connect Smart World for Better Future'
@@ -177,6 +178,7 @@ const indexBanner = [
         name: [''],
         t1: [''],
         t2: ['承载数字科技，赋能智慧生活'],
+        t2En: ['Bearing Digital Technology, Empowering Smart Life'],
         t2m: [],
         abst: [
             'Bearing Digital Technology, Empowering Smart Life'
@@ -192,6 +194,7 @@ const indexBanner = [
         name: [''],
         t1: [''],
         t2: ['成为全世界优质客户信赖的合作伙伴'],
+        t2En: ['Reliable Partner for High-level Customers Worldwide'],
         t2m: [],
         abst: [
             'To be a Trustable and Reliable Partner of High-level Customers'
@@ -206,7 +209,9 @@ const indexBanner = [
         ],
         name: [''],
         t1: ['澳弘电子持续创新，PCB产品'],
+        t1En: [],
         t2: ['适用于多领域多场景的应用需求'],
+        t2En: ['PCB Products for Multi-discipline & Multi-scenario Applications'],
         t2m: [],
         abst: [
             'Continuous innovation, PCB products suitable for multi-discipline and multi-scenario application needs'
@@ -218,47 +223,55 @@ const indexBanner = [
 const profileData = [
     {
         label: '合计产能',
+        labelEn: 'Total Production Capacity',
         num: '7,600,000',
         unit: '',
         abst: [
             '平方米/年'
         ],
+        abstEn: ['㎡/year'],
         icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
             '<path d="M20.71 8.11977L20.46 8.67977C20.27 9.08977 19.7 9.08977 19.52 8.67977L19.27 8.10977C18.83 7.09977 18.03 6.28977 17.05 5.84977L16.29 5.50977C15.87 5.31977 15.87 4.71977 16.29 4.53977L17 4.21977C18.01 3.75977 18.81 2.92977 19.25 1.88977L19.5 1.26977C19.67 0.839766 20.26 0.839766 20.44 1.26977L20.69 1.87977C21.12 2.91977 21.92 3.74977 22.94 4.19977L23.65 4.50977C24.06 4.68977 24.06 5.28977 23.65 5.46977L22.89 5.79977C21.9 6.22977 21.11 7.03977 20.67 8.04977L20.71 8.11977ZM1.98999 3.98977C1.98999 3.42977 2.42999 2.98977 2.98999 2.98977H13.99V4.98977H3.98999V18.9898H19.99V10.9898H21.99V19.9898C21.99 20.5398 21.54 20.9898 20.99 20.9898H2.98999C2.42999 20.9898 1.98999 20.5398 1.98999 19.9898V3.98977ZM6.98999 12.9898H8.98999V16.9898H6.98999V12.9898ZM10.99 6.98977H12.99V16.9898H10.99V6.98977ZM14.99 9.98977H16.99V16.9898H14.99V9.98977Z" fill="#DCDCDC"/>\n' +
             '</svg>'
     },
     {
         label: '研发制造基地',
+        labelEn: 'R&D & Manufacturing Bases',
         num: '3',
         unit: '',
         abst: [
             '个研发制造基地',
             '常州澳弘、常州海弘、泰国澳弘。'
         ],
+        abstEn: ['R&D & Manufacturing Bases', 'Changzhou Aohong, Changzhou Haihong, Aohong Thailand.'],
         icon: '<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
             '<path d="M22.6666 21H2.66663V19H3.66663V4C3.66663 3.44 4.10663 3 4.66663 3H18.6666C19.2166 3 19.6666 3.44 19.6666 4V9H21.6666V19H22.6666V21ZM17.6666 19H19.6666V11H13.6666V19H15.6666V13H17.6666V19ZM17.6666 9V5H5.66663V19H11.6666V9H17.6666ZM7.66663 11H9.66663V13H7.66663V11ZM7.66663 15H9.66663V17H7.66663V15ZM7.66663 7H9.66663V9H7.66663V7Z" fill="#DCDCDC"/>\n' +
             '</svg>'
     },
     {
         label: '全球业务中心',
+        labelEn: 'Global Business Centers',
         num: '5',
         unit: '',
         abst: [
             '个全球业务中心，',
             '新加坡、香港、韩国、匈牙利、墨西哥。'
         ],
+        abstEn: ['Global Business Centers', 'Singapore, Hong Kong, South Korea, Hungary, Mexico.'],
         icon: '<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
             '<path d="M12.3333 22C6.80325 22 2.33325 17.52 2.33325 12C2.33325 6.47 6.80325 2 12.3333 2C17.8533 2 22.3333 6.47 22.3333 12C22.3333 17.52 17.8533 22 12.3333 22ZM10.0433 19.66C9.07325 17.61 8.48325 15.36 8.35325 12.99H4.38325C4.77325 16.16 7.03325 18.76 10.0233 19.65L10.0433 19.66ZM10.3633 12.99C10.5133 15.42 11.2033 17.71 12.3233 19.74C13.4433 17.71 14.1333 15.42 14.2833 12.98H10.3433L10.3633 12.99ZM20.2633 12.99H16.2933C16.1633 15.36 15.5633 17.61 14.6033 19.65C17.5933 18.75 19.8533 16.15 20.2433 12.98L20.2633 12.99ZM4.38325 10.99H8.34325C8.47325 8.61 9.06325 6.36 10.0233 4.32C7.02325 5.21 4.76325 7.81 4.37325 10.98L4.38325 10.99ZM10.3433 10.99H14.2733C14.1133 8.55 13.4233 6.26 12.3033 4.23C11.1733 6.25 10.4833 8.54 10.3333 10.98L10.3433 10.99ZM14.5933 4.32C15.5533 6.36 16.1433 8.61 16.2733 10.98H20.2333C19.8333 7.8 17.5733 5.2 14.5833 4.31L14.5933 4.32Z" fill="#DCDCDC"/>\n' +
             '</svg>'
     },
     {
         label: '服务全球',
+        labelEn: 'Global Reach',
         num: '20',
         unit: '+',
         abst: [
             '遍布20多个国家和地区的全球客户，',
             '亚洲、欧洲、北美洲、南美洲、大洋洲、非洲'
         ],
+        abstEn: ['Customers in 20+ countries and regions', 'Asia, Europe, North America, South America, Oceania, Africa'],
         icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
             '<path d="M12 22C6.46999 22 1.98999 17.52 1.98999 12C1.98999 6.47 6.45999 2 11.99 2C17.51 2 21.99 6.47 21.99 11.99C21.99 17.51 17.51 21.99 11.99 21.99L12 22ZM12 20C16.41 20 20 16.41 20 12C20 7.58 16.41 4 12 4C7.57999 4 3.98999 7.58 3.98999 11.99C3.98899 16.4 7.56999 19.99 11.99 19.99L12 20ZM13 13H16V15H13V17H11V15H7.98999V13H10.99V12H7.97999V10H10.56L8.42999 7.87L9.83999 6.45L11.96 8.57L14.08 6.44L15.49 7.85L13.36 9.97H15.94V11.97H12.94V12.97L13 13Z" fill="#DCDCDC"/>\n' +
             '</svg>\n'
@@ -269,23 +282,30 @@ const history = [
     {
         sectionName: '1973-1999',
         sectionSlogan: '澳弘成立',
+        sectionSloganEn: 'AOH was established',
         list: [
             {
                 year: '1973',
                 t1: '公司初创',
                 t2: '创建"武进县孝都公社长江标牌厂"，开始生产简易的柳器、铭牌、五金等产品起步。',
+                t1En: 'Company Inception',
+                t2En: 'Founded as "Wujin County Xiaodu Commune Changjiang Label Factory," starting with the production of simple wickerwork, nameplates, and hardware products.',
                 images: '/images/about/history/y/1973.jpg'
             },
             {
                 year: '1982',
                 t1: '开始生产单面PCB板',
-                t2: '进入电子行业，为当时中国电视第一品牌，“黄河电视”供应单面PCB。',
+                t2: '进入电子行业，为当时中国电视第一品牌，”黄河电视”供应单面PCB。',
+                t1En: 'Entry into Single-Sided PCB Production',
+                t2En: 'Entered the electronics industry by supplying single-sided PCBs for “Huanghe TV,” the leading television brand in China at the time.',
                 images: '/images/about/history/y/1982.jpg'
             },
             {
                 year: '1995',
                 t1: '年销售达千万元',
                 t2: '当年总销售额突破1000万元人民币。',
+                t1En: 'Annual Sales Reach 10 Million Yuan',
+                t2En: 'Total annual sales surpassed 10 million RMB.',
                 images: '/images/about/history/y/1995.jpg'
             },
         ]
@@ -293,40 +313,51 @@ const history = [
     {
         sectionName: '2000-2019',
         sectionSlogan: '势不可挡',
+        sectionSloganEn: 'Unstoppable',
         list: [
             {
                 year: '2004',
-                t1: '成立“海弘”',
+                t1: '成立”海弘”',
                 t2: '主营业务聚焦生产单面PCB板。年销售额突破1亿元人民币。',
+                t1En: 'Establishment of “Haihong”',
+                t2En: 'Main business focused on producing single-sided PCBs. Annual sales exceeded 100 million RMB.',
                 images: '/images/about/history/y/2004.jpg'
             },
             {
                 year: '2005',
-                t1: '成立“澳弘”',
+                t1: '成立”澳弘”',
                 t2: [
                     '开始生产双面和多层PCB板。',
                     '援建古巴PCB生产线。',
                     '成为LG绿色伙伴（GREEN PARTNER）。',
                     '公司首次通过ISO14000环境管理体系认证。',
                 ],
+                t1En: 'Establishment of “AOH”',
+                t2En: ['Began production of double-sided and multilayer PCBs.', 'Assisted in the construction of a PCB production line in Cuba.', 'Became an LG Green Partner.', 'Achieved initial ISO 14001 Environmental Management System certification.'],
                 images: '/images/about/history/y/2005.jpg'
             },
             {
                 year: '2009',
                 t1: '扩建澳弘二期工厂',
                 t2: '澳弘成立三年即实现满产，扩建二期生产车间，双面PCB板的年产能从30万平方米提高到80万平方米。',
+                t1En: 'Expansion of AOH Phase II Factory',
+                t2En: 'Aohong reached full production capacity within three years of its establishment, leading to the expansion of the Phase II production plant. The annual production capacity for double-sided PCBs increased from 300,000 to 800,000 square meters.',
                 images: '/images/about/history/y/2009.jpg'
             },
             {
                 year: '2012',
                 t1: '海弘整体搬迁',
-                t2: '“海弘”整体搬迁到滨江工业园区的新基地，完成整厂自动化改造工程。单面PCB板的年产能300万平方米。',
+                t2: '”海弘”整体搬迁到滨江工业园区的新基地，完成整厂自动化改造工程。单面PCB板的年产能300万平方米。',
+                t1En: 'Haihong Relocation',
+                t2En: '”Haihong” completed a full relocation to a new base in the Binjiang Industrial Park, along with a comprehensive factory automation upgrade. The annual production capacity for single-sided PCBs reached 3 million square meters.',
                 images: '/images/about/history/y/2012.jpg'
             },
             {
                 year: '2017',
                 t1: '成立香港子公司',
                 t2: '在香港成立第一家海外子公司，Elite Prospect Trading Limited （香港昇耀）, 开始走向国际化经营。',
+                t1En: 'Establishment of Hong Kong Subsidiary',
+                t2En: 'Established the first overseas subsidiary, Elite Prospect Trading Limited (Hong Kong), marking the beginning of international operations.',
                 images: '/images/about/history/y/2017.jpg'
             },
             {
@@ -338,8 +369,10 @@ const history = [
                 t2: [
                     '2018年2月，在新加坡成立子公司，新加坡Elite Prospect Singapore Pte. Ltd., 进一步开拓海外市场。',
                     '2018年12月公司完成股份制改造，',
-                    '澳弘、海弘、香港昇耀、新加坡ELITE合并成立股份制公司，母公司为“常州澳弘电子股份有限公司”。',
+                    '澳弘、海弘、香港昇耀、新加坡ELITE合并成立股份制公司，母公司为”常州澳弘电子股份有限公司”。',
                 ],
+                t1En: ['Joint-Stock Reform Completed', 'Singapore Subsidiary Established'],
+                t2En: ['In February 2018, established a subsidiary in Singapore, Elite Prospect Singapore Pte. Ltd., to further expand overseas markets.', 'In December 2018, the company completed its joint-stock reform.', 'Aohong, Haihong, Hong Kong Shengyao, and Singapore ELITE were merged to form a joint-stock company, with the parent company being “Changzhou Aohong Electronics Co., Ltd.”'],
                 images: '/images/about/history/y/2018.jpg'
             },
         ]
@@ -347,32 +380,41 @@ const history = [
     {
         sectionName: '2020-Future',
         sectionSlogan: '精益求精',
+        sectionSloganEn: 'Striving for Excellence',
         list: [
             {
                 year: '2020',
                 t1: '上交所挂牌上市',
                 t2: '2020年10月21日，在上海证券交易所挂牌上市。',
+                t1En: 'Listed on Shanghai Stock Exchange',
+                t2En: 'Officially listed on the Shanghai Stock Exchange on October 21, 2020.',
                 images: '/images/about/history/y/2020.jpg'
             },
             {
                 year: '2022',
                 t1: '澳弘A2生产基地投产',
                 t2: [
-                    '澳弘新建完成A2工厂的“年产120万平方米高精密度多层板、高密度互连积层板建设项目”。',
-                    '海弘新建完成“年产60万平米单面板工厂建设项目”，总年产能达到560万平方米。',
+                    '澳弘新建完成A2工厂的”年产120万平方米高精密度多层板、高密度互连积层板建设项目”。',
+                    '海弘新建完成”年产60万平米单面板工厂建设项目”，总年产能达到560万平方米。',
                 ],
+                t1En: 'Aohong A2 Production Base Commences Operation',
+                t2En: ['Aohong completed the construction of the “Annual 1.2 Million Square Meters High-Precision Multilayer Board and High-Density Interconnect (HDI) Build-Up Board Project” at the new A2 plant.', 'Haihong completed the “Annual 600,000 Square Meters Single-Sided Board Plant Construction Project,” bringing the total annual production capacity to 5.6 million square meters.'],
                 images: '/images/about/history/y/2022.jpg'
             },
             {
                 year: '2024',
                 t1: '数智赋能，升级制造能力',
-                t2: '澳弘开工建设“年产60万平方米高密度互联印制电路板项目”，实现澳弘A2工厂满产投资。',
+                t2: '澳弘开工建设”年产60万平方米高密度互联印制电路板项目”，实现澳弘A2工厂满产投资。',
+                t1En: 'Digital & Intelligent Empowerment, Upgrading Manufacturing Capabilities',
+                t2En: 'Aohong commenced construction on the “Annual 600,000 Square Meters High-Density Interconnect Printed Circuit Board Project,” achieving full capacity investment for the Aohong A2 plant.',
                 images: '/images/about/history/y/2024.jpg'
             },
             {
                 year: '2025',
                 t1: '泰国工厂开工建设',
                 t2: '在泰国巴真府金池工业园开工兴建海外第一家生产基地，澳弘电子（泰国）有限公司。',
+                t1En: 'Construction Begins on Thailand Factory',
+                t2En: 'Broke ground on the company\'s first overseas production base, Aohong Electronics (Thailand) Co., Ltd., located in the Gold Pond Industrial Estate in Prachinburi Province, Thailand.',
                 images: '/images/about/history/y/2025.jpg'
             },
         ]
@@ -382,8 +424,10 @@ const history = [
 const indexApplication = [
     {
         name: '智能家居',
+        nameEn: 'Smart Home',
         iconClass: 'ri-home-office-line',
         region: '电视机、洗衣机、电冰箱、空调、热水器、微波炉、厨房电器、清洁电器、智能家居。',
+        regionEn: 'Televisions, Washing Machines, Refrigerators, Air Conditioners, Water Heaters, Microwave Ovens, Kitchen Appliances, Cleaning Appliances, Smart Home Systems.',
         cover: '/images/home/application/1home.jpg',
         contentBg: '/images/application/1.jpg',
         icon: '<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
@@ -395,8 +439,10 @@ const indexApplication = [
     },
     {
         name: '汽车电子',
+        nameEn: 'Automotive Electronics',
         iconClass: 'ri-police-car-line',
         region: '电池管理、车载电源、刹车控制、方向盘、水泵、冷却系统、车灯、后视镜、座椅、车内感知……',
+        regionEn: 'Battery Management Systems (BMS), Onboard Chargers (OBC), Brake Control Systems, Steering Wheels, Water Pumps, Cooling Systems, Automotive Lighting, Rearview Mirrors, Seats, In-Cabin Sensing...',
         cover: '/images/home/application/2car.jpg',
         contentBg: '/images/application/2.jpg',
         icon: '<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
@@ -422,8 +468,10 @@ const indexApplication = [
     },
     {
         name: '电源能源',
+        nameEn: 'Power & Energy',
         iconClass: 'ri-battery-charge-line',
         region: '不间断电源(UPS)、光伏逆变器、各因适配器、电站储能、移动电源、照明。',
+        regionEn: 'Uninterruptible Power Supplies (UPS), Photovoltaic Inverters, Various Power Adapters, Energy Storage Systems (ESS) for Power Stations, Portable Power Banks, Lighting.',
         cover: '/images/home/application/3elec.jpg',
         contentBg: '/images/application/3.jpg',
         icon: '<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
@@ -435,8 +483,10 @@ const indexApplication = [
     },
     {
         name: '消费办公',
+        nameEn: 'Consumer & Office',
         iconClass: 'ri-printer-line',
         region: '打印机、POS机、显示器、游戏机、电动工具。',
+        regionEn: 'Printers, POS Terminals, Monitors, Game Consoles, Power Tools.',
         cover: '/images/home/application/4office.jpg',
         contentBg: '/images/application/4.jpg',
         icon: '<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
@@ -448,8 +498,10 @@ const indexApplication = [
     },
     {
         name: '通讯安防',
+        nameEn: 'Communications & Security',
         iconClass: 'ri-webcam-line',
         region: '光模块、机顶盒、安防控制、监控系统……',
+        regionEn: 'Optical Modules, Set-Top Boxes, Security Control Units, Surveillance Systems...',
         cover: '/images/home/application/5tele.jpg',
         contentBg: '/images/application/5.jpg',
         icon: '<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
@@ -461,8 +513,10 @@ const indexApplication = [
     },
     {
         name: '工控/医疗/其他',
+        nameEn: 'Industrial Control / Medical / Others',
         iconClass: 'ri-router-line',
         region: '工业控制、精密电机、航空液压、各类EMS产品。',
+        regionEn: 'Industrial Control Equipment, Precision Motors, Aviation Hydraulic Systems, Various EMS Products.',
         cover: '/images/home/application/6industry.jpg',
         contentBg: '/images/application/6.jpg',
         icon: '<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
@@ -1062,72 +1116,94 @@ const prodList = {
 const salesPoints = [
     {
         pointName: '青岛销售处',
+        pointNameEn: 'Qingdao Sales Office',
         address: '青岛市李沧区改装大道天力保温材料公司院内',
+        addressEn: 'Inside Tianli Thermal Insulation Materials Company Yard, Gaizhuang Avenue, Licang District, Qingdao City',
         name: ['王伟'],
         tel: ['18206118383']
     },
     {
         pointName: '黄岛销售处',
+        pointNameEn: 'Huangdao Sales Office',
         address: '青岛市黄岛区前湾港路临港花园',
+        addressEn: 'Lingang Huayuan, Qianwan Gang Road, Huangdao District, Qingdao City',
         name: ['严洪'],
         tel: ['18206118383']
     },
     {
         pointName: '合肥销售处',
+        pointNameEn: 'Hefei Sales Office',
         address: '合肥经开区海恒社区福禄园14栋101',
+        addressEn: 'Building 14, Unit 101, Fuluyuan, Haiheng Community, Hefei Economic and Technological Development Zone, Hefei City',
         name: ['陈利'],
         tel: ['18206118396']
     },
     {
         pointName: '重庆销售处',
+        pointNameEn: 'Chongqing Sales Office',
         address: '重庆市江北区五里坪港城东路98号东田产业园2栋C2-3电梯二楼',
+        addressEn: '2nd Floor, Elevator C2-3, Building 2, Dongtian Industrial Park, No. 98 Gangcheng East Road, Wuliping, Jiangbei District, Chongqing City',
         name: ['耿兴国'],
         tel: ['13915897951']
     },
     {
         pointName: '深圳销售处',
+        pointNameEn: 'Shenzhen Sales Office',
         address: '深圳市宝安区绿科方群食品有限公司/厂房2楼仓库208号房',
+        addressEn: 'Room 208, Warehouse 2nd Floor, Lvkefangqun Food Co., Ltd. / Factory Building, Bao\'an District, Shenzhen City',
         name: ['王渭'],
         tel: ['18206118395']
     },
     {
         pointName: '江门销售处',
+        pointNameEn: 'Jiangmen Sales Office',
         address: '江门蓬江区棠下镇江盛路6号1栋家缘住宿',
+        addressEn: 'Building 1, Jiayuan Accommodation, No. 6 Jiangsheng Road, Tangxia Town, Pengjiang District, Jiangmen City',
         name: ['植嘉伟'],
         tel: ['15917876134']
     },
     {
         pointName: '邯郸销售处',
+        pointNameEn: 'Handan Sales Office',
         address: '河北省邯郸市高开区宏钜物流',
+        addressEn: 'Hongju Logistics, Gaokai District, Handan City, Hebei Province',
         name: ['刘爱君'],
         tel: ['18206118072']
     },
     {
         pointName: '芜湖销售处',
+        pointNameEn: 'Wuhu Sales Office',
         address: '安徽省芜湖市鸠江经济开发区宇润人才公寓17栋2单元501',
+        addressEn: 'Building 17, Unit 2, 501, Yurun Talent Apartment, Jiujiang Economic Development Zone, Wuhu City, Anhui Province',
         name: ['刘一平'],
         tel: ['18206118382']
     },
     {
         pointName: '天津销售处',
+        pointNameEn: 'Tianjin Sales Office',
         address: '天津市北辰区宜兴埠七街开发区铁达洪针织厂院内',
+        addressEn: 'Inside Tiedahong Knitting Factory Yard, Qijie Development Zone, Yixingfu, Beichen District, Tianjin City',
         name: ['孙振清'],
         tel: ['13820153214']
     },
     {
         pointName: '武汉销售处',
+        pointNameEn: 'Wuhan Sales Office',
         address: '湖北省武汉市沌口开发区珠山湖大道792号国博全力物流仓储有限公司',
+        addressEn: 'Guobo Quanli Logistics Warehousing Co., Ltd., No. 792 Zhushan Lake Avenue, Zhuankou Development Zone, Wuhan City, Hubei Province',
         name: ['刘爱君'],
         tel: ['18206118072']
     },
     {
         pointName: '韩国销售处',
+        pointNameEn: 'South Korea Sales Office',
         address: 'Tera Tower B (651 Moonjung-Dong) 167 Songpa-daero, Songpa-gu, Seoul, Korea',
         name: ['洪斗杓（DP Hong）'],
         tel: ['822-6959-5509']
     },
     {
         pointName: '欧洲销售处',
+        pointNameEn: 'Europe Sales Office',
         address: '2890 Tata, Új út 3. Hungary',
         name: ['Gergely Szilas'],
         tel: ['+36 70 421 0329']

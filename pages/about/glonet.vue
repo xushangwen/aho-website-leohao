@@ -3,7 +3,7 @@
         <EleDefaultCover
             image="/images/about/glonet/cover.jpg"
             image-mobile="/images/about/glonet/cover-m.jpg"
-            text="全球网络布局"
+            :text="$t('glonet.coverTitle')"
         ></EleDefaultCover>
         <EleBreadcrumb
             :navigate="breadcrumb"
@@ -13,12 +13,12 @@
                 class="item"
                 :class="{'active': indexPlate === 0}"
                 @mouseenter="changePlateIndex(0)"
-            >全球网络布局</div>
+            >{{ $t('glonet.switchGlobal') }}</div>
             <div
                 class="item"
                 :class="{'active': indexPlate === 1}"
                 @mouseenter="changePlateIndex(1)"
-            >国内市场</div>
+            >{{ $t('glonet.switchDomestic') }}</div>
         </nav>
         <section
             class="plate-container"
@@ -58,24 +58,24 @@
                 <div class="profile">
                     <div class="cont">
                         <div class="item" style="color: var(--main-yellow)">
-                            <div class="t1">研发制造基地</div>
+                            <div class="t1">{{ $t('glonet.baseTitle') }}</div>
                             <div class="num">3</div>
-                            <div class="t2">个研发制造基地，</div>
-                            <div class="t3">常州澳弘、常州海弘、泰国澳弘。</div>
+                            <div class="t2">{{ $t('glonet.baseCount') }}</div>
+                            <div class="t3">{{ $t('glonet.baseNames') }}</div>
                             <i class="icon ri-hotel-line"></i>
                         </div>
                         <div class="item" style="color: var(--main-blue)">
-                            <div class="t1">全球业务中心</div>
+                            <div class="t1">{{ $t('glonet.centerTitle') }}</div>
                             <div class="num">5</div>
-                            <div class="t2">个全球业务中心，</div>
-                            <div class="t3">新加坡、香港、韩国、匈牙利、墨西哥。</div>
+                            <div class="t2">{{ $t('glonet.centerCount') }}</div>
+                            <div class="t3">{{ $t('glonet.centerNames') }}</div>
                             <i class="icon ri-global-line"></i>
                         </div>
                         <div class="item" style="color: var(--main-orange)">
-                            <div class="t1">全球客户</div>
+                            <div class="t1">{{ $t('glonet.customerTitle') }}</div>
                             <div class="num">20<span>+</span></div>
-                            <div class="t2">遍布20多个国家和地区的全球客户</div>
-                            <div class="t3">亚洲、欧洲、北美洲、南美洲、大洋洲、非洲</div>
+                            <div class="t2">{{ $t('glonet.customerCount') }}</div>
+                            <div class="t3">{{ $t('glonet.customerRegions') }}</div>
                             <i class="icon ri-user-location-line"></i>
                         </div>
                     </div>
@@ -84,15 +84,15 @@
                 <div class="legend">
                 <div class="item">
                     <div class="circle customer"></div>
-                    <div class="type-name">客户</div>
+                    <div class="type-name">{{ $t('glonet.legendCustomer') }}</div>
                 </div>
                 <div class="item">
                     <div class="circle sale"></div>
-                    <div class="type-name">海外销售</div>
+                    <div class="type-name">{{ $t('glonet.legendSales') }}</div>
                 </div>
                 <div class="item">
                     <div class="circle base"></div>
-                    <div class="type-name">生产基地</div>
+                    <div class="type-name">{{ $t('glonet.legendBase') }}</div>
             </div>
         </div>
             <!-- 工厂线条 -->
@@ -132,8 +132,8 @@
                         <div class="card-header">
                             <i class="ri-building-line card-icon"></i>
                         </div>
-                        <div class="card-type">{{ card.type }}</div>
-                        <div class="card-name" v-html="card.name.replace(/电子/, '<br>电子')"></div>
+                        <div class="card-type">{{ locale === 'en' ? (card.typeEn || card.type) : card.type }}</div>
+                        <div class="card-name">{{ locale === 'en' ? (card.nameEn || card.name) : card.name }}</div>
                     </div>
                     <div class="card-img">
                         <img :src="card.image" :alt="card.name">
@@ -227,9 +227,9 @@ const gloPoints = ref(appConfig.clientConfig.gloPoints)
 
 // 工厂卡片数据（pointIndex 对应 gloPoints 中的索引：23=常州, 24=泰国）
 const gloFactoryCards = [
-    { name: '常州澳弘电子股份有限公司', type: '双面 / 多层 / HDI板', image: '/images/home/about-bg.jpg', pointIndex: 23 },
-    { name: '常州海弘电子有限公司', type: '单面PCB', image: '/images/contact/haihong.png', pointIndex: 23 },
-    { name: '澳弘（泰国）电子有限公司', type: '单面 / 双面 / 多层 / HDI', image: '/images/contact/thailand.png', pointIndex: 24 },
+    { name: '常州澳弘电子股份有限公司', nameEn: 'Changzhou AHO Electronics Co., Ltd.', type: '双面 / 多层 / HDI板', typeEn: 'Double-sided / Multi-layer / HDI PCB', image: '/images/home/about-bg.jpg', pointIndex: 23 },
+    { name: '常州海弘电子有限公司', nameEn: 'Changzhou Haihong Electronics Co., Ltd.', type: '单面PCB', typeEn: 'Single-sided PCB', image: '/images/contact/haihong.png', pointIndex: 23 },
+    { name: '澳弘（泰国）电子有限公司', nameEn: 'AHO Electronics (Thailand) Co., Ltd.', type: '单面 / 双面 / 多层 / HDI', typeEn: 'Single-sided / Double-sided / Multi-layer / HDI', image: '/images/contact/thailand.png', pointIndex: 24 },
 ]
 const gloLineGroup = ref<string[]>([])
 const gloLineDots = ref<{x: number, y: number}[]>([])
@@ -254,14 +254,10 @@ const chinaPointsList = computed(() => {
     }
     return res
 })
-const breadcrumb = ref([
-    {
-        name: '关于澳弘',
-        link: '/about'
-    }, {
-        name: '全球网络布局',
-        link: ''
-    }
+const { t, locale } = useI18n()
+const breadcrumb = computed(() => [
+    { name: t('nav.about'), link: '/about' },
+    { name: t('glonet.coverTitle'), link: '' }
 ])
 
 const indexPlate = ref(0)
@@ -459,6 +455,10 @@ onUnmounted(() => {
         justify-content: center;
         align-items: center;
         gap: tovw(80px);
+        @include mo {
+            height: 60px;
+            gap: 24px;
+        }
         .item {
             width: 400px;
             height: inherit;
@@ -469,6 +469,11 @@ onUnmounted(() => {
             transition: all .3s;
             border-bottom: 1px solid transparent;
             cursor: pointer;
+            @include mo {
+                width: auto;
+                font-size: 18px;
+                line-height: 60px;
+            }
             //&:hover {
             //    color: #656565;
             //}
@@ -484,6 +489,10 @@ onUnmounted(() => {
         position: relative;
         transition: all .3s;
         overflow: hidden;
+        @include mo {
+            overflow-x: auto;
+            min-width: 320px;
+        }
         .glo,
         .china {
             width: 100%;
