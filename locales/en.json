@@ -3,7 +3,7 @@
     "home": "Home",
     "contact": "Contact",
     "about": "About",
-    "aboutProfile": "Introduction",
+    "aboutProfile": "Company Profile",
     "aboutHistory": "History",
     "aboutCulture": "Culture",
     "aboutGlonet": "Global Network",
@@ -26,7 +26,7 @@
     "all": "All"
   },
   "home": {
-    "aboutTitle": "About AOH",
+    "aboutTitle": "About Aohong",
     "aboutDesc": "Aohong Electronics is a professional PCB R&D and manufacturing enterprise, listed on the Shanghai Stock Exchange in 2020.",
     "aboutContent1": "Our products are applied in fields such as Consumer & Office, Automotive Electronics, Power & Energy, Industrial Control & Medical, AI Computing, Satellite Internet, and Communication & Security. We serve brand customers in more than 20 countries and regions around the world.",
     "aboutContent2": "Our mission is 'Bearing Digital Technology, Empowering Smart Life.'",
@@ -53,7 +53,7 @@
   },
   "about": {
     "coverTitle": "Company Profile",
-    "profileTitle": "About AOH",
+    "profileTitle": "About Aohong",
     "profileDesc": "Aohong Electronics is a professional PCB R&D and manufacturing enterprise, listed on the Shanghai Stock Exchange in 2020.",
     "profileContent1": "Our products are applied in fields such as Consumer & Office, Automotive Electronics, Power & Energy, Industrial Control & Medical, AI Computing, Satellite Internet, and Communication & Security. We serve brand customers in more than 20 countries and regions around the world.",
     "profileContent2": "Our mission is 'Bearing Digital Technology, Empowering Smart Life.'",

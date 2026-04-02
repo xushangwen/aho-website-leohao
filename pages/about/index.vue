@@ -12,13 +12,13 @@
         <section class="s1">
             <div class="wrap">
                 <div class="left">
-                    <div class=”s-t”>
+                    <div class="s-t">
                         {{ $t('about.profileTitle') }}
                     </div>
-                    <div class=”t2”>{{ $t('about.profileDesc') }}</div>
-                    <div class=”abst”>
-                        <p class=”s-a”>{{ $t('about.profileContent1') }}</p>
-                        <p class=”s-a”>{{ $t('about.profileContent2') }}</p>
+                    <div class="t2">{{ $t('about.profileDesc') }}</div>
+                    <div class="abst">
+                        <p class="s-a">{{ $t('about.profileContent1') }}</p>
+                        <p class="s-a">{{ $t('about.profileContent2') }}</p>
                     </div>
                 </div>
                 <div class="right">
@@ -179,6 +179,16 @@ onUnmounted(() => {
         @include mo {
             width: 100%;
         }
+        .s-t {
+            color: #000;
+            font-size: 38px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            @include mo {
+                font-size: 28px;
+            }
+        }
     }
     .right {
         width: auto;
@@ -241,6 +251,17 @@ onUnmounted(() => {
                 & + p {
                     margin-top: 12px;
                 }
+            }
+        }
+        .s-a {
+            overflow: hidden;
+            color: var(--main-dark-gray, #3C3C3C);
+            text-overflow: ellipsis;
+            font-size: 18px;
+            font-style: normal;
+            line-height: 150%;
+            @include mo {
+                font-size: 16px;
             }
         }
     }

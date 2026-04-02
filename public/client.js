@@ -9,7 +9,7 @@ const nav = [
         children: [
             {
                 cn: '公司简介',
-                en: 'Introduction',
+                en: 'Company Profile',
                 link: '/about',
             },
             {
@@ -298,7 +298,7 @@ const history = [
     {
         sectionName: '1973-1999',
         sectionSlogan: '澳弘成立',
-        sectionSloganEn: 'AOH was established',
+        sectionSloganEn: 'Aohong was established',
         list: [
             {
                 year: '1973',
@@ -348,7 +348,7 @@ const history = [
                     '成为LG绿色伙伴（GREEN PARTNER）。',
                     '公司首次通过ISO14000环境管理体系认证。',
                 ],
-                t1En: 'Establishment of “AOH”',
+                t1En: 'Establishment of “Aohong”',
                 t2En: ['Began production of double-sided and multilayer PCBs.', 'Assisted in the construction of a PCB production line in Cuba.', 'Became an LG Green Partner.', 'Achieved initial ISO 14001 Environmental Management System certification.'],
                 images: '/images/about/history/y/2005.jpg'
             },
@@ -356,7 +356,7 @@ const history = [
                 year: '2009',
                 t1: '扩建澳弘二期工厂',
                 t2: '澳弘成立三年即实现满产，扩建二期生产车间，双面PCB板的年产能从30万平方米提高到80万平方米。',
-                t1En: 'Expansion of AOH Phase II Factory',
+                t1En: 'Expansion of Aohong Phase II Factory',
                 t2En: 'Aohong reached full production capacity within three years of its establishment, leading to the expansion of the Phase II production plant. The annual production capacity for double-sided PCBs increased from 300,000 to 800,000 square meters.',
                 images: '/images/about/history/y/2009.jpg'
             },
