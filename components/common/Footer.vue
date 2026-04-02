@@ -22,7 +22,7 @@
                 </div>
                 <div class="slogan">
                     <div class="cn">{{ $t('footer.slogan') }}</div>
-                    <div class="en">Connect Smart World for Better Future</div>
+                    <div class="en" v-if="locale !== 'en'">Connect Smart World for Better Future</div>
                 </div>
             </div>
         </div>
@@ -216,12 +216,15 @@ footer {
         }
 
         .wm {
-            width: 560px;
-            height: 300px;
-            @include flex-c(wrap);
-            justify-content: flex-start;
+            flex: 1;
+            max-width: 800px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px 40px;
+            align-content: start;
             @include mo {
-                justify-content: flex-start;
+                display: flex;
+                flex-direction: column;
                 width: 100%;
                 margin-top: 36px;
                 gap: 24px;
@@ -231,7 +234,7 @@ footer {
                 @include mo {
                     font-size: 14px;
                 }
-                margin-bottom: 40px;
+                margin-bottom: 0;
                 .cate-name {
                     color: var(--main-orange, #FF6400);
                     font-size: 12px;
@@ -266,14 +269,19 @@ footer {
             .la {
                 @include flex-r();
                 align-items: center;
+                max-width: 140px;
                 .icon {
                     font-size: 24px;
                     color: var(--main-orange);
                     margin-right: 8px;
+                    flex-shrink: 0;
                 }
                 span {
                     color: #000;
                     font-size: 14px;
+                    line-height: 1.4;
+                    white-space: pre-line;
+                    text-align: left;
                 }
             }
             .qr {

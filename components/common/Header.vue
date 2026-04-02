@@ -76,8 +76,8 @@
                 <div :class="['list', { 'active': indexNav === index, 'leave': indexNavPrev === index }]"
                      v-for="(item, index) in menuDisplay" :key="`sub-${index}`">
                     <div class="left">
-                        <div class="cn">{{item.cn}}</div>
-                        <div class="en">{{item.en}}</div>
+                        <div class="cn">{{ locale === 'en' ? item.en : item.cn }}</div>
+                        <div class="en" v-if="locale !== 'en'">{{item.en}}</div>
                     </div>
                     <div class="mid">
                         <NuxtLink class="item" v-for="(subItem, subIndex) in item.children" :key="`subItem-${subIndex}`"

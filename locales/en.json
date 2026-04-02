@@ -1,19 +1,19 @@
 {
   "nav": {
     "home": "Home",
-    "contact": "Contact Us",
-    "about": "About AOH",
-    "aboutProfile": "Brief Introduction",
-    "aboutHistory": "Milestones",
-    "aboutCulture": "Corporate Culture",
-    "aboutGlonet": "Global Network Layout",
+    "contact": "Contact",
+    "about": "About",
+    "aboutProfile": "Introduction",
+    "aboutHistory": "History",
+    "aboutCulture": "Culture",
+    "aboutGlonet": "Global Network",
     "aboutPatent": "Certifications & Patents",
-    "aboutHonor": "AOH Honours",
+    "aboutHonor": "Honours",
     "aboutEsg": "ESG",
     "products": "Products",
     "application": "Applications",
-    "news": "News Center",
-    "invest": "Investor Relations",
+    "news": "News",
+    "invest": "IR",
     "lang": "English"
   },
   "common": {
@@ -58,17 +58,17 @@
     "profileContent1": "Our products are applied in fields such as Consumer & Office, Automotive Electronics, Power & Energy, Industrial Control & Medical, AI Computing, Satellite Internet, and Communication & Security. We serve brand customers in more than 20 countries and regions around the world.",
     "profileContent2": "Our mission is 'Bearing Digital Technology, Empowering Smart Life.'",
     "videoPlayBtn": "Watch Full Video",
-    "historyLink": "Milestones",
-    "cultureLink": "Corporate Culture",
-    "networkLink": "Global Network Layout",
+    "historyLink": "History",
+    "cultureLink": "Culture",
+    "networkLink": "Global Network",
     "patentLink": "Certifications & Patents",
-    "honorLink": "AOH Honours"
+    "honorLink": "Honours"
   },
   "history": {
-    "coverTitle": "Milestones"
+    "coverTitle": "History"
   },
   "culture": {
-    "coverTitle": "Corporate Culture",
+    "coverTitle": "Culture",
     "coreValuesTitle": "Core Values",
     "value1Title": "Market-Driven",
     "value1Desc": "Adhering to market orientation, pursuing stable and balanced market operations.",
@@ -84,8 +84,8 @@
     "value6Desc": "Adhering to market orientation, pursuing stable and balanced market operations."
   },
   "glonet": {
-    "coverTitle": "Global Network Layout",
-    "switchGlobal": "Global Network Layout",
+    "coverTitle": "Global Network",
+    "switchGlobal": "Global Network",
     "switchDomestic": "Domestic Market",
     "baseTitle": "R&D & Manufacturing Bases",
     "baseCount": " R&D & manufacturing bases: ",
@@ -106,8 +106,8 @@
     "certTab": "Qualification Certificates"
   },
   "honor": {
-    "coverTitle": "AOH Honours",
-    "title": "AOH Honours"
+    "coverTitle": "Honours",
+    "title": "Honours"
   },
   "esg": {
     "coverTitle": "ESG",
@@ -144,7 +144,7 @@
     "categoryLabel": "Product Categories"
   },
   "news": {
-    "coverTitle": "News Center",
+    "coverTitle": "News",
     "allNews": "All News",
     "recommendSlogan": "Connect Smart World for Better Future",
     "readMore": "Read More"
@@ -154,13 +154,13 @@
     "regionLabel": "Products applied in: "
   },
   "invest": {
-    "coverTitle": "Investor Relations",
+    "coverTitle": "IR",
     "stockInfo": "Stock Information",
-    "announcements": "Regular Announcements",
+    "announcements": "Periodical Report",
     "learnMore": "Learn More"
   },
   "contact": {
-    "coverTitle": "Contact Us",
+    "coverTitle": "Contact",
     "addressLabel": "Address",
     "zipLabel": "Zip Code",
     "contactTitle": "Contact Information",
@@ -198,7 +198,7 @@
     "phoneLabel": "Phone",
     "emailLabel": "Email",
     "addressLabel": "Address",
-    "wechatLabel": "Scan to follow our WeChat Official Account",
+    "wechatLabel": "WeChat\nOfficial Account",
     "backToTop": "Back to Top",
     "copyright": "All Rights Reserved"
   },

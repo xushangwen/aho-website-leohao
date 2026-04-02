@@ -1,7 +1,7 @@
 const nav = [
     {
         cn: '关于澳弘',
-        en: 'About AOH',
+        en: 'About',
         link: '/about',
         cover: [
             '/images/layout/nav/about.jpg'
@@ -9,22 +9,22 @@ const nav = [
         children: [
             {
                 cn: '公司简介',
-                en: 'Brief Introduction',
+                en: 'Introduction',
                 link: '/about',
             },
             {
                 cn: '发展历程',
-                en: 'Milestones',
+                en: 'History',
                 link: '/about/history',
             },
             {
                 cn: '企业文化',
-                en: 'Corporate Culture',
+                en: 'Culture',
                 link: '/about/culture',
             },
             {
                 cn: '全球网络布局',
-                en: 'Global Network Layout',
+                en: 'Global Network',
                 link: '/about/glonet',
             },
             {
@@ -34,7 +34,7 @@ const nav = [
             },
             {
                 cn: '澳弘荣誉',
-                en: 'AOH Honours',
+                en: 'Honours',
                 link: '/about/honor',
             },
             {
@@ -52,10 +52,26 @@ const nav = [
             '/images/layout/nav/products.jpg'
         ],
         children: [
-            { "cn": "单⾯板", "en": "Single-sided PCB", "link": "/products?cate=17f6kC900EP91S44"},
-            { "cn": "双⾯多层板", "en": "Double-sided / Multi-layer PCB", "link": "/products?cate=176jf90wM0r9E137"},
-            { "cn": "HDI板", "en": "HDI PCB", "link": "/products?cate=1076v9YRe1009130"},
-            { "cn": "特种PCB板", "en": "Special PCB", "link": "/products?cate=KGi17V690Xz09115"}
+            { 
+                cn: '单面板', 
+                en: 'Single-Sided PCB', 
+                link: '/products?cate=17f6kC900EP91S44' 
+            },
+            { 
+                cn: '双面多层板', 
+                en: 'Double-Sided PCB', 
+                link: '/products?cate=176jf90wM0r9E137' 
+            },
+            { 
+                cn: 'HDI板', 
+                en: 'HDI PCB', 
+                link: '/products?cate=1076v9YRe1009130' 
+            },
+            { 
+                cn: '特种PCB板', 
+                en: 'Specialized PCB', 
+                link: '/products?cate=KGi17V690Xz09115' 
+            }
         ]
     },
     {
@@ -105,7 +121,7 @@ const nav = [
     },
     {
         cn: '投资者关系',
-        en: 'Investor Relations',
+        en: 'IR',
         link: '/invest',
         cover: [
             '/images/layout/nav/investor.jpg'
@@ -119,7 +135,7 @@ const nav = [
             },
             {
                 cn: '定期公告',
-                en: 'Regular Announcements',
+                en: 'Periodical Report',
                 link: 'https://www.cninfo.com.cn/new/disclosure/stock?stockCode=605058&orgId=9900039836#latestAnnouncement',
                 target: '_blank'
             },
@@ -127,7 +143,7 @@ const nav = [
     },
     {
         cn: '新闻中心',
-        en: 'News Center',
+        en: 'News',
         link: '/news',
         cover: [
             '/images/layout/nav/news.jpg'
@@ -136,7 +152,7 @@ const nav = [
     },
     {
         cn: '联系我们',
-        en: 'Contact Us',
+        en: 'Contact',
         link: '/contact',
         cover: [],
         children: [

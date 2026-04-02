@@ -42,7 +42,7 @@
                                     :key="`t1-${nameIndex}`"
                                 >{{nameItem}}</span>
                             </div>
-                            <div class="t2" v-if="locale === 'en' ? (item.t2En && item.t2En.length > 0) : (item.t2 && item.t2.length > 0)">
+                            <div :class="['t2', { 'en-hero': locale === 'en' }]" v-if="locale === 'en' ? (item.t2En && item.t2En.length > 0) : (item.t2 && item.t2.length > 0)">
                                 <span
                                     v-for="(nameItem, nameIndex) in (locale === 'en' ? item.t2En : item.t2)"
                                     :key="`t2-${nameIndex}`"
@@ -54,7 +54,7 @@
                                     :key="`t2m-${nameIndex}`"
                                 >{{nameItem}}</span>
                             </div>
-                            <div class="prd-abst" v-if="item.abst && item.abst.length > 0">
+                            <div class="prd-abst" v-if="item.abst && item.abst.length > 0 && locale !== 'en'">
                                     <span
                                         v-for="(abstItem, abstIndex) in item.abst"
                                         :key="`asbtItem${abstIndex}`"
@@ -855,6 +855,9 @@ onUnmounted(() => {
                     @include mo {
                         font-size: 20px;
                     }
+                }
+                .t2.en-hero {
+                    font-family: 'Google Sans', sans-serif;
                 }
                 .t2m {
                     margin-top: 6px;
