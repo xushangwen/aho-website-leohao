@@ -55,8 +55,8 @@
                     </div>
                 </div>
                 <div class="sl l3"></div>
-                <div class="wc">
-                    <div class="la">
+                <div :class="['wc', { 'wc-en': locale === 'en' }]">
+                    <div :class="['la', { 'la-en': locale === 'en' }]">
                         <i class="icon ri-wechat-fill"></i>
                         <span>{{ $t('footer.wechatLabel') }}</span>
                     </div>
@@ -266,10 +266,19 @@ footer {
                 @include flex-c();
                 align-items: center;
             }
+            &.wc-en {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
             .la {
                 @include flex-r();
                 align-items: center;
                 max-width: 140px;
+                &.la-en {
+                    max-width: none;
+                    justify-content: center;
+                }
                 .icon {
                     font-size: 24px;
                     color: var(--main-orange);
@@ -283,6 +292,9 @@ footer {
                     white-space: pre-line;
                     text-align: left;
                 }
+            }
+            &.wc-en .la span {
+                text-align: center;
             }
             .qr {
                 margin-top: 12px;

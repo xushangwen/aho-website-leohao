@@ -580,6 +580,7 @@ nav.norm {
 
             .left {
                 width: 170px;
+                padding-top: 16px;
                 .cn {
                     color: var(--main-blue, #1E3296);
                     font-size: 24px;
