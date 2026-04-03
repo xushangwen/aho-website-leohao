@@ -607,131 +607,188 @@ const newsList = [
 
 const chinaPoints = [
     [
-        {name: '天津销售处', position: {left: '59.904%', top: '38.590%'},
+        {name: '天津销售处', nameEn: 'Tianjin Sales Office', position: {left: '59.904%', top: '38.590%'},
             cus: [
                 '联系人：孙振清',
                 '电话：13820153214',
                 '地址：天津市北辰区宜兴埠七街开发区铁达洪针织厂院内',
+            ],
+            cusEn: [
+                'Contact: Sun Zhenqing',
+                'Tel: 13820153214',
+                'Address: Tieda Hong Knitting Factory, Development Zone, Yixingbu 7th St, Beichen District, Tianjin',
             ]
         },
-        {name: '邯郸销售处', position: {left: '57.514%', top: '41.975%'},
+        {name: '邯郸销售处', nameEn: 'Handan Sales Office', position: {left: '57.514%', top: '41.975%'},
             cus: [
                 '联系人：刘爱君',
                 '电话：18206118072',
                 '地址：河北省邯郸市高开区宏钜物流',
+            ],
+            cusEn: [
+                'Contact: Liu Aijun',
+                'Tel: 18206118072',
+                'Address: Hongju Logistics, High-tech Zone, Handan, Hebei',
             ]
         },
-        {name: '芜湖销售处', position: {left: '60.656%', top: '49.309%'},
+        {name: '芜湖销售处', nameEn: 'Wuhu Sales Office', position: {left: '60.656%', top: '49.309%'},
             cus: [
                 '联系人：刘一平',
                 '电话：18206118382',
                 '地址：安徽省芜湖市鸠江经济开发区宇润人才公寓17栋2单元501',
+            ],
+            cusEn: [
+                'Contact: Liu Yiping',
+                'Tel: 18206118382',
+                'Address: Apt 501, Unit 2, Bldg 17, Yurun Talent Apt, Jiujiang Economic Dev. Zone, Wuhu, Anhui',
             ]
         },
-        {name: '合肥销售处', position: {left: '60.041%', top: '48.745%'},
+        {name: '合肥销售处', nameEn: 'Hefei Sales Office', position: {left: '60.041%', top: '48.745%'},
             cus: [
                 '联系人：陈利',
                 '电话：18206118396',
                 '地址：合肥经开区海恒社区福禄园14栋101',
+            ],
+            cusEn: [
+                'Contact: Chen Li',
+                'Tel: 18206118396',
+                'Address: Rm 101, Bldg 14, Fuluyuan, Haiheng Community, Economic Dev. Zone, Hefei',
             ]
         },
-        {name: '武汉销售处', position: {left: '58.333%', top: '51.002%'},
+        {name: '武汉销售处', nameEn: 'Wuhan Sales Office', position: {left: '58.333%', top: '51.002%'},
             cus: [
                 '联系人：刘爱君',
                 '电话：18206118072',
                 '地址：湖北省武汉市沌口开发区珠山湖大道792号国博全力物流仓储有限公司',
+            ],
+            cusEn: [
+                'Contact: Liu Aijun',
+                'Tel: 18206118072',
+                'Address: Guobo Quanli Logistics, No. 792 Zhushanhu Ave, Zhuankou Dev. Zone, Wuhan, Hubei',
             ]
         }
     ],
     [
-        {name: '重庆销售处', position: {left: '51.844%', top: '52.017%'},
+        {name: '重庆销售处', nameEn: 'Chongqing Sales Office', position: {left: '51.844%', top: '52.017%'},
             cus: [
                 '联系人：耿兴国',
                 '电话：13915897951',
                 '地址：重庆市江北区五里坪港城东路98号东田产业园2栋C2-3电梯二楼',
+            ],
+            cusEn: [
+                'Contact: Geng Xingguo',
+                'Tel: 13915897951',
+                'Address: 2F, Bldg 2, Dongtian Industrial Park, No. 98 Gangcheng East Rd, Jiangbei District, Chongqing',
             ]
         }
     ],
     [
-        {name: '江门销售处', position: {left: '56.472%', top: '62.025%'},
+        {name: '江门销售处', nameEn: 'Jiangmen Sales Office', position: {left: '56.472%', top: '62.025%'},
             cus: [
                 '联系人：植嘉伟',
                 '电话：15917876134',
                 '地址：江门蓬江区棠下镇江盛路6号1栋家缘住宿',
+            ],
+            cusEn: [
+                'Contact: Zhi Jiawei',
+                'Tel: 15917876134',
+                'Address: Jiayuan Hostel, Bldg 1, No. 6 Jiangsheng Rd, Tangxia Town, Pengjiang District, Jiangmen',
             ]
         },
     ],
     [
-        {name: '黄岛销售处', position: {left: '61.749%', top: '41.524%'},
+        {name: '黄岛销售处', nameEn: 'Huangdao Sales Office', position: {left: '61.749%', top: '41.524%'},
             cus: [
                 '联系人：严洪',
                 '电话：18206118383',
                 '地址：青岛市黄岛区前湾港路临港花园',
+            ],
+            cusEn: [
+                'Contact: Yan Hong',
+                'Tel: 18206118383',
+                'Address: Lingang Garden, Qianwan Port Rd, Huangdao District, Qingdao',
             ]
         },
-        {name: '青岛销售处', position: {left: '60.792%', top: '42.652%'},
+        {name: '青岛销售处', nameEn: 'Qingdao Sales Office', position: {left: '60.792%', top: '42.652%'},
             cus: [
                 '联系人：王伟',
                 '电话：18206118383',
                 '地址：青岛市李沧区改装大道天力保温材料公司院内',
+            ],
+            cusEn: [
+                'Contact: Wang Wei',
+                'Tel: 18206118383',
+                'Address: Tianli Insulation Materials Co., Gaizhuang Ave, Licang District, Qingdao',
             ]
         },
-        {name: '常州本部', position: {left: '61.847%', top: '49.020%'},
+        {name: '常州本部', nameEn: 'Changzhou HQ', position: {left: '61.847%', top: '49.020%'},
             cus: [
                 '联系人：耿克非',
                 '电话：0519-69887878转9666',
                 '邮箱：gengkf@czaohong.com',
                 '地址：江苏省常州市新北区电子产业园新科路15号',
+            ],
+            cusEn: [
+                'Contact: Geng Kefei',
+                'Tel: +86-519-69887878 ext. 9666',
+                'Email: gengkf@czaohong.com',
+                'Address: No. 15 Xinke Road, Electronics Industrial Park, Xinbei District, Changzhou, Jiangsu',
             ]
         },
-        {name: '深圳销售处', position: {left: '58.060%', top: '61.383%'},
+        {name: '深圳销售处', nameEn: 'Shenzhen Sales Office', position: {left: '58.060%', top: '61.383%'},
             cus: [
                 '联系人：王渭',
                 '电话：18206118395',
                 '地址：深圳市宝安区绿科方群食品有限公司/厂房2楼仓库208号房',
+            ],
+            cusEn: [
+                'Contact: Wang Wei',
+                'Tel: 18206118395',
+                "Address: Rm 208, Warehouse 2F, Lükefang Food Co., Bao'an District, Shenzhen",
             ]
         },
-        {name: '香港昇耀', position: {left: '57.992%', top: '63.075%'},
+        {name: '香港昇耀', nameEn: 'Elite Prospect (Hong Kong)', position: {left: '57.992%', top: '63.075%'},
             cus: [],
+            cusEn: [],
             largeItem:true
         },
     ]
 ]
 
 const gloPoints = [
-    {name: '英国', position: {left: '5.260%', top: '50.551%'}, type: 'orange'},
-    {name: '德国', position: {left: '8.197%', top: '51.936%'}, type: 'orange'},
-    {name: '波兰', position: {left: '11.480%', top: '52.332%'}, type: 'orange'},
-    {name: '法国', position: {left: '6.079%', top: '54.508%'}, type: 'orange'},
-    {name: '奥地利', position: {left: '9.718%', top: '53.800%'}, type: 'orange'},
-    {name: '斯洛文尼亚', position: {left: '9.918%', top: '54.400%'}, type: 'orange'},
-    {name: '斯洛伐克', position: {left: '11.624%', top: '53.427%'}, type: 'orange'},
-    {name: '匈牙利', position: {left: '11.324%', top: '53.727%'}, type: 'blue'},
-    {name: '意大利', position: {left: '9.768%', top: '57.377%'}, type: 'orange'},
-    {name: '西班牙', position: {left: '4.713%', top: '58.169%'}, type: 'orange'},
-    {name: '突尼斯', position: {left: '8.538%', top: '60.147%'}, type: 'orange'},
-    {name: '埃及', position: {left: '14.159%', top: '63.410%'}, type: 'orange'},
-    {name: '迪拜', position: {left: '21.059%', top: '63.81%'}, type: 'orange'},
-    {name: '罗马尼亚', position: {left: '12.596%', top: '55.466%'}, type: 'orange'},
-    {name: '土耳其', position: {left: '15.096%', top: '58.466%'}, type: 'orange'},
-    {name: '印度', position: {left: '27.049%', top: '66.973%'}, type: 'orange'},
-    {name: '日本', position: {left: '44.331%', top: '57.674%'}, type: 'orange'},
-    {name: '台湾', position: {left: '38.730%', top: '64.995%'}, type: 'orange'},
-    {name: '菲律宾', position: {left: '38.798%', top: '69.545%'}, type: 'orange'},
-    {name: '马来西亚', position: {left: '33.05%', top: '72.003%'}, type: 'orange'},
-    {name: '越南', position: {left: '35.297%', top: '68.459%'}, type: 'orange'},
-    {name: '印度尼西亚', position: {left: '36.997%', top: '74.459%'}, type: 'orange'},
-    {name: '澳大利亚', position: {left: '43.852%', top: '83.296%'}, type: 'orange'},
-    {name: '常州', position: {left: '38.183%', top: '61.730%'}, type: 'yellow'},
-    {name: '泰国', position: {left: '33.333%', top: '68.655%'}, type: 'yellow'},
-    {name: '美国', position: {left: '76.639%', top: '58.169%'}, type: 'orange'},
-    {name: '巴西', position: {left: '87.5%', top: '75.5%'}, type: 'orange'},
-    {name: '韩国', position: {left: '40.710%', top: '59.554%'}, type: 'blue'},
-    {name: '韩国', position: {left: '40.310%', top: '59.154%'}, type: 'orange'},
-    {name: '香港', position: {left: '37.022%', top: '65.094%'}, type: 'blue'},
-    {name: '新加坡', position: {left: '33.75%', top: '73.403%'}, type: 'blue'},
-    {name: '墨西哥', position: {left: '76.161%', top: '64.005%'}, type: 'blue'},
-    {name: '墨西哥', position: {left: '75.8%', top: '64.3%'}, type: 'orange'},
+    {name: '英国', nameEn: 'UK', position: {left: '5.260%', top: '50.551%'}, type: 'orange'},
+    {name: '德国', nameEn: 'Germany', position: {left: '8.197%', top: '51.936%'}, type: 'orange'},
+    {name: '波兰', nameEn: 'Poland', position: {left: '11.480%', top: '52.332%'}, type: 'orange'},
+    {name: '法国', nameEn: 'France', position: {left: '6.079%', top: '54.508%'}, type: 'orange'},
+    {name: '奥地利', nameEn: 'Austria', position: {left: '9.718%', top: '53.800%'}, type: 'orange'},
+    {name: '斯洛文尼亚', nameEn: 'Slovenia', position: {left: '9.918%', top: '54.400%'}, type: 'orange'},
+    {name: '斯洛伐克', nameEn: 'Slovakia', position: {left: '11.624%', top: '53.427%'}, type: 'orange'},
+    {name: '匈牙利', nameEn: 'Hungary', position: {left: '11.324%', top: '53.727%'}, type: 'blue'},
+    {name: '意大利', nameEn: 'Italy', position: {left: '9.768%', top: '57.377%'}, type: 'orange'},
+    {name: '西班牙', nameEn: 'Spain', position: {left: '4.713%', top: '58.169%'}, type: 'orange'},
+    {name: '突尼斯', nameEn: 'Tunisia', position: {left: '8.538%', top: '60.147%'}, type: 'orange'},
+    {name: '埃及', nameEn: 'Egypt', position: {left: '14.159%', top: '63.410%'}, type: 'orange'},
+    {name: '迪拜', nameEn: 'Dubai', position: {left: '21.059%', top: '63.81%'}, type: 'orange'},
+    {name: '罗马尼亚', nameEn: 'Romania', position: {left: '12.596%', top: '55.466%'}, type: 'orange'},
+    {name: '土耳其', nameEn: 'Turkey', position: {left: '15.096%', top: '58.466%'}, type: 'orange'},
+    {name: '印度', nameEn: 'India', position: {left: '27.049%', top: '66.973%'}, type: 'orange'},
+    {name: '日本', nameEn: 'Japan', position: {left: '44.331%', top: '57.674%'}, type: 'orange'},
+    {name: '台湾', nameEn: 'Taiwan', position: {left: '38.730%', top: '64.995%'}, type: 'orange'},
+    {name: '菲律宾', nameEn: 'Philippines', position: {left: '38.798%', top: '69.545%'}, type: 'orange'},
+    {name: '马来西亚', nameEn: 'Malaysia', position: {left: '33.05%', top: '72.003%'}, type: 'orange'},
+    {name: '越南', nameEn: 'Vietnam', position: {left: '35.297%', top: '68.459%'}, type: 'orange'},
+    {name: '印度尼西亚', nameEn: 'Indonesia', position: {left: '36.997%', top: '74.459%'}, type: 'orange'},
+    {name: '澳大利亚', nameEn: 'Australia', position: {left: '43.852%', top: '83.296%'}, type: 'orange'},
+    {name: '常州', nameEn: 'Changzhou', position: {left: '38.183%', top: '61.730%'}, type: 'yellow'},
+    {name: '泰国', nameEn: 'Thailand', position: {left: '33.333%', top: '68.655%'}, type: 'yellow'},
+    {name: '美国', nameEn: 'USA', position: {left: '76.639%', top: '58.169%'}, type: 'orange'},
+    {name: '巴西', nameEn: 'Brazil', position: {left: '87.5%', top: '75.5%'}, type: 'orange'},
+    {name: '韩国', nameEn: 'South Korea', position: {left: '40.710%', top: '59.554%'}, type: 'blue'},
+    {name: '韩国', nameEn: 'South Korea', position: {left: '40.310%', top: '59.154%'}, type: 'orange'},
+    {name: '香港', nameEn: 'Hong Kong', position: {left: '37.022%', top: '65.094%'}, type: 'blue'},
+    {name: '新加坡', nameEn: 'Singapore', position: {left: '33.75%', top: '73.403%'}, type: 'blue'},
+    {name: '墨西哥', nameEn: 'Mexico', position: {left: '76.161%', top: '64.005%'}, type: 'blue'},
+    {name: '墨西哥', nameEn: 'Mexico', position: {left: '75.8%', top: '64.3%'}, type: 'orange'},
 ]
 
 const gloPointsForHome = [

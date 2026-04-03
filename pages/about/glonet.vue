@@ -47,7 +47,7 @@
                     >
                         <div class="dot"></div>
                         <div class="cont-container">
-                            <div class="name">{{ item.name }}</div>
+                            <div class="name">{{ locale === 'en' ? (item.nameEn || item.name) : item.name }}</div>
                             <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M19.284 17.3647L12.9131 23.7256L6.54222 17.3547C3.02173 13.8342 3.02173 8.1334 6.54222 4.62291C10.0527 1.10242 15.7535 1.10242 19.264 4.62191C22.7745 8.1324 22.7745 13.8332 19.264 17.3437L19.284 17.3647ZM11.913 9.99366H8.91255V11.9939H11.913V14.9944H13.9132V11.9939H16.9137V9.99366H13.9132V6.99324H11.913V9.99366Z" fill="#FF6400"/>
                             </svg>
@@ -198,11 +198,11 @@
                             @mouseleave="itemMouseLeaveHandler($event, index, detailIndex)"
 
                         >
-                            <div class="name">{{detailItem.name}}</div>
+                            <div class="name">{{ locale === 'en' ? (detailItem.nameEn || detailItem.name) : detailItem.name }}</div>
                             <div class="cus" v-if="detailItem.cus.length > 0">
                                 <div
                                     class="cus-name"
-                                    v-for="(cusItem, cusIndex) in detailItem.cus"
+                                    v-for="(cusItem, cusIndex) in (locale === 'en' ? (detailItem.cusEn || detailItem.cus) : detailItem.cus)"
                                 >{{cusItem}}</div>
                             </div>
                         </div>
@@ -227,9 +227,9 @@ const gloPoints = ref(appConfig.clientConfig.gloPoints)
 
 // 工厂卡片数据（pointIndex 对应 gloPoints 中的索引：23=常州, 24=泰国）
 const gloFactoryCards = [
-    { name: '常州澳弘电子股份有限公司', nameEn: 'Changzhou AHO Electronics Co., Ltd.', type: '双面 / 多层 / HDI板', typeEn: 'Double-sided / Multi-layer / HDI PCB', image: '/images/home/about-bg.jpg', pointIndex: 23 },
+    { name: '常州澳弘电子股份有限公司', nameEn: 'Changzhou Aohong Electronics Co., Ltd.', type: '双面 / 多层 / HDI板', typeEn: 'Double-sided / Multi-layer / HDI PCB', image: '/images/home/about-bg.jpg', pointIndex: 23 },
     { name: '常州海弘电子有限公司', nameEn: 'Changzhou Haihong Electronics Co., Ltd.', type: '单面PCB', typeEn: 'Single-sided PCB', image: '/images/contact/haihong.png', pointIndex: 23 },
-    { name: '澳弘（泰国）电子有限公司', nameEn: 'AHO Electronics (Thailand) Co., Ltd.', type: '单面 / 双面 / 多层 / HDI', typeEn: 'Single-sided / Double-sided / Multi-layer / HDI', image: '/images/contact/thailand.png', pointIndex: 24 },
+    { name: '澳弘（泰国）电子有限公司', nameEn: 'Aohong Electronics (Thailand) Co., Ltd.', type: '单面 / 双面 / 多层 / HDI', typeEn: 'Single-sided / Double-sided / Multi-layer / HDI', image: '/images/contact/thailand.png', pointIndex: 24 },
 ]
 const gloLineGroup = ref<string[]>([])
 const gloLineDots = ref<{x: number, y: number}[]>([])
