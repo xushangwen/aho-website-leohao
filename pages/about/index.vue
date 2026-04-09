@@ -181,7 +181,7 @@ onUnmounted(() => {
         }
         .s-t {
             color: #000;
-            font-size: 38px;
+            font-size: fluid(38px, 28px);
             font-style: normal;
             font-weight: 700;
             line-height: normal;
@@ -206,7 +206,7 @@ onUnmounted(() => {
         }
         img.bg {
             width: 100%;
-            max-width: 660px;
+            max-width: min(660px, 90vw);
             height: 100%;
             transition: all 1s;
         }
@@ -227,7 +227,7 @@ onUnmounted(() => {
     }
     .t2 {
         color: var(--main-blue, #1E3296);
-        font-size: 28px;
+        font-size: fluid(28px, 20px);
         font-style: normal;
         font-weight: 700;
         line-height: 130%;
@@ -283,8 +283,8 @@ onUnmounted(() => {
             display: flex;
             flex-flow: row nowrap;
             justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 20px;
+            gap: fluid(20px);
+            margin-bottom: fluid(20px);
             @include mo {
                 flex-direction: column;
             }
@@ -311,7 +311,7 @@ onUnmounted(() => {
                 inset: 0;
                 color: #ffffff;
                 cursor: pointer;
-                padding: 48px;
+                padding: fluid(48px);
                 display: flex;
                 flex-flow: column nowrap;
                 justify-content: space-between;
@@ -321,7 +321,7 @@ onUnmounted(() => {
                 }
                 .name {
                     color: inherit;
-                    font-size: 24px;
+                    font-size: fluid(24px);
                     font-style: normal;
                     font-weight: 700;
                     line-height: 1.3;
@@ -339,7 +339,7 @@ onUnmounted(() => {
                     background-color: rgba(255, 255, 255, .1);
                     transition: all .3s;
                     i {
-                        font-size: 24px;
+                        font-size: fluid(24px);
                         color: currentColor;
                     }
                 }
@@ -367,7 +367,7 @@ onUnmounted(() => {
         right: 24px;
         top: 24px;
         color: white;
-        font-size: 40px;
+        font-size: fluid(40px);
         cursor: pointer;
         transition: transform 0.2s ease;
         &:hover {

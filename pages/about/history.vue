@@ -118,7 +118,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .s1 {
-    padding: 100px 0;
+    padding: fluid(100px) 0;
     position: relative;
     .bg {
         position: absolute;
@@ -134,12 +134,12 @@ onMounted(() => {
         .nav {
             margin: 0 auto;
             width: 100%;
-            max-width: 940px;
+            max-width: min(940px, 90vw);
             display: flex;
             flex-flow: row nowrap;
             justify-content: space-between;
             align-items: flex-start;
-            height: 108px;
+            height: fluid(108px);
             @include mo {
                 overflow-x: auto;
                 &::-webkit-scrollbar { display: none; }
@@ -169,7 +169,7 @@ onMounted(() => {
                         font-weight: 700;
                     }
                     .name {
-                        font-size: 48px;
+                        font-size: fluid(48px);
                         font-weight: bolder;
                         letter-spacing: -0.96px;
                         color: var(--main-blue);
@@ -182,12 +182,12 @@ onMounted(() => {
                 }
                 .slogan {
                     font-weight: 300;
-                    font-size: 24px;
+                    font-size: fluid(24px);
                 }
                 .name {
                     height: 50px;
                     margin-top: 12px;
-                    font-size: 36px;
+                    font-size: fluid(36px);
                     font-weight: 400;
                     letter-spacing: -0.72px;
                 }
@@ -195,8 +195,8 @@ onMounted(() => {
         }
         .content {
             width: 92%;
-            height: 610px;
-            max-width: 1150px;
+            height: fluid(610px);
+            max-width: min(1150px, 90vw);
             margin: tovw(120px) auto 0;
             @include mo {
                 height: auto;
@@ -209,7 +209,7 @@ onMounted(() => {
             }
             .list {
                 width: 100%;
-                height: 600px;
+                height: fluid(600px);
                 display: flex;
                 flex-flow: row nowrap;
                 justify-content: space-between;
@@ -240,8 +240,8 @@ onMounted(() => {
             }
             .item {
                 width: 100%;
-                max-width: 288px;
-                height: 450px;
+                max-width: min(288px, 90vw);
+                height: fluid(450px);
                 padding: 0 0 0 20px;
                 display: flex;
                 flex-flow: column nowrap;
@@ -274,14 +274,14 @@ onMounted(() => {
                     leading-trim: both;
                     text-edge: cap;
                     font-family: "TTFors";
-                    font-size: 32px;
+                    font-size: fluid(32px);
                     font-weight: bold;
                     letter-spacing: -0.64px;
                 }
                 .t1 {
                     margin-top: 7px;
                     color: var(--main-dark-gray, #3C3C3C);
-                    font-size: 20px;
+                    font-size: fluid(20px);
                     font-weight: 700;
                 }
                 .t2 {
@@ -317,7 +317,7 @@ onMounted(() => {
             }
             @for $i from 1 through 3 {
                 .item:nth-child(#{$i}) {
-                    margin-top: calc((3 - #{$i}) * 80px);
+                    margin-top: calc((3 - #{$i}) * #{fluid(80px)});
                 }
             }
         }
@@ -342,7 +342,7 @@ onMounted(() => {
                 }
             }
             .icon {
-                font-size: 48px;
+                font-size: fluid(48px);
                 color: var(--main-blue);
                 transition: all .3s;
             }

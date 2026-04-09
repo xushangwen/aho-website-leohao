@@ -13,10 +13,10 @@
 <style scoped lang="scss">
     .title {
         width: 100%;
-        max-width: 1000px;
+        max-width: min(1000px, 90vw);
         :deep(.t1) {
             color: #000;
-            font-size: 36px;
+            font-size: fluid(36px, 24px);
             font-style: normal;
             font-weight: 700;
             line-height: normal;
@@ -24,7 +24,7 @@
         }
         :deep(.t2) {
             color: var(--BASE_COLOR_RED);
-            font-size: 18px;
+            font-size: fluid(18px, 14px);
             font-style: normal;
             font-weight: 500;
             line-height: 140%; /* 25.2px */

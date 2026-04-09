@@ -115,9 +115,14 @@
 
 <style scoped lang="scss">
 footer {
-    padding-top: 120px;
+    padding-top: fluid(120px, 60px);
     position: relative;
     overflow: hidden;
+
+    @include mo {
+        padding-top: 60px;
+    }
+
     .bg {
         position: absolute;
         inset: 0;
@@ -132,6 +137,8 @@ footer {
             object-fit: cover;
         }
     }
+
+    // ── 顶部 logo + slogan ──────────────────────────────
     .top {
         .wrap {
             display: flex;
@@ -144,10 +151,21 @@ footer {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 16px;
+                padding-bottom: 24px;
+            }
+        }
+        .logo svg {
+            @include lap {
+                width: 140px;
+                height: auto;
+            }
+            @include mo {
+                width: 120px;
+                height: auto;
             }
         }
         .slogan {
-            font-size: 30px;
+            font-size: fluid(30px, 18px);
             font-weight: 400;
             text-align: right;
             .en {
@@ -159,27 +177,24 @@ footer {
             }
         }
     }
+
+    // ── 主内容区：联系方式 + 站点地图 + 微信 ─────────────
     .cont {
-        padding: tovw(60px) 0 tovw(80px);
+        padding: fluid(60px, 36px) 0 fluid(80px, 48px);
         @include mo {
-            padding: 40px 0 64px;
+            padding: 36px 0 48px;
         }
+
         & > .wrap {
             @include flex-r(wrap);
             justify-content: space-between;
-            .sl {
-                display: none;
-            }
+            align-items: flex-start;
+            gap: 32px;
+            .sl { display: none; }
+
             @include mo {
-                @include flex-c(wrap);
-                justify-content: flex-start;
-                align-items: flex-start;
-                .logo {
-                    svg {
-                        width: 80px;
-                        height: auto;
-                    }
-                }
+                @include flex-c(nowrap);
+                gap: 32px;
             }
         }
 
@@ -187,96 +202,110 @@ footer {
             @include flex-c();
             justify-content: flex-start;
             gap: 11px;
-            @include mo {
-                gap: 8px;
-            }
+            flex-shrink: 0;
+
             .icon {
                 font-size: 36px;
                 color: var(--main-orange);
-            }
-
-            .item {
-                color: #000000;
-                font-size: 16px;
-                line-height: 1.3;
-                font-family: -apple-system, SpaceGrotesk, HarmonyOS_Sans;
                 @include mo {
-                    line-height: 1.3;
+                    font-size: 28px;
                 }
+            }
+            .item {
+                color: #000;
+                font-size: 16px;
+                line-height: 1.4;
+                font-family: -apple-system, SpaceGrotesk, HarmonyOS_Sans;
+                a { color: inherit; }
                 &.phone {
-                    leading-trim: both;
-                    text-edge: cap;
                     font-size: 20px;
                     font-weight: 700;
+                    @include lap {
+                        font-size: 18px;
+                    }
                     @include mo {
                         font-size: 16px;
                     }
                 }
+                @include mo {
+                    font-size: 14px;
+                }
+            }
+            .w {
+                @include flex-c();
+                gap: 6px;
             }
         }
 
         .wm {
             flex: 1;
+            min-width: 0;
             max-width: 800px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 32px 40px;
             align-content: start;
-            @include mo {
-                display: flex;
-                flex-direction: column;
-                width: 100%;
-                margin-top: 36px;
-                gap: 24px;
+
+            @include lap {
+                max-width: 560px;
+                gap: 20px 24px;
             }
+            @include mo {
+                // 移动端改为两列展开，节省空间
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px 16px;
+                max-width: none;
+                width: 100%;
+            }
+
             .cate-item {
                 @include flex-c();
-                @include mo {
-                    font-size: 14px;
-                }
-                margin-bottom: 0;
+                gap: 0;
+
                 .cate-name {
                     color: var(--main-orange, #FF6400);
                     font-size: 12px;
-                    font-style: normal;
                     font-weight: 400;
-                    line-height: 1; /* 15.6px */
-                    margin-bottom: 2px;
+                    line-height: 1;
+                    margin-bottom: 8px;
                     @include mo {
-                        margin-bottom: 16px;
-                        font-size: 16px;
+                        font-size: 13px;
+                        margin-bottom: 10px;
                     }
                 }
                 .item {
-                    margin-top: 12px;
+                    margin-top: 10px;
                     color: var(--main-dark-gray, #3C3C3C);
-                    font-size: 16px;
-                    font-style: normal;
-                    line-height: 1.2;
+                    font-size: 15px;
+                    line-height: 1.3;
+                    @include lap {
+                        font-size: 14px;
+                    }
                     @include mo {
-                        margin-top: 8px;
+                        font-size: 13px;
+                        margin-top: 7px;
                     }
                 }
             }
         }
 
         .wc {
-            @include mo {
-                margin-top: 36px;
-                @include flex-c();
-                align-items: center;
-            }
+            flex-shrink: 0;
+            @include flex-c();
+            align-items: flex-start;
+
             &.wc-en {
-                display: flex;
-                flex-direction: column;
                 align-items: center;
             }
+            @include mo {
+                align-items: center;
+            }
+
             .la {
                 @include flex-r();
                 align-items: center;
-                max-width: 140px;
                 &.la-en {
-                    max-width: none;
                     justify-content: center;
                 }
                 .icon {
@@ -290,7 +319,6 @@ footer {
                     font-size: 14px;
                     line-height: 1.4;
                     white-space: pre-line;
-                    text-align: left;
                 }
             }
             &.wc-en .la span {
@@ -298,8 +326,13 @@ footer {
             }
             .qr {
                 margin-top: 12px;
-                width: 120px;
-                height: auto;
+                width: 110px;
+                @include lap {
+                    width: 96px;
+                }
+                @include mo {
+                    width: 100px;
+                }
                 img {
                     width: 100%;
                     height: auto;
@@ -308,67 +341,53 @@ footer {
         }
     }
 
+    // ── 版权栏 ──────────────────────────────────────────
     .copy {
-
         .wrap {
-            padding: 20px 0 60px;
+            padding: 20px 0 48px;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+            align-items: center;
             border-top: 0.5px solid var(--main-blue, #1E3296);
+
             @include mo {
                 flex-direction: column;
-                gap: 5px;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 16px 0 40px;
             }
-            .left {
+        }
+        .left {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 15px;
+            font-size: 12px;
+            a, span {
+                color: #999;
+                text-transform: uppercase;
+                text-decoration: none;
+            }
+        }
+        .right {
+            .backtop {
                 display: flex;
-                gap: 15px;
-                font-size: 12px;
-                a, span {
-                    color: #999;
-                    text-transform: uppercase;
-                    text-decoration: none;
-                    @include mo {
-                        font-size: 10px;
-                    }
-                }
-                .ga {
-                    display: flex;
-                    flex-direction: row;
-                    gap: 5px;
-                    align-items: center;
-                    @include mo {
-                        flex-direction: column;
-                        gap: 2px;
-                    }
-                    img {
-                        display: inline;
-                        width: 16px;
-                        height: 17px;
-                    }
+                gap: 10px;
+                align-items: center;
+                cursor: pointer;
+            }
+            span {
+                color: var(--main-dark-gray, #3C3C3C);
+                font-size: 15px;
+                @include mo {
+                    font-size: 14px;
                 }
             }
-            .right {
-                .backtop {
-                    display: flex;
-                    gap: 15px;
-                    align-items: center;
-                    cursor: pointer;
-                }
-                span {
-                    color: var(--main-dark-gray, #3C3C3C);
-                    leading-trim: both;
-                    text-edge: cap;
-                    font-size: 16px;
-                    font-style: normal;
-                }
-                .icon {
-                    font-size: 24px;
-                    color: var(--main-orange);
-                }
+            .icon {
+                font-size: 22px;
+                color: var(--main-orange);
             }
         }
     }
 }
-
 </style>

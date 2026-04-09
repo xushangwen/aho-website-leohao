@@ -289,12 +289,12 @@ const esgReport = computed(() => appConfig.clientConfig?.esgReport || null)
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center bottom;
-    padding: 100px 0;
+    padding: fluid(100px) 0;
     .wrap {
         display: flex;
         flex-flow: column nowrap;
-        gap: 64px;
-        max-width: 1120px;
+        gap: fluid(64px);
+        max-width: min(1120px, 90vw);
     }
     .pla.blue {
         color: var(--main-blue)
@@ -306,7 +306,7 @@ const esgReport = computed(() => appConfig.clientConfig?.esgReport || null)
         color: #4696FF
     }
     .pla {
-        height: 490px;
+        height: fluid(490px);
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-between;
@@ -334,13 +334,13 @@ const esgReport = computed(() => appConfig.clientConfig?.esgReport || null)
             flex-flow: column nowrap;
             align-items: center;
             overflow: hidden;
-            gap: 27px;
+            gap: fluid(27px);
             background: linear-gradient(180deg, currentColor 0%, rgba(30, 50, 150, 0.30) 100%);
             svg {
-                margin-top: 32px;
+                margin-top: fluid(32px);
             }
             .name {
-                font-size: 24px;
+                font-size: fluid(24px, 18px);
                 color: white;
             }
         }
@@ -361,7 +361,7 @@ const esgReport = computed(() => appConfig.clientConfig?.esgReport || null)
             }
             .t1 {
                 color: var(--main-black, #000);
-                font-size: 20px;
+                font-size: fluid(20px);
                 font-style: normal;
                 font-weight: 700;
                 line-height: normal;
@@ -398,7 +398,7 @@ const esgReport = computed(() => appConfig.clientConfig?.esgReport || null)
         }
     }
     .report-card {
-        margin-top: 64px;
+        margin-top: fluid(64px);
         display: flex;
         flex-flow: row nowrap;
         align-items: stretch;
@@ -411,7 +411,7 @@ const esgReport = computed(() => appConfig.clientConfig?.esgReport || null)
         }
         .card-img {
             width: 480px;
-            height: 280px;
+            height: fluid(280px);
             flex: none;
             @include mo {
                 width: 100%;
@@ -427,7 +427,7 @@ const esgReport = computed(() => appConfig.clientConfig?.esgReport || null)
         }
         .card-info {
             flex: auto;
-            padding: 0 48px;
+            padding: 0 fluid(48px);
             display: flex;
             flex-flow: column nowrap;
             justify-content: center;
@@ -443,13 +443,13 @@ const esgReport = computed(() => appConfig.clientConfig?.esgReport || null)
                 align-self: flex-start;
             }
             .title {
-                font-size: 24px;
+                font-size: fluid(24px);
                 font-weight: 700;
                 color: #000;
                 line-height: 1.3;
             }
             .year {
-                font-size: 48px;
+                font-size: fluid(48px);
                 font-weight: 800;
                 font-family: 'SpaceGrotesk', sans-serif;
                 color: #F0F0F0;

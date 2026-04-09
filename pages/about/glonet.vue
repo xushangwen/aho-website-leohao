@@ -463,7 +463,7 @@ onUnmounted(() => {
             width: 400px;
             height: inherit;
             color: var(--main-light-gray, #DCDCDC);
-            font-size: 38px;
+            font-size: fluid(38px, 18px);
             line-height: 85px;
             text-align: center;
             transition: all .3s;
@@ -624,7 +624,7 @@ onUnmounted(() => {
             top: tovw(100px);
             .cont {
                 width: 100%;
-                max-width: 1000px;
+                max-width: min(1000px, 90vw);
                 height: inherit;
                 display: flex;
                 flex-flow: row nowrap;
@@ -656,7 +656,7 @@ onUnmounted(() => {
                     leading-trim: both;
                     text-edge: cap;
                     font-family: "SpaceGrotesk";
-                    font-size: 60px;
+                    font-size: fluid(60px);
                     font-weight: 700;
                     line-height: 1;
                     letter-spacing: -1.2px;
@@ -723,7 +723,7 @@ onUnmounted(() => {
                 }
             }
             .type-name {
-                font-size: 20px;
+                font-size: fluid(20px);
                 color: var(--main-dark-gray);
             }
         }
@@ -765,7 +765,7 @@ onUnmounted(() => {
             left: 50%;
             transform: translateX(-50%);
             width: 100%;
-            max-width: 1000px;
+            max-width: min(1000px, 90vw);
             top: calc(#{tovw(100px)} + 260px);
             display: flex;
             flex-direction: row;
@@ -818,7 +818,7 @@ onUnmounted(() => {
                 margin-bottom: 4px;
             }
             .card-icon {
-                font-size: 20px;
+                font-size: fluid(20px);
                 color: var(--main-yellow);
             }
             .card-type {
@@ -858,19 +858,19 @@ onUnmounted(() => {
             justify-content: space-between;
             align-items: flex-end;
             padding: 0 tovw(60px) tovw(140px);
-            gap: 30px;
+            gap: fluid(30px);
             .detail-list {
                 width: 100%;
-                max-width: 300px;
+                max-width: min(300px, 90vw);
                 display: flex;
                 flex-flow: column nowrap;
                 justify-content: flex-end;
                 align-items: center;
-                gap: 25px;
+                gap: fluid(25px);
             }
             .item {
                 width: 100%;
-                max-width: 300px;
+                max-width: min(300px, 90vw);
                 background-color: white;
                 border-top: 2px solid var(--main-blue);
                 padding: 12px 18px;
@@ -878,7 +878,7 @@ onUnmounted(() => {
                 transition: all .3s;
                 &.large-item {
                     .cus-name {
-                        font-size: 20px;
+                        font-size: fluid(20px);
                         &::before {
                             display: none;
                         }
@@ -890,7 +890,7 @@ onUnmounted(() => {
             }
             .name {
                 color: #231815;
-                font-size: 24px;
+                font-size: fluid(24px);
             }
             .cus {
                 margin-top: 12px;

@@ -49,7 +49,7 @@
 
 <style scoped lang="scss">
     .swiper-indexbanner {
-        width: 100vw;
+        width: 100%;
         height: calc(100vh - 120px);
 
         --swiper-theme-color: #ff6600; /* 设置Swiper风格 */

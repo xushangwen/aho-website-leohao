@@ -36,20 +36,20 @@ defineProps({
     .date {
         color: #AFAFAF;
         font-feature-settings: 'clig' off, 'liga' off;
-        font-size: 18px;
+        font-size: fluid(18px, 14px);
         font-style: normal;
         font-weight: 400;
         line-height: normal;
     }
     .title {
         color: #666;
-        margin-top: 15px;
-        font-size: 20px;
+        margin-top: fluid(15px, 10px);
+        font-size: fluid(20px, 16px);
         font-style: normal;
         font-weight: 400;
         line-height: 140%; /* 28px */
     }
     .bot {
-        margin-top: 50px;
+        margin-top: fluid(50px, 24px);
     }
 </style>

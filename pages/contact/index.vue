@@ -141,7 +141,7 @@ const contactInfo = computed(() => [
         margin-bottom: tovw(48px);
         text-align: center;
         .cn {
-            font-size: 38px;
+            font-size: fluid(38px);
             font-weight: 700;
             color: #000;
             line-height: 1;
@@ -196,7 +196,7 @@ const contactInfo = computed(() => [
                 align-items: center;
                 justify-content: center;
                 color: #fff;
-                font-size: 22px;
+                font-size: fluid(22px);
                 backdrop-filter: blur(8px);
                 &.factory {
                     background: var(--main-blue);
@@ -226,7 +226,7 @@ const contactInfo = computed(() => [
                 font-weight: 700;
                 color: var(--main-blue);
                 line-height: 1.3;
-                margin-bottom: 28px;
+                margin-bottom: fluid(28px);
             }
 
             .factory-meta {
@@ -293,10 +293,10 @@ const contactInfo = computed(() => [
             flex-direction: column;
         }
         .contact-title {
-            font-size: 22px;
+            font-size: fluid(22px);
             font-weight: 700;
             color: var(--main-blue);
-            margin-bottom: 28px;
+            margin-bottom: fluid(28px);
             padding-bottom: 20px;
             position: relative;
             // 灰色分隔线（1px）
@@ -341,7 +341,7 @@ const contactInfo = computed(() => [
             }
         }
         .contact-icon {
-            font-size: 26px;
+            font-size: fluid(26px);
             color: var(--main-orange);
             flex: none;
             margin-top: 1px;
@@ -368,15 +368,15 @@ const contactInfo = computed(() => [
 
 /* ===== Section 2: 留言表单 ===== */
 .s2 {
-    padding: 100px 0;
+    padding: fluid(100px, 48px) 0;
     background-color: #F8F8F8;
     .section-name {
-        font-size: 38px;
+        font-size: fluid(38px, 26px);
         font-weight: 700;
         text-align: center;
     }
     .feedback {
-        margin-top: 60px;
+        margin-top: fluid(60px, 32px);
     }
     @include mo {
         padding: 48px 0;
@@ -387,9 +387,9 @@ const contactInfo = computed(() => [
 
 /* ===== Section 3: 销售处 ===== */
 .s3 {
-    padding: 100px 0;
+    padding: fluid(100px, 48px) 0;
     .section-name {
-        font-size: 38px;
+        font-size: fluid(38px, 26px);
         font-weight: 700;
         text-align: center;
     }

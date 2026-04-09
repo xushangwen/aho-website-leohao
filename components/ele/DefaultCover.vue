@@ -99,12 +99,12 @@ onMounted(() => {
             align-items: flex-start;
             .text {
                 color: rgba(255, 255, 255, 0);
-                font-size: 36px;
+                font-size: fluid(36px, 24px);
                 font-style: normal;
                 font-weight: 700;
                 line-height: normal;
                 position: relative;
-                bottom: 100px;
+                bottom: fluid(100px, 40px);
                 text-shadow: 0 0 50px rgba(255, 255, 255, .5);
             }
         }

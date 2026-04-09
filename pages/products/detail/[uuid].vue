@@ -77,13 +77,13 @@
 
 <style scoped lang="scss">
     .main {
-        padding: 94px 0 220px;
+        padding: fluid(94px) 0 fluid(220px);
         background: #F4F4F4;;
     }
     .abst {
         width: 100%;
-        max-width: 800px;
-        margin-top: 24px;
+        max-width: min(800px, 90vw);
+        margin-top: fluid(24px);
         color: #666;
         font-size: 18px;
         font-style: normal;
@@ -102,7 +102,7 @@
         }
     }
     .m1 {
-        margin-top: 100px;
+        margin-top: fluid(100px);
         .left {
             height: 462px;
             position: relative;
@@ -156,11 +156,11 @@
         }
         .right {
             .t1 {
-                margin-top: 24px;
+                margin-top: fluid(24px);
                 color: var(--BASE_COLOR_RED);
                 /* Display sm/Semibold */
                 font-family: Inter;
-                font-size: 30px;
+                font-size: fluid(30px);
                 font-style: normal;
                 font-weight: 600;
                 line-height: 38px; /* 126.667% */
@@ -177,7 +177,7 @@
                 line-height: 28px; /* 155.556% */
             }
             .plist {
-                margin-top: 32px;
+                margin-top: fluid(32px);
                 .item {
                     gap: 12px;
                     display: flex;
@@ -189,7 +189,7 @@
                 }
             }
             .get-quote {
-                margin-top: 38px;
+                margin-top: fluid(38px);
             }
         }
         .xp {
@@ -206,7 +206,7 @@
     }
 
     .m2 {
-        margin-top: 110px;
+        margin-top: fluid(110px);
         .left,
         .right {
 
@@ -215,13 +215,13 @@
             .tool {
                 display: flex;
                 justify-content: flex-start;
-                gap: 48px;
+                gap: fluid(48px);
                 .item {
                     cursor: pointer;
                 }
             }
             .list {
-                margin-top: 40px;
+                margin-top: fluid(40px);
                 border-radius: 8px;
                 border: 1px solid var(--gray-200, #EAECF0);
                 background: var(--base-white, #FFF);

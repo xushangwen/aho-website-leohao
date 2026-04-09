@@ -96,23 +96,41 @@ div{
 }
 
 
-@media screen  and (max-width: 1400px){
+// laptop (≤1400px)：修正公式，边距逐渐收窄而非扩张
+@media screen and (max-width: 1440px) {
     .wrap {
-        width: calc(100% - tovw(96px));
+        width: calc(100% - #{tovw(96px, 1440px)} * 2);
         &.row {
-            width: calc(100% - tovw(96px) + 1.6vw);
+            width: calc(100% - #{tovw(96px, 1440px)} * 2 + 1.6vw);
         }
     }
-
+    .header-wrap {
+        width: calc(100% - #{tovw(60px, 1440px)} * 2);
+    }
 }
 
+// tablet (≤1024px)：边距继续收窄
+@media screen and (max-width: 1024px) {
+    .wrap {
+        width: calc(100% - 60px);
+        &.row {
+            width: calc(100% - 60px + 1.6vw);
+        }
+    }
+    .header-wrap {
+        width: calc(100% - 40px);
+    }
+}
 
-@media screen  and (max-width: 992px){
+// mobile (≤992px)：固定 24px 边距
+@media screen and (max-width: 992px) {
     .wrap {
         width: calc(100% - 48px);
         &.row {
             width: calc(100% - 48px + 1.6vw);
         }
     }
-
+    .header-wrap {
+        width: calc(100% - 32px);
+    }
 }

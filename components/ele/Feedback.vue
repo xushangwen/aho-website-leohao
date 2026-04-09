@@ -49,24 +49,28 @@
 <style scoped lang="scss">
 .form {
     width: 96%;
-    max-width: 800px;
-    margin: 0 auto 60px;
+    max-width: min(800px, 90vw);
+    margin: 0 auto fluid(60px, 32px);
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: tovw(50px);
+    grid-gap: fluid(50px, 20px);
+    @include mo {
+        grid-template-columns: 1fr;
+        grid-gap: 20px;
+    }
 }
 .form-control {
     @include flex-r(nowrap);
     justify-content: flex-start;
     align-items: flex-start;
-    padding-bottom: 20px;
+    padding-bottom: fluid(20px, 12px);
     &:not(.no-border) {
         border-bottom: 1px solid #B4B4B4;
     }
     .label {
         flex: none;
         max-width: 100px;
-        font-size: 16px;
+        font-size: fluid(16px, 14px);
         color: var(--main-dark-gray);
         position: relative;
     }
@@ -76,9 +80,8 @@
         margin-left: 20px;
         input {
             width: 100%;
-            font-size: 18px;
+            font-size: fluid(18px, 14px);
             color: var(--main-dark-gray);
-            //height: 35px;
             background-color: transparent;
             border: none;
             outline: none;

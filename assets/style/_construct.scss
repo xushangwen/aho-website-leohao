@@ -359,20 +359,22 @@ b, strong, h1, h2, h3{
 
 .s-t {
     color: #000;
-    font-size: 38px;
+    font-size: var(--fs-h1);
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    @include mo {
+        font-size: 26px;
+    }
 }
 .s-a {
     overflow: hidden;
     color: var(--main-dark-gray, #3C3C3C);
     text-overflow: ellipsis;
-    font-size: 18px;
+    font-size: var(--fs-body);
     font-style: normal;
     line-height: 150%;
-}
-
-@media screen  and (max-width: 992px){
-
+    @include mo {
+        font-size: 16px;
+    }
 }

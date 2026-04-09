@@ -333,7 +333,7 @@ function slideNext() {
 </style>
 <style scoped lang="scss">
 .s1 {
-    padding: 100px 0;
+    padding: fluid(100px) 0;
     .wrap {
     }
     .top {
@@ -341,8 +341,8 @@ function slideNext() {
         flex-flow: row nowrap;
         justify-content: space-between;
         align-items: stretch;
-        gap: 48px;
-        margin-top: 48px;
+        gap: fluid(48px);
+        margin-top: fluid(48px);
         .left {
             width: 60%;
             height: auto;
@@ -356,14 +356,14 @@ function slideNext() {
                 flex-flow: column nowrap;
                 justify-content: flex-start;
                 align-items: flex-start;
-                padding-bottom: 80px;
+                padding-bottom: fluid(80px);
                 .year {
                     align-self: flex-end;
                     color: #F4F4F4;
                     leading-trim: both;
                     text-edge: cap;
                     //font-family: "TTFors";
-                    font-size: 126.222px;
+                    font-size: fluid(126.222px);
                     font-style: normal;
                     font-weight: bolder;
                 }
@@ -379,7 +379,7 @@ function slideNext() {
                 .t1 {
                     margin-top: 8px;
                     color: var(--main-dark-gray, #3C3C3C);
-                    font-size: 24px;
+                    font-size: fluid(24px);
                     font-style: normal;
                     font-weight: 700;
                     line-height: normal;
@@ -449,7 +449,7 @@ function slideNext() {
         display: flex;
         justify-content: center;
         gap: 0;
-        margin-top: 40px;
+        margin-top: fluid(40px);
         position: relative;
         // 灰色底线（伪元素）
         &::before {
@@ -462,8 +462,8 @@ function slideNext() {
             background: var(--main-light-gray);
         }
         .tab-item {
-            padding: 16px 80px;
-            font-size: 28px;
+            padding: 16px fluid(80px);
+            font-size: fluid(28px);
             font-weight: 500;
             color: var(--main-dark-gray);
             cursor: pointer;
@@ -491,8 +491,8 @@ function slideNext() {
     .patent-list {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 48px;
-        margin-top: 48px;
+        gap: fluid(48px, 24px);
+        margin-top: fluid(48px);
         @include lap {
             grid-template-columns: repeat(2, 1fr);
         }
@@ -543,7 +543,7 @@ function slideNext() {
     .no-more {
         grid-column: 1 / -1;
         text-align: center;
-        padding: 40px 0;
+        padding: fluid(40px) 0;
         color: var(--main-gray, #666);
         font-size: 14px;
     }

@@ -52,7 +52,7 @@ const breadcrumb = computed(() => [
         display: flex;
         flex-flow: column nowrap;
         justify-content: flex-start;
-        gap: 24px;
+        gap: fluid(24px);
     }
     .item {
         width: 100%;
@@ -73,12 +73,12 @@ const breadcrumb = computed(() => [
         }
         > .c {
             z-index: 2;
-            padding: 60px;
+            padding: fluid(60px, 24px);
             display: flex;
             flex-flow: row nowrap;
             justify-content: space-between;
             align-items: flex-end;
-            gap: 110px;
+            gap: fluid(110px, 16px);
             @include mo {
                 padding: 24px;
                 gap: 16px;
@@ -99,14 +99,14 @@ const breadcrumb = computed(() => [
                 flex-flow: row nowrap;
                 justify-content: space-between;
                 align-items: flex-end;
-                gap: 91px;
+                gap: fluid(91px, 8px);
                 @include mo {
                     flex-direction: column;
                     align-items: flex-start;
                     gap: 8px;
                 }
                 .name {
-                    font-size: 32px;
+                    font-size: fluid(32px, 22px);
                     color: white;
                     font-weight: bold;
                     width: 225px;

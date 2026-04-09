@@ -235,7 +235,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .s1 {
-    padding: 100px 0;
+    padding: fluid(100px, 40px) 0;
     background-color: #F8F8F8;
     @include mo {
         padding: 40px 0 60px;
@@ -327,7 +327,7 @@ onMounted(() => {
                 }
             }
             .icon {
-                font-size: 22px;
+                font-size: fluid(22px);
                 color: var(--main-blue);
                 transform: scale(0) translateX(-50px);
                 transition: transform .3s;
@@ -339,7 +339,7 @@ onMounted(() => {
         width: 100%;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        grid-gap: 30px;
+        grid-gap: fluid(30px);
         @include lap {
             grid-template-columns: repeat(2, 1fr);
         }
@@ -371,7 +371,7 @@ onMounted(() => {
                 border-top: 1px solid var(--main-light-gray, #DCDCDC);
                 font-size: 14px;
                 .name {
-                    font-size: 20px;
+                    font-size: fluid(20px);
                     font-weight: 700;
                 }
                 .intro {
@@ -386,7 +386,7 @@ onMounted(() => {
         .no-more {
             grid-column: 1 / -1;
             text-align: center;
-            padding: 40px 0;
+            padding: fluid(40px) 0;
             color: var(--main-gray, #666);
             font-size: 14px;
         }

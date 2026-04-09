@@ -38,4 +38,47 @@ $BC: #FF6400;
     --HEADER_HEIGHT: 72px;
     --HEADER_HEIGHT_MOB: 70px;
     --WIDTH_SLIDE: 7.5vw; /*108px / 1440px*/
+
+    // ============================================================
+    // 响应式设计 Tokens（流体缩放: 1440px固定 → 375px缩小）
+    // 公式: clamp(min, min + (max-min)*((100vw - 375px)/(1440-375)), max)
+    // ============================================================
+
+    // --- 字号 Tokens ---
+    --fs-display: clamp(32px, calc(32px + 16 * ((100vw - 375px) / 1065)), 48px);
+    --fs-h1: clamp(26px, calc(26px + 12 * ((100vw - 375px) / 1065)), 38px);
+    --fs-h2: clamp(22px, calc(22px + 10 * ((100vw - 375px) / 1065)), 32px);
+    --fs-h3: clamp(20px, calc(20px + 8 * ((100vw - 375px) / 1065)), 28px);
+    --fs-h4: clamp(16px, calc(16px + 8 * ((100vw - 375px) / 1065)), 24px);
+    --fs-body: clamp(14px, calc(14px + 4 * ((100vw - 375px) / 1065)), 18px);
+    --fs-body-sm: 16px;
+    --fs-caption: 14px;
+    --fs-small: 12px;
+
+    // --- 间距 Tokens ---
+    --sp-section: clamp(48px, calc(48px + 72 * ((100vw - 375px) / 1065)), 120px);
+    --sp-section-sm: clamp(32px, calc(32px + 48 * ((100vw - 375px) / 1065)), 80px);
+    --sp-content: clamp(24px, calc(24px + 36 * ((100vw - 375px) / 1065)), 60px);
+    --sp-element: clamp(16px, calc(16px + 32 * ((100vw - 375px) / 1065)), 48px);
+    --sp-element-sm: clamp(12px, calc(12px + 20 * ((100vw - 375px) / 1065)), 32px);
+    --sp-gap: clamp(12px, calc(12px + 12 * ((100vw - 375px) / 1065)), 24px);
+}
+
+// 保护层: ≥1441px 强制使用固定最大值，确保PC端布局不变
+@media screen and (min-width: 1441px) {
+    :root {
+        --fs-display: 48px;
+        --fs-h1: 38px;
+        --fs-h2: 32px;
+        --fs-h3: 28px;
+        --fs-h4: 24px;
+        --fs-body: 18px;
+
+        --sp-section: 120px;
+        --sp-section-sm: 80px;
+        --sp-content: 60px;
+        --sp-element: 48px;
+        --sp-element-sm: 32px;
+        --sp-gap: 24px;
+    }
 }

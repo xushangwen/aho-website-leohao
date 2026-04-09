@@ -428,7 +428,7 @@
                 .t1,
                 .t2 {
                     color: black;
-                    font-size: 52px;
+                    font-size: fluid(52px);
                     line-height: 1.5;
                 }
                 .t1 {
@@ -438,15 +438,15 @@
                     font-weight: 300;
                 }
                 .abst {
-                    margin-top: 30px;
-                    font-size: 44px;
+                    margin-top: fluid(30px);
+                    font-size: fluid(44px);
                     line-height: 1.5;
                     color: var(--main-blue);
                 }
 
             }
             .more {
-                margin-top: 37px;
+                margin-top: fluid(37px);
                 cursor: pointer;
                 display: block;
                 transform: translateY(-20px);
@@ -483,22 +483,19 @@
 }
 .s1,
 .s2 {
-    padding: 80px 0;
+    padding: fluid(80px) 0;
     @include lap {
         padding: tovw(80px) 0;
     }
     .wrap {
         & > .la {
             color: var(--main-black, #0F171F);
-            font-size: 30px;
+            font-size: fluid(30px);
             font-weight: 700;
             line-height: 150%; /* 45px */
         }
         .list {
-            margin-top: 48px;
-            @include lap {
-                margin-top: 32px;
-            }
+            margin-top: fluid(48px);
         }
     }
 }
@@ -517,7 +514,7 @@
                 @include flex-c();
                 justify-content: flex-end;
                 align-items: flex-start;
-                padding: 24px 24px 48px;
+                padding: 24px 24px fluid(48px);
                 cursor: pointer;
                 transition: all .3s;
                 .icon {
@@ -541,12 +538,12 @@
                 }
                 .num {
                     color: #E5E5E5;
-                    font-size: 40px;
+                    font-size: fluid(40px);
                     font-weight: 500;
                 }
                 .t {
                     color: var(--main-black, #0F171F);
-                    font-size: 20px;
+                    font-size: fluid(20px);
                     font-weight: 700;
                 }
                 .l {
@@ -630,7 +627,7 @@
                     text-align: right;
                     leading-trim: both;
                     text-edge: cap;
-                    font-size: 60px;
+                    font-size: fluid(60px);
                     font-weight: 700;
                     position: absolute;
                     top: 16px;
@@ -639,11 +636,11 @@
                 }
                 .t {
                     color: var(--main-blue, #196BB6);
-                    font-size: 24px;
+                    font-size: fluid(24px);
                     font-style: normal;
                     font-weight: 700;
                     line-height: normal;
-                    margin-top: 80px;
+                    margin-top: fluid(80px);
                 }
                 .ab {
                     color: #6B6B6B;
@@ -656,10 +653,7 @@
             }
         }
         .back {
-            margin-top: 100px;
-            @include lap {
-                margin-top: 70px;
-            }
+            margin-top: fluid(100px, 40px);
             @include mo {
                 margin-top: 40px;
             }
@@ -669,7 +663,7 @@
 
 .s3 {
     position: relative;
-    padding: 88px 0;
+    padding: fluid(88px) 0;
     @include lap {
         padding: tovw(88px) 0;
     }
@@ -685,18 +679,18 @@
     .wrap {
         @include flex-c();
         justify-content: center;
-        gap: 48px;
+        gap: fluid(48px);
         @include lap {
             gap: tovw(48px);
         }
         .info {
             color: white;
             .t1 {
-                font-size: 36px;
+                font-size: fluid(36px);
                 font-weight: 700;
             }
             .t2 {
-                font-size: 20px;
+                font-size: fluid(20px);
                 font-weight: 700;
                 margin-top: 12px;
             }

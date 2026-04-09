@@ -150,12 +150,12 @@ watch(docScrollTop, () => {
 
 <style scoped lang="scss">
 .s1 {
-    padding: 100px 0;
+    padding: fluid(100px) 0;
 
     .wrap {
         > .t {
             color: #000;
-            font-size: 38px;
+            font-size: fluid(38px);
             font-weight: 700;
         }
     }
@@ -163,8 +163,8 @@ watch(docScrollTop, () => {
     .patent-list {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 48px;
-        margin-top: 48px;
+        gap: fluid(48px, 24px);
+        margin-top: fluid(48px);
         @include lap {
             grid-template-columns: repeat(2, 1fr);
         }
@@ -209,7 +209,7 @@ watch(docScrollTop, () => {
         .no-more {
             grid-column: 1 / -1;
             text-align: center;
-            padding: 40px 0;
+            padding: fluid(40px) 0;
             color: var(--main-gray, #666);
             font-size: 14px;
         }

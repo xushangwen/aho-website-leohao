@@ -76,20 +76,20 @@ function indexValueUpdate(index) {
     }
 }
 .s2 {
-    padding: 100px 0;
+    padding: fluid(100px, 48px) 0;
     @include mo {
         padding: 48px 0;
     }
     .t {
-        font-size: 38px;
+        font-size: fluid(38px, 26px);
         font-weight: bold;
         @include mo {
             font-size: 26px;
         }
     }
     .list {
-        height: 523px;
-        margin-top: 48px;
+        height: fluid(523px);
+        margin-top: fluid(48px);
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-between;
@@ -107,7 +107,7 @@ function indexValueUpdate(index) {
             flex: none;
             overflow: hidden;
             transition: all .3s;
-            padding: 50px;
+            padding: fluid(50px);
             display: flex;
             flex-flow: column nowrap;
             justify-content: flex-end;
@@ -125,7 +125,7 @@ function indexValueUpdate(index) {
             }
             .t1 {
                 color: white;
-                font-size: 24px;
+                font-size: fluid(24px);
             }
             .ab {
                 visibility: hidden;
@@ -142,7 +142,7 @@ function indexValueUpdate(index) {
                 justify-content: flex-start;
                 align-items: flex-start;
                 .t1 {
-                    font-size: 36px;
+                    font-size: fluid(36px);
                 }
                 .ab {
                     visibility: visible;

@@ -53,13 +53,13 @@ defineEmits(['navigate'])
 ._pagi {
     width: 100%;
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
     justify-content: center;
     align-items: center;
     gap: 10px;
     .item {
-        width: 34px;
-        height: 34px;
+        width: fluid(34px, 30px);
+        height: fluid(34px, 30px);
         display: flex;
         flex-flow: column nowrap;
         justify-content: center;
@@ -67,7 +67,7 @@ defineEmits(['navigate'])
         border: 1px solid var(--main-light-gray);
         border-radius: 6px;
         color: var(--main-dark-gray);
-        font-size: 16px;
+        font-size: fluid(16px, 14px);
         font-family: 'TTFors';
         cursor: pointer;
         transition: all .3s;
@@ -80,7 +80,7 @@ defineEmits(['navigate'])
         }
         .icon {
             color: inherit;
-            font-size: 18px;
+            font-size: fluid(18px, 16px);
         }
     }
 }

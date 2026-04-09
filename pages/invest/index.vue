@@ -68,14 +68,14 @@ const breadcrumb = computed(() => [
 
 <style scoped lang="scss">
 .s1 {
-    padding: 80px 0 100px;
+    padding: fluid(80px, 40px) 0 fluid(100px, 60px);
     @include mo {
         padding: 40px 0 60px;
     }
     .wrap {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 32px;
+        gap: fluid(32px, 20px);
         @include mo {
             grid-template-columns: 1fr;
             gap: 20px;
@@ -124,9 +124,9 @@ const breadcrumb = computed(() => [
         display: flex;
         flex-flow: column nowrap;
         justify-content: flex-end;
-        padding: 40px;
+        padding: fluid(40px);
         .card-icon {
-            font-size: 36px;
+            font-size: fluid(36px);
             color: #fff;
             opacity: 0.9;
             margin-bottom: 16px;
@@ -141,11 +141,11 @@ const breadcrumb = computed(() => [
             margin-bottom: 10px;
         }
         .card-cn {
-            font-size: 32px;
+            font-size: fluid(32px);
             font-weight: 700;
             color: #fff;
             line-height: 1.2;
-            margin-bottom: 24px;
+            margin-bottom: fluid(24px);
         }
         ._btn {
             align-self: flex-start;

@@ -190,7 +190,7 @@ const postList = computed(() => {
 
 <style scoped lang="scss">
 .s1 {
-    padding: 100px 0;
+    padding: fluid(100px) 0;
     @include mo {
         padding: 40px 0 60px;
     }
@@ -200,7 +200,7 @@ const postList = computed(() => {
     .label-list {
         @include flex-r();
         align-items: flex-start;
-        gap: 24px;
+        gap: fluid(24px, 12px);
         @include mo {
             flex-wrap: wrap;
             gap: 12px;
@@ -234,7 +234,7 @@ const postList = computed(() => {
     }
 
     .recommend {
-        margin-top: 60px;
+        margin-top: fluid(60px);
         border-radius: 10px;
         border: 1px solid var(--main-light-gray, #DCDCDC);
         @include flex-r(nowrap);
@@ -306,7 +306,7 @@ const postList = computed(() => {
             transition: transform .3s ease-in-out;
         }
         .info {
-            padding: 32px 60px;
+            padding: 32px fluid(60px, 24px);
             @include flex-c(nowrap);
             justify-content: center;
             align-items: flex-start;
@@ -320,7 +320,7 @@ const postList = computed(() => {
             }
             .t1,
             .t2 {
-                font-size: 22px;
+                font-size: fluid(22px);
             }
             .t1 {
                 margin-top: 12px;
@@ -365,15 +365,15 @@ const postList = computed(() => {
     }
 
     .news-list {
-        margin-top: 60px;
+        margin-top: fluid(60px);
     }
 
     .pagi {
-        margin-top: 60px;
+        margin-top: fluid(60px);
     }
     .loading {
         text-align: center;
-        padding: 60px 0;
+        padding: fluid(60px) 0;
         color: var(--main-gray, #666);
         font-size: 14px;
     }

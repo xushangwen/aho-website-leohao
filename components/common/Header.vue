@@ -283,7 +283,8 @@ nav.norm {
     @include flex-c(nowrap);
     justify-content: center;
     transition: all .3s;
-    @include mo {
+    // 1024px 以下切换到移动导航
+    @include tab {
         top: -100px;
     }
 
@@ -344,9 +345,17 @@ nav.norm {
         align-items: center;
         gap: tovw(16px);
         height: 100%;
+        // 1400px 以下收紧间距
+        @include lap {
+            gap: 4px;
+        }
         .item {
             height: 100%;
             padding: 0 tovw(10px);
+            @include lap {
+                padding: 0 8px;
+                font-size: 15px;
+            }
             @include flex-r(nowrap);
             align-items: center;
             color: #000;
@@ -578,6 +587,21 @@ nav.norm {
             justify-content: space-between;
             align-items: flex-start;
 
+            // laptop (≤1400px)：与 header-wrap 边距保持对齐
+            @include lap {
+                margin: 0 #{tovw(160px)};
+                .left .en {
+                    font-size: 28px;
+                }
+                .mid {
+                    width: 400px;
+                    .item { width: 185px; }
+                }
+                .right img {
+                    width: 260px;
+                }
+            }
+
             .left {
                 width: 170px;
                 padding-top: 16px;
@@ -689,9 +713,6 @@ nav.norm {
         }
     }
 
-    @include mo {
-        //background-color: black;
-    }
 }
 
 nav.mobi {
@@ -702,9 +723,9 @@ nav.mobi {
     position: fixed;
     top: -100px;
     transition: all .3s;
-    ;
 
-    @include mo {
+    // 1024px 以下显示移动导航
+    @include tab {
         top: 0;
     }
 
@@ -889,7 +910,7 @@ nav.mobi {
     height: var(--HEADER_HEIGHT);
     transition: height .3s;
 
-    @include mo {
+    @include tab {
         height: var(--HEADER_HEIGHT_MOB);
     }
 }

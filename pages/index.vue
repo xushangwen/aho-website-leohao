@@ -648,7 +648,7 @@ onUnmounted(() => {
         }
         .prd-abst {
             span {
-                font-size: 38px;
+                font-size: fluid(38px, 28px);
                 font-weight: 900;
                 margin-right: 3px;
                 @include mo {
@@ -657,7 +657,7 @@ onUnmounted(() => {
             }
         }
         .blur-text {
-            font-size: 38px;
+            font-size: fluid(38px, 25px);
             font-weight: 900;
             color: white;
         }
@@ -698,7 +698,8 @@ onUnmounted(() => {
     width: 100%;
     height: 100vh;
     background: whitesmoke;
-    @include mo {
+    // tab (≤1024px)：移动导航出现，banner 需减去导航高度
+    @include tab {
         height: calc(100vh - var(--HEADER_HEIGHT_MOB));
     }
     .banner-prev, .banner-next {
@@ -807,11 +808,12 @@ onUnmounted(() => {
             justify-content: center;
             align-items: flex-start;
             @include lap {
-                width: calc(100% - 240px);
+                width: calc(100% - 160px);
             }
             @include mo {
+                // 移动端文字下沉，与底部按钮/分页点留空间
                 justify-content: flex-end;
-                width: calc(100% - 48px);
+                width: 100%;
             }
             .cont {
                 height: auto;
@@ -839,7 +841,7 @@ onUnmounted(() => {
                     color: white;
                 }
                 .t1 {
-                    font-size: 36px;
+                    font-size: fluid(36px, 26px);
                     font-weight: 300;
                     margin-bottom: 16px;
                     @include mo {
@@ -850,7 +852,7 @@ onUnmounted(() => {
                 }
                 .t2,
                 .t2m {
-                    font-size: 36px;
+                    font-size: fluid(36px, 20px);
                     font-weight: 700;
                     @include mo {
                         font-size: 20px;
@@ -868,9 +870,9 @@ onUnmounted(() => {
                 .prd-abst {
                     margin-top: 12px;
                     color: white;
-                    max-width: 740px;
+                    max-width: min(740px, 90vw);
                     span {
-                        font-size: 30px;
+                        font-size: fluid(30px, 20px);
                         font-family: TTFors;
                         font-weight: 400;
                     }
@@ -884,7 +886,7 @@ onUnmounted(() => {
 
             }
             .more {
-                margin-top: 30px;
+                margin-top: fluid(30px, 20px);
                 @include mo {
                     margin-bottom: 100px;
                 }
@@ -935,7 +937,7 @@ onUnmounted(() => {
             &.heavy {
                 .cont {
                     .t1 {
-                        font-size: 60px;
+                        font-size: fluid(60px, 39px);
                     }
                 }
             }
@@ -965,15 +967,15 @@ onUnmounted(() => {
 .s1 {
     position: relative;
     .wrap {
-        min-height: 514px;
+        min-height: fluid(514px);
     }
     .left {
         width: 575px;
-        padding: 83px 0 35px 0;
+        padding: fluid(83px, 36px) 0 35px 0;
     }
     .t2 {
         color: var(--main-blue, #1E3296);
-        font-size: 28px;
+        font-size: fluid(28px, 20px);
         font-style: normal;
         font-weight: 700;
         line-height: 130%;
@@ -998,38 +1000,54 @@ onUnmounted(() => {
             position: absolute;
             inset: 0;
             background: url("/images/home/about-bg.jpg") no-repeat center / cover;
-            border-radius:  0 0 0 40px;
+            border-radius: 0 0 0 40px;
             overflow: hidden;
         }
     }
+    // laptop (≤1400px)：左侧内容与右侧图片按比例压缩
     @include lap {
         .left {
-            width: 50%;
+            width: 48%;
         }
         .right {
             min-width: 0;
+            width: 48%;
+        }
+        .t2 {
+            font-size: 24px;
+            margin-top: 32px;
+        }
+        .abst p {
+            margin-top: 20px;
+        }
+        ._btn {
+            margin-top: 28px;
         }
     }
+    // mobile (≤992px)：图片沉底，文字全宽
     @include mo {
         .wrap {
             min-height: unset;
         }
         .left {
             width: 100%;
-            padding: 40px 0 280px;
+            padding: 36px 0 240px;
         }
         .t2 {
-            font-size: 22px;
-            margin-top: 24px;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        .abst p {
+            margin-top: 16px;
         }
         ._btn {
-            margin-top: 32px;
+            margin-top: 28px;
         }
         .right {
             position: absolute;
             bottom: 0;
             top: unset;
-            height: 260px;
+            height: 220px;
             width: 100%;
             min-width: 0;
             .bg {
@@ -1040,14 +1058,17 @@ onUnmounted(() => {
 }
 
 .el-profile-data {
-    margin: 120px 0 0;
+    margin: fluid(120px, 48px) 0 0;
+    @include lap {
+        margin: 80px 0 0;
+    }
     @include mo {
         margin: 48px 0 0;
     }
 }
 
 .s2 {
-    margin-top: 100px;
+    margin-top: fluid(100px, 40px);
     padding: tovw(120px) 0;
     position: relative;
     .bg {
@@ -1070,14 +1091,14 @@ onUnmounted(() => {
         margin-top: 12px;
     }
     .sc {
-        margin-top: 32px;
+        margin-top: fluid(32px, 24px);
         display: flex;
         flex-flow: row nowrap;
         justify-content: flex-start;
         align-items: center;
         .sc-for,
         .sc-provide {
-            font-size: 30px;
+            font-size: fluid(30px, 18px);
             color: var(--main-dark-gray);
             flex-shrink: 0;
         }
@@ -1105,7 +1126,7 @@ onUnmounted(() => {
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 28px;
+            font-size: fluid(28px, 22px);
             flex-shrink: 0;
             position: relative;
             overflow: hidden;
@@ -1119,7 +1140,7 @@ onUnmounted(() => {
             }
         }
         b {
-            font-size: 32px;
+            font-size: fluid(32px, 22px);
             font-weight: 700;
             color: var(--main-blue);
         }
@@ -1138,22 +1159,44 @@ onUnmounted(() => {
         opacity: 0;
         transform: translateY(-10px);
     }
-    @include mo {
-        margin-top: 48px;
-        padding: 48px 0;
+    // laptop (≤1400px)
+    @include lap {
+        margin-top: 64px;
+        padding: 80px 0;
         .sc {
-            flex-wrap: wrap;
-            gap: 8px;
+            .sc-for, .sc-provide { font-size: 26px; }
+            b { font-size: 28px; }
+            .sc-icon-wrap { width: 38px; height: 38px; font-size: 24px; }
+        }
+    }
+    // mobile (≤992px)：纵向堆叠，"为 X 提供 Y" 各占一行
+    @include mo {
+        margin-top: 40px;
+        padding: 40px 0;
+        .s-a { margin-top: 10px; }
+        .sc {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 14px;
+            margin-top: 24px;
             .sc-for,
             .sc-provide {
-                font-size: 20px;
+                font-size: 18px;
+                flex-shrink: unset;
             }
+            .sc-provide { margin-left: 0; }
             .sc-slot {
-                min-width: 160px;
+                margin-left: 0;
+                min-width: unset;
             }
-            b {
+            .sc-pair { gap: 8px; }
+            .sc-icon-wrap {
+                width: 36px;
+                height: 36px;
                 font-size: 22px;
+                border-radius: 8px;
             }
+            b { font-size: 22px; }
         }
     }
 }
@@ -1167,7 +1210,7 @@ onUnmounted(() => {
     .item {
         height: $itemHeight;
         width: 100%;
-        padding: 40px 0;
+        padding: fluid(40px, 26px) 0;
         background-color: white;
         transition: background-color .4s cubic-bezier(.4, 0, .2, 1);
         .wrap {
@@ -1186,7 +1229,7 @@ onUnmounted(() => {
             border-right: 1px solid var(--main-orange);
             transition: border-color .4s cubic-bezier(.4, 0, .2, 1);
             .icon {
-                font-size: 40px;
+                font-size: fluid(40px, 26px);
                 color: var(--main-orange);
                 transition: color .4s cubic-bezier(.4, 0, .2, 1);
                 line-height: 1;
@@ -1196,13 +1239,13 @@ onUnmounted(() => {
             .cont {
                 width: 460px;
                 height: inherit;
-                margin-left: 20px;
+                margin-left: fluid(20px, 13px);
                 display: flex;
                 flex-flow: column nowrap;
                 justify-content: space-between;
                 .name {
                     color: var(--main-blue, #1E3296);
-                    font-size: 28px;
+                    font-size: fluid(28px, 20px);
                     font-weight: 700;
                     transition: color .4s cubic-bezier(.4, 0, .2, 1);
                 }
@@ -1257,6 +1300,21 @@ onUnmounted(() => {
                 bottom: calc((7 - #{$i}) * (100vh - #{$header_height} - #{$itemHeight}) / 6);
             }
         }
+        // laptop 断点：固定像素宽度超出容器，改用百分比
+        @include lap {
+            .wrap {
+                align-items: center;
+            }
+            .left {
+                width: 55%;
+                .cont {
+                    width: calc(100% - 60px);
+                }
+            }
+            .right {
+                img { width: 30vw; max-width: 400px; }
+            }
+        }
         @include mo {
             height: auto !important;
             position: static !important;
@@ -1307,6 +1365,11 @@ onUnmounted(() => {
     .tools {
         margin-top: tovw(80px);
         text-align: center;
+    }
+    @include lap {
+        padding: 60px 0 100px;
+        .news-list { margin-top: 48px; }
+        .tools { margin-top: 48px; }
     }
     @include mo {
         padding: 48px 0 64px;
@@ -1422,8 +1485,12 @@ onUnmounted(() => {
         padding-bottom: tovw(16px);
         text-align: center;
         flex-shrink: 0;
+        // tab (≤1024px)：移动导航高度更小
+        @include tab {
+            padding-top: calc(var(--HEADER_HEIGHT_MOB) + 16px);
+        }
         .s5-title {
-            font-size: 36px;
+            font-size: fluid(36px, 24px);
             font-weight: 700;
             color: #1e293b;
             margin-bottom: 8px;
@@ -1431,7 +1498,7 @@ onUnmounted(() => {
         .s5-desc {
             font-size: 18px;
             color: #475569;
-            max-width: 560px;
+            max-width: min(560px, 90vw);
             margin: 0 auto;
         }
     }
@@ -1517,7 +1584,7 @@ onUnmounted(() => {
 
     .s5-stat {
         text-align: center;
-        padding: 16px 32px;
+        padding: 16px fluid(32px, 16px);
         background: $glass-bg;
         border-radius: 16px;
         border: 1px solid $glass-border;
@@ -1529,7 +1596,7 @@ onUnmounted(() => {
         }
     }
     .s5-stat-num {
-        font-size: 42px;
+        font-size: fluid(42px, 28px);
         font-weight: 600;
         font-family: SpaceGrotesk, sans-serif;
         line-height: 1.1;
@@ -1540,6 +1607,21 @@ onUnmounted(() => {
         margin-top: 4px;
     }
 
+    @include lap {
+        .s5-header {
+            .s5-title { font-size: 30px; }
+            .s5-desc { font-size: 16px; }
+        }
+        .s5-bottom {
+            bottom: 60px;
+        }
+        .s5-stat {
+            padding: 12px 24px;
+        }
+        .s5-stat-num {
+            font-size: 36px;
+        }
+    }
     @include mo {
         height: auto;
         min-height: 80vh;

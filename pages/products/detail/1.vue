@@ -990,7 +990,7 @@
                 justify-content: flex-start;
                 align-items: center;
                 gap: tovw(24px);
-                padding: 60px 32px 0;
+                padding: fluid(60px) 32px 0;
                 cursor: pointer;
                 transition: all .3s;
                 border-radius: 10px;
@@ -1038,7 +1038,7 @@
                     .num {
                         width: 100%;
                         font-family: "SpaceGrotesk";
-                        font-size: 60px;
+                        font-size: fluid(60px, 22px);
                         font-weight: 700;
                         line-height: normal;
                         background: linear-gradient(90deg, #29ABE2 10.76%, rgba(41, 171, 226, 0.00) 124.7%);
@@ -1076,7 +1076,7 @@
                     .t1 {
                         color: var(--main-black, #0F171F);
                         text-align: center;
-                        font-size: 24px;
+                        font-size: fluid(24px, 18px);
                         font-style: normal;
                         font-weight: 700;
                         line-height: 130%; /* 31.2px */
@@ -1085,10 +1085,10 @@
 
                     .ab {
                         width: 100%;
-                        max-width: 375px;
+                        max-width: min(375px, 90vw);
                         color: var(--main-black, #0F171F);
                         text-align: center;
-                        font-size: 20px;
+                        font-size: fluid(20px, 14px);
                         font-style: normal;
                         font-weight: 400;
                         line-height: 130%; /* 26px */
@@ -1158,26 +1158,23 @@
 <style scoped lang="scss">
 .s1,
 .s2 {
-    padding: 80px 0;
+    padding: fluid(80px, 64px) 0;
     .wrap {
         & > .la {
             color: var(--main-black, #0F171F);
-            font-size: 30px;
+            font-size: fluid(30px, 24px);
             font-weight: 700;
             line-height: 150%; /* 45px */
         }
         .list {
-            margin-top: 48px;
-            @include lap {
-                margin-top: 32px;
-            }
+            margin-top: fluid(48px, 32px);
         }
     }
 }
 .s1 {
     .wrap {
         .back {
-            margin-top: 44px;
+            margin-top: fluid(44px);
         }
     }
 }
@@ -1225,7 +1222,7 @@
                     text-align: right;
                     leading-trim: both;
                     text-edge: cap;
-                    font-size: 60px;
+                    font-size: fluid(60px);
                     font-weight: 700;
                     position: absolute;
                     top: 16px;
@@ -1234,11 +1231,11 @@
                 }
                 .t {
                     color: var(--main-blue, #196BB6);
-                    font-size: 24px;
+                    font-size: fluid(24px);
                     font-style: normal;
                     font-weight: 700;
                     line-height: normal;
-                    margin-top: 80px;
+                    margin-top: fluid(80px);
                 }
                 .ab {
                     color: #6B6B6B;
@@ -1251,10 +1248,7 @@
             }
         }
         .back {
-            margin-top: 100px;
-            @include lap {
-                margin-top: 70px;
-            }
+            margin-top: fluid(100px, 40px);
             @include mo {
                 margin-top: 40px;
             }
