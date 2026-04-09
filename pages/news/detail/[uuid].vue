@@ -110,7 +110,7 @@ const { data: newsDetail, pending: loading, refresh } = await useAsyncData(
     }
     .title {
         color: var(--main-black, #000);
-        font-size: 28px;
+        font-size: fluid(28px, 20px);
         font-style: normal;
         font-weight: 700;
         line-height: 130%; /* 36.4px */

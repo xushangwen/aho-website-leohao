@@ -675,7 +675,7 @@ onUnmounted(() => {
                     font-weight: bold;
                 }
                 .icon {
-                    font-size: 24px;
+                    font-size: fluid(24px);
                     position: absolute;
                     left: 20px;
                     bottom: 20px;

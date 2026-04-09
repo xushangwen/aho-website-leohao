@@ -54,7 +54,7 @@ defineProps({
             width: 100%;
             color: #000;
             text-align: left;
-            font-size: 52px;
+            font-size: fluid(52px, 32px);
             font-style: normal;
             font-weight: 700;
             line-height: normal;

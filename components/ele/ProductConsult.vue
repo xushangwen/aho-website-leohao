@@ -84,11 +84,11 @@
         .info {
             color: white;
             .t1 {
-                font-size: 36px;
+                font-size: fluid(36px, 24px);
                 font-weight: 700;
             }
             .t2 {
-                font-size: 20px;
+                font-size: fluid(20px);
                 font-weight: 700;
                 margin-top: 12px;
             }

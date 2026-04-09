@@ -385,7 +385,7 @@ nav.norm {
             //    margin: 0 .5em;
             //}
             .icon {
-                font-size: 24px;
+                font-size: fluid(24px);
                 color: var(--BC);
                 line-height: 24px;
                 margin-left: 6px;
@@ -445,7 +445,7 @@ nav.norm {
             cursor: pointer;
             transition: all .3s;
             .icon {
-                font-size: 24px;
+                font-size: fluid(24px);
                 transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
             }
 
@@ -607,7 +607,7 @@ nav.norm {
                 padding-top: 16px;
                 .cn {
                     color: var(--main-blue, #1E3296);
-                    font-size: 24px;
+                    font-size: fluid(24px);
                     font-style: normal;
                     font-weight: 400;
                     line-height: 27px; /* 112.5% */
@@ -618,7 +618,7 @@ nav.norm {
                     leading-trim: both;
                     text-edge: cap;
                     font-family: "TT Fors";
-                    font-size: 40px;
+                    font-size: fluid(40px, 28px);
                     font-style: normal;
                     font-weight: 100;
                     line-height: 100%; /* 40px */
@@ -642,7 +642,7 @@ nav.norm {
                     align-items: center;
                     position: relative;
                     .icon {
-                        font-size: 20px;
+                        font-size: fluid(20px);
                         color: var(--main-blue);
                         transform: scale(0) translateX(-50px);
                         transition: transform .3s;
@@ -755,7 +755,7 @@ nav.mobi {
                 @include flex-c();
                 justify-content: center;
                 .icon {
-                    font-size: 24px;
+                    font-size: fluid(24px);
                 }
             }
 
@@ -827,7 +827,7 @@ nav.mobi {
                 }
 
                 .icon {
-                    font-size: 24px;
+                    font-size: fluid(24px);
                     color: var(--main-blue);
                     margin-left: 6px;
                     transition: all .3s;
@@ -887,7 +887,7 @@ nav.mobi {
             align-items: center;
 
             .icon {
-                font-size: 24px;
+                font-size: fluid(24px);
             }
 
             .switcher {

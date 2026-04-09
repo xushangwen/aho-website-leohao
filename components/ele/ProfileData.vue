@@ -73,7 +73,7 @@ const { locale } = useI18n()
         .data {
             text-edge: cap;
             font-family: 'Google Sans', SpaceGrotesk, sans-serif;
-            font-size: 60px;
+            font-size: fluid(60px, 36px);
             font-weight: 700;
             display: flex;
             flex-flow: row nowrap;

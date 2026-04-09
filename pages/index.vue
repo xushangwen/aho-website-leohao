@@ -720,7 +720,7 @@ onUnmounted(() => {
         justify-content: center;
         align-items: center;
         .icon {
-            font-size: 36px;
+            font-size: fluid(36px, 24px);
             color: var(--main-blue);
         }
         &:hover {

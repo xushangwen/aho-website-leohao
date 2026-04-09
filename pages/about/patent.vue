@@ -437,7 +437,7 @@ function slideNext() {
                     }
                 }
                 i {
-                    font-size: 24px;
+                    font-size: fluid(24px);
                     color: var(--main-blue);
                     transition: all .3s;
                 }

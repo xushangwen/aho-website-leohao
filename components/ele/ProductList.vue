@@ -73,7 +73,7 @@ onMounted(() => {
         @include flex-c();
         gap: 12px;
         .t1 {
-            font-size: 36px;
+            font-size: fluid(36px, 24px);
             font-weight: 700;
             text-transform: uppercase;
         }
@@ -162,7 +162,7 @@ onMounted(() => {
                 height: 100%;
                 .t1 {
                     color: var(--main-blue, #196BB6);
-                    font-size: 30px;
+                    font-size: fluid(30px, 20px);
                     font-weight: 700;
                     line-height: 1.5;
                 }

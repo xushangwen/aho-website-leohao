@@ -205,7 +205,7 @@ footer {
             flex-shrink: 0;
 
             .icon {
-                font-size: 36px;
+                font-size: fluid(36px, 24px);
                 color: var(--main-orange);
                 @include mo {
                     font-size: 28px;
@@ -218,7 +218,7 @@ footer {
                 font-family: -apple-system, SpaceGrotesk, HarmonyOS_Sans;
                 a { color: inherit; }
                 &.phone {
-                    font-size: 20px;
+                    font-size: fluid(20px);
                     font-weight: 700;
                     @include lap {
                         font-size: 18px;
@@ -309,7 +309,7 @@ footer {
                     justify-content: center;
                 }
                 .icon {
-                    font-size: 24px;
+                    font-size: fluid(24px);
                     color: var(--main-orange);
                     margin-right: 8px;
                     flex-shrink: 0;
@@ -384,7 +384,7 @@ footer {
                 }
             }
             .icon {
-                font-size: 22px;
+                font-size: fluid(22px);
                 color: var(--main-orange);
             }
         }

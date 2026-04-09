@@ -62,7 +62,7 @@ const breadcrumb = ref([
     }
     .title {
         color: var(--main-black, #000);
-        font-size: 28px;
+        font-size: fluid(28px, 20px);
         font-style: normal;
         font-weight: 700;
         line-height: 130%; /* 36.4px */
@@ -71,7 +71,7 @@ const breadcrumb = ref([
 }
 .t1 {
     color: var(--main-orange, #FF6400);
-    font-size: 20px;
+    font-size: fluid(20px);
     font-style: normal;
     font-weight: 700;
     line-height: normal;
