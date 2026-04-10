@@ -447,10 +447,10 @@ function projectNE(lng, lat) {
     }
 }
 function getMarkerSize(type) {
-    // 移动端标记点放大 3 倍以便触摸操作
+    // 移动端标记点适当放大以便触摸操作，与地图同比缩放
     const mobile = windowWidth.value <= 992
     const base = type === 'rd' ? 5 : type === 'business' ? 4.5 : 4
-    return mobile ? base * 3 : base
+    return mobile ? base * 1.5 : base
 }
 
 const allLocations = [
@@ -1721,7 +1721,8 @@ onUnmounted(() => {
         height: auto;
         min-height: 70vh;
         .s5-header {
-            padding-top: calc(var(--HEADER_HEIGHT_MOB) + 24px);
+            padding-top: calc(var(--HEADER_HEIGHT_MOB) + 8px);
+            padding-bottom: 8px;
             .s5-title { font-size: 24px; }
             .s5-desc {
                 font-size: 16px;
@@ -1733,13 +1734,13 @@ onUnmounted(() => {
             overflow-x: scroll;
             overflow-y: hidden;
             -webkit-overflow-scrolling: touch;
-            height: 60vw;
-            min-height: 240px;
+            height: 72vw;
+            min-height: 280px;
             flex: none;
 
             .s5-map-zoom {
                 position: relative;
-                width: 240%;
+                width: 280%;
                 aspect-ratio: 800 / 450;
                 height: auto;
                 top: 50%;
@@ -1765,16 +1766,31 @@ onUnmounted(() => {
             position: relative;
             left: 0;
             transform: none;
-            padding-bottom: 24px;
+            width: 100%;
+            padding: 12px 16px 28px;
+        }
+        // 筛选按钮：2列网格（全部+全球客户/业务中心+研发基地）
+        .s5-filters {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .s5-stats {
+            gap: 8px;
+            padding: 0;
         }
         .s5-stat {
-            padding: 10px 16px;
+            flex: 1;
+            min-width: 0;
+            padding: 10px 12px;
         }
         .s5-stat-num {
-            font-size: 28px;
+            font-size: 26px;
         }
         .s5-stat-txt {
-            font-size: 13px;
+            font-size: 11px;
+            text-wrap: balance;
+            line-height: 1.4;
         }
         .s5-fbtn {
             padding: 8px 12px;
