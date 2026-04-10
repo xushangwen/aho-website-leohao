@@ -12,7 +12,7 @@
             <div
                 class="cont"
             >
-                <img src="/images/about/culture/s1-content.jpg" alt="">
+                <img :src="philosophyImage" :alt="$t('culture.coverTitle')">
             </div>
         </section>
         <section class="s2">
@@ -40,7 +40,12 @@
 </template>
 
 <script setup lang="ts">
-const { t } = useI18n()
+const { t, locale } = useI18n()
+const philosophyImage = computed(() =>
+    locale.value === 'en'
+        ? '/images/about/culture/s1-content-en.jpg'
+        : '/images/about/culture/s1-content.jpg'
+)
 const breadcrumb = computed(() => [
     { name: t('nav.about'), link: '/about' },
     { name: t('culture.coverTitle'), link: '' }

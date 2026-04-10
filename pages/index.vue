@@ -573,7 +573,7 @@ onMounted(async () => {
     }
     initS5Observer()
     scTimer = setInterval(() => {
-        currentScIndex.value = (currentScIndex.value + 1) % scItems.length
+        currentScIndex.value = (currentScIndex.value + 1) % scItems.value.length
     }, 1800)
 })
 onUnmounted(() => {
@@ -585,6 +585,22 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
+/* sc-slide Transition：<Transition> 动态 class 不能在 scoped 中嵌套使用，放在全局块确保正确应用 */
+.sc-slide-enter-active {
+    transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1), transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sc-slide-leave-active {
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sc-slide-enter-from {
+    opacity: 0;
+    transform: translateY(10px);
+}
+.sc-slide-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
 .swiper-horizontal > .swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal {
     width: calc(100% - #{tovw(80px)} * 2);
     left: tovw(80px);
@@ -1144,20 +1160,6 @@ onUnmounted(() => {
             font-weight: 700;
             color: var(--main-blue);
         }
-    }
-    .sc-slide-enter-active {
-        transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1), transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .sc-slide-leave-active {
-        transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .sc-slide-enter-from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    .sc-slide-leave-to {
-        opacity: 0;
-        transform: translateY(-10px);
     }
     // laptop (≤1400px)
     @include lap {
