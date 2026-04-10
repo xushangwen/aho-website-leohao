@@ -1729,8 +1729,8 @@ onUnmounted(() => {
             overflow-x: scroll;
             overflow-y: hidden;
             -webkit-overflow-scrolling: touch;
-            height: 90vw;
-            min-height: 320px;
+            height: 110vw;
+            min-height: 360px;
             flex: none;
 
             .s5-map-zoom {
@@ -1764,13 +1764,15 @@ onUnmounted(() => {
             width: 100%;
             padding: 12px 16px 28px;
         }
-        // 全部按钮独占一行，其余三个筛选按钮一行（3列）
+        // 全部按钮独占一行（fit-content居中），其余三个筛选按钮一行（3列）
         .s5-filters {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 8px;
             .s5-fbtn:first-child {
-                grid-column: 1 / -1;  // "全部" 跨满整行
+                grid-column: 1 / -1;
+                width: fit-content;
+                margin: 0 auto;
             }
         }
         .s5-stats {

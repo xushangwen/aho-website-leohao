@@ -140,7 +140,9 @@
                             class="icon ri-arrow-down-s-line"></i></NuxtLink>
                         <div class="list" v-if="item.children.length > 0">
                             <NuxtLink class="item" v-for="(subItem, subIndex) in item.children"
-                                      :key="`sub-menu-item-${subIndex}`" :to="localePath(subItem.link)">{{ locale === 'en' ? (subItem.en || subItem.cn) : subItem.cn }}</NuxtLink>
+                                      :key="`sub-menu-item-${subIndex}`"
+                                      :to="localePath(subItem.link)"
+                                      @click="closeSubMenu()">{{ locale === 'en' ? (subItem.en || subItem.cn) : subItem.cn }}</NuxtLink>
                         </div>
                     </div>
                     <div class="lang">
@@ -969,7 +971,6 @@ nav.mobi {
         .lang {
             margin-top: 32px;
             padding-top: 24px;
-            border-top: 0.5px solid #E8E8E8;
             @include flex-r();
             justify-content: space-between;
             align-items: center;
