@@ -1729,8 +1729,8 @@ onUnmounted(() => {
             overflow-x: scroll;
             overflow-y: hidden;
             -webkit-overflow-scrolling: touch;
-            height: 110vw;
-            min-height: 360px;
+            height: 120vw;
+            min-height: 380px;
             flex: none;
 
             .s5-map-zoom {
@@ -1738,8 +1738,7 @@ onUnmounted(() => {
                 width: 280%;
                 aspect-ratio: 800 / 450;
                 height: auto;
-                top: 50%;
-                transform: translateY(-50%);
+                // 不做垂直居中，地图从顶部对齐，避免 overflow-y:hidden 裁切顶部
                 display: block;
             }
             .s5-map-img {
