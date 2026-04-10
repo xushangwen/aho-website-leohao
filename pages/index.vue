@@ -1729,16 +1729,16 @@ onUnmounted(() => {
             overflow-x: scroll;
             overflow-y: hidden;
             -webkit-overflow-scrolling: touch;
-            height: 120vw;
-            min-height: 380px;
             flex: none;
+            // 高度由内容驱动，避免固定 vw 值与 aspect-ratio 产生裁切
 
             .s5-map-zoom {
                 position: relative;
-                width: 280%;
+                // min(280% viewport, 800px SVG原始宽度)：
+                // 手机端 ≈ 280% 缩放（可横划），tablet 宽时不超 800px 避免过高
+                width: min(280%, 800px);
                 aspect-ratio: 800 / 450;
-                height: auto;
-                // 不做垂直居中，地图从顶部对齐，避免 overflow-y:hidden 裁切顶部
+                height: auto;   // 高度 = width × 450/800，完全由宽度推导，不裁切
                 display: block;
             }
             .s5-map-img {
