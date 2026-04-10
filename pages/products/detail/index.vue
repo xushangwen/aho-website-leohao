@@ -483,10 +483,7 @@
 }
 .s1,
 .s2 {
-    padding: fluid(80px) 0;
-    @include lap {
-        padding: tovw(80px) 0;
-    }
+    padding: fluid(80px, 40px) 0;
     .wrap {
         & > .la {
             color: var(--main-black, #0F171F);
@@ -663,10 +660,7 @@
 
 .s3 {
     position: relative;
-    padding: fluid(88px) 0;
-    @include lap {
-        padding: tovw(88px) 0;
-    }
+    padding: fluid(88px, 40px) 0;
     .bg {
         position: absolute;
         inset: 0;
@@ -679,10 +673,7 @@
     .wrap {
         @include flex-c();
         justify-content: center;
-        gap: fluid(48px);
-        @include lap {
-            gap: tovw(48px);
-        }
+        gap: fluid(48px, 20px);
         .info {
             color: white;
             .t1 {

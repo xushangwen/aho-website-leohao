@@ -62,6 +62,18 @@ const { locale } = useI18n()
             height: auto;
             min-height: 140px;
             padding: 16px 12px 16px 16px;
+            border-left: 0.5px solid var(--main-light-gray);
+        }
+
+        &:nth-child(odd) {
+            @include mo {
+                border-right: 0.5px solid var(--main-light-gray);
+            }
+        }
+        &:nth-child(3), &:nth-child(4) {
+            @include mo {
+                margin-top: 24px;
+            }
         }
 
         .label {
@@ -81,7 +93,9 @@ const { locale } = useI18n()
             align-items: flex-end;
             color: var(--main-blue);
             @include lap { font-size: 48px; }
-            @include mo { font-size: 36px; }
+            @include mo {
+                font-size: clamp(24px, 7vw, 36px);
+            }
         }
         .abst {
             font-size: 14px;
@@ -105,13 +119,26 @@ const { locale } = useI18n()
             position: absolute;
             left: -1px;
             top: 37px;
+            @include mo {
+                left: -1px;
+                top: 24px;
+                height: 60px;
+            }
         }
         .icon {
             position: absolute;
             left: 20px;
             bottom: -2px;
             @include mo {
-                display: none;
+                left: auto;
+                right: 8px;
+                bottom: 0;
+                opacity: 0.15;
+                transform: scale(1);
+                transform-origin: bottom right;
+            }
+            :deep(svg path) {
+                fill: var(--main-blue);
             }
         }
     }

@@ -62,7 +62,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .product-list {
-    padding: tovw(100px) 0;
+    padding: fluid(100px, 64px) 0;
     .top {
         @include flex-r();
         justify-content: space-between;
@@ -102,7 +102,7 @@ onMounted(() => {
 .product-list {
     .list {
         --bs-gutter-x: 40px;
-        margin-top: tovw(50px);
+        margin-top: fluid(50px, 32px);
         margin-right: calc(-1* var(--bs-gutter-x));
         margin-left: calc(-1* var(--bs-gutter-x));
         @include mo {

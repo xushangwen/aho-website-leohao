@@ -339,7 +339,7 @@ const postList = computed(() => {
                 margin-top: 12px;
             }
             ._btn {
-                margin-top: tovw(60px);
+                margin-top: fluid(60px, 24px);
 
             }
         }

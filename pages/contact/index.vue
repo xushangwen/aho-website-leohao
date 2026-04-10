@@ -132,13 +132,10 @@ const contactInfo = computed(() => [
 <style scoped lang="scss">
 /* ===== Section 1: 制造基地 ===== */
 .s1 {
-    padding: tovw(100px) 0 tovw(80px);
-    @include mo {
-        padding: 40px 0 32px;
-    }
+    padding: fluid(100px, 40px) 0 fluid(80px, 32px);
 
     .section-hd {
-        margin-bottom: tovw(48px);
+        margin-bottom: fluid(48px, 20px);
         text-align: center;
         .cn {
             font-size: fluid(38px);
@@ -151,13 +148,12 @@ const contactInfo = computed(() => [
     .factory-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: tovw(32px);
+        gap: fluid(32px, 20px);
         @include lap {
             grid-template-columns: repeat(2, 1fr);
         }
         @include mo {
             grid-template-columns: 1fr;
-            gap: 20px;
         }
     }
 
@@ -176,7 +172,7 @@ const contactInfo = computed(() => [
 
         .factory-img {
             width: 100%;
-            height: tovw(220px);
+            height: fluid(220px, 160px);
             overflow: hidden;
             position: relative;
             img {
@@ -222,7 +218,7 @@ const contactInfo = computed(() => [
             }
 
             .factory-name {
-                font-size: tovw(20px);
+                font-size: fluid(20px, 16px);
                 font-weight: 700;
                 color: var(--main-blue);
                 line-height: 1.3;
@@ -398,10 +394,10 @@ const contactInfo = computed(() => [
         .section-name { font-size: 26px; }
     }
     .pos-list {
-        margin-top: tovw(60px);
+        margin-top: fluid(60px, 32px);
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        grid-column-gap: tovw(60px);
+        grid-column-gap: fluid(60px, 24px);
         grid-row-gap: 0;
         @include mo {
             grid-template-columns: 1fr;

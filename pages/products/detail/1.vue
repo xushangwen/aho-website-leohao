@@ -989,7 +989,7 @@
                 @include flex-c();
                 justify-content: flex-start;
                 align-items: center;
-                gap: tovw(24px);
+                gap: fluid(24px, 12px);
                 padding: fluid(60px) 32px 0;
                 cursor: pointer;
                 transition: all .3s;

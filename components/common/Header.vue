@@ -94,11 +94,11 @@
                 </div>
             </div>
         </nav>
-        <nav class="mobi">
+        <nav :class="['mobi', { transparent: transparentStatus && !keepSolid }]">
             <div class="menu-container">
                 <div class="wrap">
                     <NuxtLink class="logo" :to="`/`">
-                        <svg style="width: 150px;" width="266" height="34" viewBox="0 0 266 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg style="width: 140px;" width="266" height="34" viewBox="0 0 266 34" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_2107_42513)">
                                 <path d="M219.843 30.4943C219.608 30.4943 219.418 30.3436 219.418 30.1531V27.247H231.317V10.9487H219.418V8.27295H215.528V10.9487H203.633V27.2514H215.528V31.2208C215.528 32.5277 216.844 33.5865 218.47 33.5865H233.306V30.4987H219.839L219.843 30.4943ZM219.422 13.4251H227.432V17.6957H219.422V13.4251ZM219.422 20.1766H227.432V24.7662H219.422V20.1766ZM215.533 24.7706H207.523V20.181H215.533V24.7706ZM215.533 17.7002H207.523V13.4296H215.533V17.7002Z" fill="#3C3C3C"/>
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M181.926 33.582H199.637V30.8176L195.881 19.2507H192.155L195.912 30.8176H185.651L192.979 8.27295H189.253L181.926 30.8176V33.582ZM169.366 11.4227H177.19V15.7687H169.366V24.5092H177.19V28.8241C177.19 30.4056 173.154 30.4367 172.118 30.4367V33.9807C175.555 33.9807 180.734 33.3162 180.734 28.8285V22.0328H172.911V18.2495H180.734V8.94632H169.366V11.4272V11.4227Z" fill="#3C3C3C"/>
@@ -114,13 +114,18 @@
                                 </clipPath>
                             </defs>
                         </svg>
+                        <div class="m-divider"></div>
+                        <div class="m-stock-code">
+                            <div class="code">605058</div>
+                            <div class="label">{{ locale === 'en' ? 'Stock Code' : '股票代码' }}</div>
+                        </div>
                     </NuxtLink>
                     <div class="tools">
-                        <div class="btn" @click="toggleSubMenu()">
-                            <i class="icon ri-menu-fill"></i>
-                        </div>
-                        <div class="btn">
+                        <div class="btn search">
                             <i class="icon ri-search-2-line"></i>
+                        </div>
+                        <div class="btn" @click="toggleSubMenu()">
+                            <i :class="['icon', statusSubMenu ? 'ri-close-line' : 'ri-menu-fill']"></i>
                         </div>
                     </div>
                 </div>
@@ -192,6 +197,8 @@ const scrollTopHandler = throttle((scrollTop) => {
     }
     // 鼠标悬停在导航上时不干预，避免覆盖 hover 状态
     if (isNavHovered.value) return
+    // 抽屉打开时保持不透明
+    if (statusSubMenu.value) return
     // 滚动距离超过页面高度则取消透明
     transparentStatus.value = !(scrollTop > 0)
 }, 200)
@@ -257,14 +264,36 @@ function activeNav(index) {
 }
 /***PC部分结束***/
 
-/***mobile部分结束***/
+/***mobile部分开始***/
 const indexMenu = ref(-1)
 const statusSubMenu = ref(false)
 function closeSubMenu() {
     statusSubMenu.value = false
+    if (process.client) {
+        document.body.style.overflow = ''
+        // 恢复透明状态（如果页面在顶部）
+        if (window.scrollY <= 0 && !keepSolid) {
+            transparentStatus.value = true
+        }
+    }
 }
-function toggleSubMenuItem() {
-
+function toggleSubMenu() {
+    statusSubMenu.value = !statusSubMenu.value
+    if (process.client) {
+        document.body.style.overflow = statusSubMenu.value ? 'hidden' : ''
+        if (statusSubMenu.value) {
+            // 打开抽屉：强制白底
+            transparentStatus.value = false
+        } else {
+            // 关闭抽屉：根据滚动位置恢复
+            if (window.scrollY <= 0 && !keepSolid) {
+                transparentStatus.value = true
+            }
+        }
+    }
+}
+function toggleSubMenuItem(index) {
+    indexMenu.value = indexMenu.value === index ? -1 : index
 }
 /***mobile部分结束***/
 
@@ -343,17 +372,12 @@ nav.norm {
     .top-menu {
         @include flex-r(nowrap);
         align-items: center;
-        gap: tovw(16px);
+        gap: fluid(12px, 4px);
         height: 100%;
-        // 1400px 以下收紧间距
-        @include lap {
-            gap: 4px;
-        }
         .item {
             height: 100%;
-            padding: 0 tovw(10px);
+            padding: 0 8px;
             @include lap {
-                padding: 0 8px;
                 font-size: 15px;
             }
             @include flex-r(nowrap);
@@ -368,6 +392,7 @@ nav.norm {
             transition: all .3s;
             .cn {
                 transition: color .3s;
+                white-space: nowrap;
                 position: relative;
                 // 预留粗体宽度，防止 font-weight 切换时引起布局移位
                 &::after {
@@ -587,9 +612,9 @@ nav.norm {
             justify-content: space-between;
             align-items: flex-start;
 
-            // laptop (≤1400px)：与 header-wrap 边距保持对齐
+            // ≤1439px：收窄子菜单面板边距
             @include lap {
-                margin: 0 #{tovw(160px)};
+                margin: 0 fluid(120px, 60px);
                 .left .en {
                     font-size: 28px;
                 }
@@ -722,11 +747,32 @@ nav.mobi {
     background-color: white;
     position: fixed;
     top: -100px;
-    transition: all .3s;
+    transition: background-color .3s, top .3s;
 
     // 1024px 以下显示移动导航
     @include tab {
         top: 0;
+    }
+
+    // 透明态（首页顶部）— 所有子选择器嵌套在 .menu-container 内，确保特异性高于默认规则
+    &.transparent {
+        background-color: transparent;
+        .menu-container {
+            background-color: transparent;
+            border-bottom-color: rgba(255, 255, 255, 0.25);
+            .m-divider {
+                background-color: rgba(255, 255, 255, 0.4);
+            }
+            .m-stock-code {
+                color: rgba(255, 255, 255, 0.9);
+            }
+            .logo svg path {
+                fill: white;
+            }
+            .tools .btn .icon {
+                color: white;
+            }
+        }
     }
 
     .menu-container {
@@ -734,7 +780,8 @@ nav.mobi {
         z-index: 999;
         height: inherit;
         background-color: white;
-        border-top: var(--BASE_COLOR_BLUE) 4px solid;
+        border-bottom: 0.5px solid var(--main-light-gray, #DCDCDC);
+        transition: background-color .3s, border-bottom-color .3s;
 
         >.wrap {
             height: inherit;
@@ -743,22 +790,61 @@ nav.mobi {
             align-items: center;
         }
 
+        .logo {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .m-divider {
+            width: 1px;
+            height: 20px;
+            background-color: var(--main-light-gray, #DCDCDC);
+            transition: background-color .3s;
+        }
+
+        .m-stock-code {
+            display: flex;
+            flex-flow: column nowrap;
+            color: var(--main-black, #000);
+            transition: color .3s;
+            .code {
+                font-size: 12px;
+                font-weight: 700;
+                line-height: 130%;
+            }
+            .label {
+                font-size: 10px;
+                font-weight: 400;
+                line-height: 130%;
+            }
+        }
+
         .tools {
             @include flex-r();
             justify-content: space-between;
             align-items: center;
-            gap: 16px;
+            gap: 8px;
 
-            .btn {
-                width: 24px;
-                height: 24px;
-                @include flex-c();
-                justify-content: center;
-                .icon {
-                    font-size: fluid(24px);
-                }
+            // 补偿 .btn 内部 padding，使汉堡包 icon 与 logo 左侧对齐
+            @include tab {
+                margin-right: -6px;
             }
 
+            .btn {
+                width: 36px;
+                height: 36px;
+                @include flex-c();
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                .icon {
+                    font-size: 24px;
+                    line-height: 1;
+                    transition: color .3s;
+                }
+            }
         }
     }
 
@@ -780,101 +866,101 @@ nav.mobi {
 
     .sub-menu-container {
         position: fixed;
-        top: -110vh;
-        left: 0;
-        width: 100%;
+        right: -100%;
+        top: 0;
+        width: 85%;
+        max-width: 380px;
         z-index: 199;
-        background-color: #F8F8F8;
-        height: auto;
+        background-color: #fff;
+        height: 100vh;
+        height: 100dvh;
         opacity: 0;
-        overflow: hidden;
-        transition: all .3s;
-        min-height: 40vh;
-        max-height: 100vh;
-        padding: 32px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        transition: right .35s cubic-bezier(.4, 0, .2, 1), opacity .3s;
+        padding: calc(var(--HEADER_HEIGHT_MOB) + 32px) 32px 40px;
+        box-sizing: border-box;
+        box-shadow: -8px 0 32px rgba(0, 0, 0, .08);
+
+        // 手机端侧边栏全宽
+        @include mo {
+            width: 100%;
+            max-width: none;
+            border-radius: 0;
+        }
 
         &.active {
             opacity: 1;
-            top: var(--HEADER_HEIGHT_MOB);
+            right: 0;
         }
 
         .sub-menu {
             height: auto;
-            margin-bottom: 12px;
+            margin-bottom: 0;
+            border-bottom: 0.5px solid #E8E8E8;
 
             .name {
                 width: 100%;
-                height: 46px;
+                height: 52px;
                 position: relative;
-                font-size: 18px;
-                padding: 0 4px;
+                font-size: 16px;
+                font-weight: 500;
+                letter-spacing: 0.02em;
+                padding: 0;
                 @include flex-r();
                 align-items: center;
-                color: #000000;
-                transition: all .3s;
-
-                &::after {
-                    content: '';
-                    display: block;
-                    height: 2px;
-                    width: 100%;
-                    background-color: var(--main-blue);
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    transform: scaleX(0);
-                    transition: all .3s;
-                }
+                justify-content: space-between;
+                color: #1a1a1a;
+                transition: color .3s;
 
                 .icon {
-                    font-size: fluid(24px);
-                    color: var(--main-blue);
-                    margin-left: 6px;
+                    font-size: 18px;
+                    color: #999;
                     transition: all .3s;
                 }
             }
 
             .list {
                 margin-top: 0;
-                transition: all .3s;
+                padding-bottom: 0;
+                transition: padding .3s;
 
                 .item {
                     display: block;
                     height: 0;
                     width: 100%;
-                    padding: 0;
-                    font-size: 16px;
-                    color: #8F8F8F;
-                    transition: height .3s, padding .3s;
+                    padding: 0 0 0 12px;
+                    font-size: 14px;
+                    color: #666;
+                    transition: height .3s, padding .25s, color .3s;
                     overflow: hidden;
-                    border-bottom: var(--main-gray) 0px solid;
                     box-sizing: border-box;
+
+                    &:hover, &:active {
+                        color: var(--main-blue);
+                    }
                 }
             }
 
             &.active {
                 .name {
                     color: var(--main-blue);
-                    font-weight: bold;
-                    border-bottom-color: var(--main-blue);
-
-                    &::after {
-                        transform: scaleX(1);
-                    }
+                    font-weight: 600;
 
                     .icon {
+                        color: var(--main-blue);
                         transform: rotate(180deg);
                     }
                 }
 
                 .list {
-                    margin-top: 6px;
+                    padding-bottom: 12px;
 
                     .item {
-                        height: 31px;
-                        padding: 6px;
-                        border-bottom-width: 1px;
-                        transition: border .3s .1s;
+                        height: 36px;
+                        line-height: 36px;
+                        padding-top: 0;
+                        padding-bottom: 0;
                     }
                 }
             }
@@ -882,25 +968,31 @@ nav.mobi {
 
         .lang {
             margin-top: 32px;
+            padding-top: 24px;
+            border-top: 0.5px solid #E8E8E8;
             @include flex-r();
             justify-content: space-between;
             align-items: center;
 
             .icon {
-                font-size: fluid(24px);
+                font-size: 22px;
+                color: #666;
             }
 
             .switcher {
+                display: flex;
+                gap: 16px;
                 .link {
-                    font-size: 18px;
-                    color: var(--main-black);
+                    font-size: 15px;
+                    color: #999;
+                    letter-spacing: 0.02em;
+                    transition: color .3s;
 
                     &.active {
                         color: var(--main-blue);
-                        font-weight: bold;
+                        font-weight: 600;
                     }
                 }
-
             }
         }
     }

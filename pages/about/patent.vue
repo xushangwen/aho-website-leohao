@@ -368,7 +368,7 @@ function slideNext() {
                     font-weight: bolder;
                 }
                 .label {
-                    margin-top: tovw(65px);
+                    margin-top: fluid(65px, 24px);
                     width: 140px;
                     padding: 6px 0;
                     border-radius: 40px;
@@ -536,7 +536,7 @@ function slideNext() {
     }
     .tool {
         width: 100%;
-        margin-top: tovw(120px);
+        margin-top: fluid(120px, 48px);
         text-align: center;
     }
     .loading,

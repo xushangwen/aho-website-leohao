@@ -218,11 +218,8 @@ footer {
                 font-family: -apple-system, SpaceGrotesk, HarmonyOS_Sans;
                 a { color: inherit; }
                 &.phone {
-                    font-size: fluid(20px);
+                    font-size: fluid(20px, 16px);
                     font-weight: 700;
-                    @include lap {
-                        font-size: 18px;
-                    }
                     @include mo {
                         font-size: 16px;
                     }
@@ -251,10 +248,10 @@ footer {
                 gap: 20px 24px;
             }
             @include mo {
-                // 移动端改为两列展开，节省空间
+                // 移动端改为三列，更紧凑
                 display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px 16px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px 12px;
                 max-width: none;
                 width: 100%;
             }
@@ -270,8 +267,8 @@ footer {
                     line-height: 1;
                     margin-bottom: 8px;
                     @include mo {
-                        font-size: 13px;
-                        margin-bottom: 10px;
+                        font-size: 12px;
+                        margin-bottom: 6px;
                     }
                 }
                 .item {
@@ -284,7 +281,7 @@ footer {
                     }
                     @include mo {
                         font-size: 13px;
-                        margin-top: 7px;
+                        margin-top: 6px;
                     }
                 }
             }

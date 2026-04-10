@@ -197,7 +197,7 @@ onMounted(() => {
             width: 92%;
             height: fluid(610px);
             max-width: min(1150px, 90vw);
-            margin: tovw(120px) auto 0;
+            margin: fluid(120px, 40px) auto 0;
             @include mo {
                 height: auto;
                 overflow-x: auto;
@@ -323,8 +323,8 @@ onMounted(() => {
         }
         .prev,
         .next {
-            width: tovw(100px);
-            height: tovw(100px);
+            width: fluid(100px, 56px);
+            height: fluid(100px, 56px);
             border-radius: 100px;
             background-color: #ffffff;
             display: flex;

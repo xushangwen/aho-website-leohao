@@ -60,10 +60,7 @@ function getCategoryName(type) {
 ._news-list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 60px;
-    @include lap {
-        gap: tovw(32px);
-    }
+    gap: fluid(60px, 16px);
     @include mo {
         grid-template-columns: 1fr;
         gap: 24px;

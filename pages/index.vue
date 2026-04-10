@@ -21,15 +21,19 @@
                     v-for="(item, index) in bannerSlides"
                     :key="index"
                 >
-                    <video class="cover" muted loop autoplay playsinline v-if="item.cover[0] && videoTester(item.cover[0])">
-                        <source
-                            v-for="(videoItem, videoIndex) in item.cover"
-                            :key="`videoIndex${videoIndex}`"
-                            :src="videoItem"
-                        ></source>
-                    </video>
-                    <div class="cover" :style="{backgroundImage: `url(${item.cover[0]})`}" v-else></div>
-                    <div class="cover-m" :style="{backgroundImage: `url(${item.cover[1]})`}" v-else></div>
+                    <template v-if="item.cover[0] && videoTester(item.cover[0])">
+                        <video class="cover" muted loop autoplay playsinline>
+                            <source
+                                v-for="(videoItem, videoIndex) in item.cover"
+                                :key="`videoIndex${videoIndex}`"
+                                :src="videoItem"
+                            ></source>
+                        </video>
+                    </template>
+                    <template v-else>
+                        <div class="cover" :style="{backgroundImage: `url(${item.cover[0]})`}"></div>
+                        <div class="cover-m" :style="{backgroundImage: `url(${item.cover[1]})`}"></div>
+                    </template>
                     <div class="mask">
                         <div class="rect-1"></div>
                         <div class="rect-2"></div>
@@ -180,8 +184,8 @@
                     preserveAspectRatio="xMidYMid meet"
                     @mouseleave="onMarkerLeave"
                 >
-                    <!-- 全区域事件捕获层 -->
-                    <rect x="0" y="0" width="800" height="450" fill="transparent" style="pointer-events:all" />
+                    <!-- 全区域事件捕获层，点击空白处清除tooltip -->
+                    <rect x="0" y="0" width="800" height="450" fill="transparent" style="pointer-events:all" @click="clearMapSelection" />
                     <template v-for="(marker, idx) in filteredMarkers" :key="marker.name + marker.type">
                         <g
                             class="s5-marker-g"
@@ -189,6 +193,13 @@
                             @mouseleave="onMarkerLeave"
                             @click.stop="onMarkerClick(marker)"
                         >
+                            <!-- 移动端扩大触摸响应区域 -->
+                            <circle
+                                :cx="marker.x" :cy="marker.y"
+                                r="14"
+                                fill="transparent"
+                                style="cursor:pointer"
+                            />
                             <!-- 动态脉冲光晕（空心描边，CSS r动画） — 仅 active 时显示 -->
                             <circle
                                 v-if="isMarkerActive(marker)"
@@ -234,6 +245,7 @@
                 <div
                     v-if="hoveredMarker"
                     class="s5-tooltip-div"
+                    :class="{ 'fixed-mobile': windowWidth <= 1024 }"
                     :style="{ left: tooltipScreenPos.x + 'px', top: tooltipScreenPos.y + 'px' }"
                 >{{ hoveredMarker.name }}</div>
             </div>
@@ -348,8 +360,22 @@ const elApplication = ref(null)
 const elS3 = ref(null)
 let headerHeight, s3Height, itemLength, lastChildHeight, step
 
+// 初始化前必须先重置所有 class，确保 getBoundingClientRect 读到正确的自然高度
+function initApplicationItem() {
+    elApplication.value?.forEach(item => {
+        item.classList.remove('fixed-sticky', 'absolute-sticky')
+    })
+    // 使用正确的 header 高度（tab/mo 用移动导航高度 70px）
+    headerHeight = windowWidth.value <= 1024 ? 70 : 72
+    const { height } = elS3.value.getBoundingClientRect()
+    itemLength = elApplication.value.length
+    lastChildHeight = elApplication.value[itemLength - 1].getBoundingClientRect().height
+    step = (windowHeight.value - headerHeight - lastChildHeight) / (itemLength - 1)
+    elS3.value.style.height = `${height}px`
+    updateApplicationItem()
+}
+
 function updateApplicationItem() {
-    if (windowWidth.value <= 992) return
     const { top: s3Top, bottom: s3Bottom } = elS3.value.getBoundingClientRect()
     const delta = headerHeight - s3Top
     if (s3Bottom < windowHeight.value) {
@@ -375,31 +401,9 @@ function updateApplicationItem() {
     }
 }
 
+// 窗口尺寸变化时重新初始化（防止高度/间距错位）
 watch(windowHeight, initApplicationItem)
 watch(windowWidth, initApplicationItem)
-
-// 初始化前必须先重置所有 class，确保 getBoundingClientRect 读到正确的自然高度
-function initApplicationItem() {
-    // 移动端禁用 sticky 滚动效果
-    if (windowWidth.value <= 992) {
-        elS3.value.style.height = ''
-        elApplication.value?.forEach(item => {
-            item.classList.remove('fixed-sticky', 'absolute-sticky')
-        })
-        return
-    }
-    headerHeight = 72
-    elApplication.value?.forEach(item => {
-        item.classList.remove('fixed-sticky', 'absolute-sticky')
-    })
-    const { height } = elS3.value.getBoundingClientRect()
-    itemLength = elApplication.value.length
-    lastChildHeight = elApplication.value[itemLength - 1].getBoundingClientRect().height
-    step = (windowHeight.value - headerHeight - lastChildHeight) / (itemLength - 1)
-    elS3.value.style.height = `${height}px`
-    // 初始化后立即同步当前滚动位置的状态（修复刷新在 s4/s5 时错乱的根因）
-    updateApplicationItem()
-}
 
 /***application end*****/
 
@@ -443,9 +447,10 @@ function projectNE(lng, lat) {
     }
 }
 function getMarkerSize(type) {
-    if (type === 'rd') return 5
-    if (type === 'business') return 4.5
-    return 4
+    // 移动端标记点放大 3 倍以便触摸操作
+    const mobile = windowWidth.value <= 992
+    const base = type === 'rd' ? 5 : type === 'business' ? 4.5 : 4
+    return mobile ? base * 3 : base
 }
 
 const allLocations = [
@@ -510,23 +515,37 @@ const clickedKey = ref(null)
 let markerClickTimer = null
 const tooltipScreenPos = ref({ x: 0, y: 0 })
 const MAP_ZOOM = 1.2  // 与 CSS .s5-map-zoom scale() 保持同步
+let wasJustClicked = false  // 防止 touch 点击后 mouseleave 立即清除 tooltip
 
 function computeTooltipPos(marker) {
     const mapWrap = elS5Section.value?.querySelector('.s5-map-wrap')
     if (!mapWrap) return
-    const { width, height } = mapWrap.getBoundingClientRect()
-    const scale = Math.min(width / 800, height / 450)
-    const ox = (width - 800 * scale) / 2
-    const oy = (height - 450 * scale) / 2
-    // 未缩放前标记在容器中的位置
-    const ux = ox + marker.x * scale
-    const uy = oy + marker.y * scale
-    // scale(MAP_ZOOM) transform-origin: center center 后的实际坐标
-    const cx = width / 2
-    const cy = height / 2
-    tooltipScreenPos.value = {
-        x: cx + (ux - cx) * MAP_ZOOM,
-        y: cy + (uy - cy) * MAP_ZOOM,
+
+    if (windowWidth.value <= 1024) {
+        // 移动端：使用 SVG 实际渲染位置 → 视口坐标（配合 position: fixed tooltip）
+        const svgEl = mapWrap.querySelector('.s5-markers-svg')
+        if (!svgEl) return
+        const svgRect = svgEl.getBoundingClientRect()
+        const scaleX = svgRect.width / 800
+        const scaleY = svgRect.height / 450
+        tooltipScreenPos.value = {
+            x: svgRect.left + marker.x * scaleX,
+            y: svgRect.top + marker.y * scaleY,
+        }
+    } else {
+        // 桌面端：原有逻辑（container 内绝对定位）
+        const { width, height } = mapWrap.getBoundingClientRect()
+        const scale = Math.min(width / 800, height / 450)
+        const ox = (width - 800 * scale) / 2
+        const oy = (height - 450 * scale) / 2
+        const ux = ox + marker.x * scale
+        const uy = oy + marker.y * scale
+        const cx = width / 2
+        const cy = height / 2
+        tooltipScreenPos.value = {
+            x: cx + (ux - cx) * MAP_ZOOM,
+            y: cy + (uy - cy) * MAP_ZOOM,
+        }
     }
 }
 
@@ -541,14 +560,31 @@ function onMarkerEnter(marker) {
 }
 let hoverClearTimer = null
 function onMarkerLeave() {
+    // touch 点击后 wasJustClicked 为 true，阻止 hover 事件立即清除 tooltip
+    if (wasJustClicked) return
     hoverClearTimer = setTimeout(() => { hoveredMarker.value = null }, 60)
 }
 function onMarkerClick(marker) {
     const key = `${marker.name}-${marker.type}`
+    // 标记点击，阻止 mouseleave 在 400ms 内清除 tooltip
+    wasJustClicked = true
+    clearTimeout(markerClickTimer)
+    markerClickTimer = setTimeout(() => { wasJustClicked = false }, 400)
+    // 再次点击同一标记 → 关闭 tooltip（toggle）
+    if (clickedKey.value === key) {
+        clickedKey.value = null
+        hoveredMarker.value = null
+        return
+    }
     clickedKey.value = key
     hoveredMarker.value = { key, ...marker }
-    clearTimeout(markerClickTimer)
-    markerClickTimer = setTimeout(() => { clickedKey.value = null }, 300)
+    computeTooltipPos(marker)
+}
+function clearMapSelection() {
+    if (!wasJustClicked) {
+        hoveredMarker.value = null
+        clickedKey.value = null
+    }
 }
 
 getRecommendNews()
@@ -575,6 +611,14 @@ onMounted(async () => {
     scTimer = setInterval(() => {
         currentScIndex.value = (currentScIndex.value + 1) % scItems.value.length
     }, 1800)
+
+    // 移动端/tablet 地图初始居中显示（避免停留在最左端）
+    if (windowWidth.value <= 1024) {
+        const mapWrap = document.querySelector('.s5-map-wrap')
+        if (mapWrap) {
+            mapWrap.scrollLeft = (mapWrap.scrollWidth - mapWrap.clientWidth) / 2
+        }
+    }
 })
 onUnmounted(() => {
     s3ScrollCleanup?.()
@@ -602,8 +646,8 @@ onUnmounted(() => {
 }
 
 .swiper-horizontal > .swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal {
-    width: calc(100% - #{tovw(80px)} * 2);
-    left: tovw(80px);
+    width: calc(100% - #{fluid(80px, 24px)} * 2);
+    left: fluid(80px, 24px);
     bottom: 65px;
     height: 6px;
     text-align: left;
@@ -687,6 +731,10 @@ onUnmounted(() => {
         &.absolute-sticky {
             .left {
                 border-right: 1px solid white !important;
+                // 移动端不加右侧白色 border（会产生多余白线）
+                @include mo {
+                    border-right: none !important;
+                }
                 .icon {
                     color: white !important;
                 }
@@ -699,6 +747,13 @@ onUnmounted(() => {
                 &::after {
                     background-color: white !important;
                 }
+            }
+            // 移动端竖线+圆点也变白
+            .wrap::before {
+                background-color: rgba(255, 255, 255, 0.5) !important;
+            }
+            .wrap::after {
+                background-color: white !important;
             }
         }
     }
@@ -714,10 +769,6 @@ onUnmounted(() => {
     width: 100%;
     height: 100vh;
     background: whitesmoke;
-    // tab (≤1024px)：移动导航出现，banner 需减去导航高度
-    @include tab {
-        height: calc(100vh - var(--HEADER_HEIGHT_MOB));
-    }
     .banner-prev, .banner-next {
         width: 72px;
         height: 72px;
@@ -747,16 +798,10 @@ onUnmounted(() => {
         }
     }
     .banner-prev {
-        left: 75px;
-        @include lap {
-            left: tovw(48px);
-        }
+        left: fluid(75px, 24px);
     }
     .banner-next {
-        right: 75px;
-        @include lap {
-            right: tovw(48px);
-        }
+        right: fluid(75px, 24px);
     }
     .swiper-slide {
         width: 100%;
@@ -774,7 +819,7 @@ onUnmounted(() => {
         }
         .cover {
             @include mo {
-                display: none;
+                display: block;
             }
         }
         .cover-m {
@@ -793,7 +838,7 @@ onUnmounted(() => {
             background-position: 0 0, 0 0;
             .rect-1 {
                 width: calc(100vw - 14vw);
-                height: calc(100vh - 170px);
+                height: calc(100% - 170px);
                 border-radius: 0 0 40px 0;
                 position: absolute;
                 left: 0;
@@ -826,10 +871,14 @@ onUnmounted(() => {
             @include lap {
                 width: calc(100% - 160px);
             }
+            // tablet 断点单独覆盖，避免内容离左侧过远
+            @include tab {
+                width: calc(100% - 60px);
+            }
             @include mo {
-                // 移动端文字下沉，与底部按钮/分页点留空间
-                justify-content: flex-end;
-                width: 100%;
+                // 移动端内容居中，保留 .wrap 的内边距
+                justify-content: center;
+                padding-top: var(--HEADER_HEIGHT_MOB);
             }
             .cont {
                 height: auto;
@@ -838,6 +887,9 @@ onUnmounted(() => {
                 transform: translateY(-20px);
                 opacity: 0;
                 transition: all .5s 1s ease-in-out;
+                @include mo {
+                    max-width: calc(100% - 40px);
+                }
                 .icon1,
                 .icon2 {
                     position: absolute;
@@ -861,17 +913,19 @@ onUnmounted(() => {
                     font-weight: 300;
                     margin-bottom: 16px;
                     @include mo {
-                        font-size: 26px;
-                        font-weight: bold;
+                        font-size: 24px;
+                        font-weight: 300;
                         margin-bottom: 10px;
+                        span { display: block; }
                     }
                 }
                 .t2,
                 .t2m {
-                    font-size: fluid(36px, 20px);
+                    font-size: fluid(36px, 24px);
                     font-weight: 700;
                     @include mo {
-                        font-size: 20px;
+                        font-size: 24px;
+                        span { display: block; }
                     }
                 }
                 .t2.en-hero {
@@ -886,7 +940,7 @@ onUnmounted(() => {
                 .prd-abst {
                     margin-top: 12px;
                     color: white;
-                    max-width: min(740px, 90vw);
+                    max-width: min(560px, 85vw);
                     span {
                         font-size: fluid(30px, 20px);
                         font-family: TTFors;
@@ -896,7 +950,9 @@ onUnmounted(() => {
                 @include mo {
                     padding: 0;
                     .prd-abst {
-                        margin-top: 0px;
+                        margin-top: 10px;
+                        max-width: 85vw;
+                        span { font-size: 15px; }
                     }
                 }
 
@@ -904,7 +960,7 @@ onUnmounted(() => {
             .more {
                 margin-top: fluid(30px, 20px);
                 @include mo {
-                    margin-bottom: 100px;
+                    margin-bottom: 60px;
                 }
                 cursor: pointer;
                 display: block;
@@ -938,14 +994,14 @@ onUnmounted(() => {
                             text-align: left;
                         }
                         .t1 {
-                            font-size: 26px;
+                            font-size: 22px;
                         }
                         .t2 {
                             display: none;
                         }
                         .t2m {
                             display: block;
-                            font-size: 20px;
+                            font-size: 22px;
                         }
                     }
                 }
@@ -953,7 +1009,7 @@ onUnmounted(() => {
             &.heavy {
                 .cont {
                     .t1 {
-                        font-size: fluid(60px, 39px);
+                        font-size: fluid(60px, 32px);
                     }
                 }
             }
@@ -995,15 +1051,15 @@ onUnmounted(() => {
         font-style: normal;
         font-weight: 700;
         line-height: 130%;
-        margin-top: tovw(48px);
+        margin-top: fluid(48px, 20px);
     }
     .abst {
         p {
-            margin-top: tovw(32px);
+            margin-top: fluid(32px, 16px);
         }
     }
     ._btn {
-        margin-top: tovw(48px);
+        margin-top: fluid(48px, 20px);
     }
     .right {
         position: absolute;
@@ -1020,7 +1076,7 @@ onUnmounted(() => {
             overflow: hidden;
         }
     }
-    // laptop (≤1400px)：左侧内容与右侧图片按比例压缩
+    // laptop (≤1439px)：左侧内容与右侧图片按比例压缩
     @include lap {
         .left {
             width: 48%;
@@ -1028,16 +1084,6 @@ onUnmounted(() => {
         .right {
             min-width: 0;
             width: 48%;
-        }
-        .t2 {
-            font-size: 24px;
-            margin-top: 32px;
-        }
-        .abst p {
-            margin-top: 20px;
-        }
-        ._btn {
-            margin-top: 28px;
         }
     }
     // mobile (≤992px)：图片沉底，文字全宽
@@ -1047,7 +1093,7 @@ onUnmounted(() => {
         }
         .left {
             width: 100%;
-            padding: 36px 0 240px;
+            padding: 36px 0 340px;
         }
         .t2 {
             font-size: 20px;
@@ -1055,6 +1101,7 @@ onUnmounted(() => {
         }
         .abst p {
             margin-top: 16px;
+            text-wrap: balance;
         }
         ._btn {
             margin-top: 28px;
@@ -1063,7 +1110,7 @@ onUnmounted(() => {
             position: absolute;
             bottom: 0;
             top: unset;
-            height: 220px;
+            height: 280px;
             width: 100%;
             min-width: 0;
             .bg {
@@ -1075,9 +1122,6 @@ onUnmounted(() => {
 
 .el-profile-data {
     margin: fluid(120px, 48px) 0 0;
-    @include lap {
-        margin: 80px 0 0;
-    }
     @include mo {
         margin: 48px 0 0;
     }
@@ -1085,7 +1129,7 @@ onUnmounted(() => {
 
 .s2 {
     margin-top: fluid(100px, 40px);
-    padding: tovw(120px) 0;
+    padding: fluid(120px, 40px) 0;
     position: relative;
     .bg {
         position: absolute;
@@ -1161,44 +1205,41 @@ onUnmounted(() => {
             color: var(--main-blue);
         }
     }
-    // laptop (≤1400px)
+    // laptop (≤1439px)
     @include lap {
-        margin-top: 64px;
-        padding: 80px 0;
         .sc {
-            .sc-for, .sc-provide { font-size: 26px; }
-            b { font-size: 28px; }
-            .sc-icon-wrap { width: 38px; height: 38px; font-size: 24px; }
+            .sc-icon-wrap { width: 38px; height: 38px; }
         }
     }
-    // mobile (≤992px)：纵向堆叠，"为 X 提供 Y" 各占一行
+    // mobile (≤992px)：紧凑布局，保持行内排列
     @include mo {
         margin-top: 40px;
         padding: 40px 0;
         .s-a { margin-top: 10px; }
         .sc {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 14px;
-            margin-top: 24px;
+            flex-direction: row;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
             .sc-for,
             .sc-provide {
-                font-size: 18px;
-                flex-shrink: unset;
+                font-size: 16px;
+                flex-shrink: 0;
             }
-            .sc-provide { margin-left: 0; }
+            .sc-provide { margin-left: 4px; }
             .sc-slot {
-                margin-left: 0;
+                margin-left: 6px;
                 min-width: unset;
             }
-            .sc-pair { gap: 8px; }
+            .sc-pair { gap: 6px; }
             .sc-icon-wrap {
-                width: 36px;
-                height: 36px;
-                font-size: 22px;
+                width: 30px;
+                height: 30px;
+                font-size: 18px;
                 border-radius: 8px;
             }
-            b { font-size: 22px; }
+            b { font-size: 18px; }
         }
     }
 }
@@ -1280,19 +1321,26 @@ onUnmounted(() => {
             height: auto;
             border-radius: 10px;
             overflow: hidden;
+            flex-shrink: 0;
             img {
                 height: auto;
                 width: 440px;
+                display: block;
             }
         }
         @for $i from 1 through 7 {
             $header_height: var(--HEADER_HEIGHT);
+            $header_height_mob: var(--HEADER_HEIGHT_MOB);
+            $mobileItemHeight: 340px;
             position: relative;
             &.fixed-sticky:nth-child(#{$i}) {
                 background-color: lighten(#1E3296, 5% * ($i - 1));
                 position: fixed;
                 left: 0;
                 top: calc(#{$header_height} + (#{$i} - 1) * (100vh - #{$header_height} - #{$itemHeight}) / 6);
+                @include tab {
+                    top: calc(#{$header_height_mob} + (#{$i} - 1) * (100vh - #{$header_height_mob} - #{$mobileItemHeight}) / 6);
+                }
             }
             &.absolute-sticky:nth-child(#{$i}) {
                 background-color: lighten(#1E3296, 5% * ($i - 1));
@@ -1300,6 +1348,9 @@ onUnmounted(() => {
                 left: 0;
                 top: unset;
                 bottom: calc((7 - #{$i}) * (100vh - #{$header_height} - #{$itemHeight}) / 6);
+                @include tab {
+                    bottom: calc((7 - #{$i}) * (100vh - #{$header_height_mob} - #{$mobileItemHeight}) / 6);
+                }
             }
         }
         // laptop 断点：固定像素宽度超出容器，改用百分比
@@ -1318,41 +1369,87 @@ onUnmounted(() => {
             }
         }
         @include mo {
-            height: auto !important;
-            position: static !important;
-            bottom: unset !important;
-            top: unset !important;
-            background-color: white !important;
+            height: 340px !important;
+            overflow: hidden;
+            padding-top: 22px;
             .wrap {
+                display: flex;
                 flex-direction: column;
-                gap: 16px;
+                height: 100%;
+                padding-right: 36px;  // 右侧留出竖线+圆点区域，增加右边距缩小内容宽度
+                overflow: visible;
+                position: relative;
             }
             .left {
                 width: 100%;
                 height: auto;
                 border-right: none;
-                border-bottom: 1px solid var(--main-orange);
-                padding-bottom: 16px;
-                .cont {
-                    width: auto;
-                    flex: 1;
-                    .name { font-size: 20px; }
-                    .region { font-size: 14px; }
+                border-bottom: none;
+                flex-direction: column;
+                align-items: flex-start;
+                padding-bottom: 0;
+                flex-shrink: 0;
+                &::after {
+                    display: none;
                 }
+                .icon {
+                    font-size: 26px;
+                    margin-top: 0;
+                    margin-bottom: 6px;
+                }
+                .cont {
+                    width: 100%;
+                    flex: none;
+                    height: auto;
+                    margin-left: 0;
+                    justify-content: flex-start;
+                    gap: 4px;
+                    .name { font-size: 16px; }
+                    .region { font-size: 12px; line-height: 1.4;
+                        .c { margin-top: 3px; }
+                    }
+                }
+            }
+            // 右侧竖线（绝对定位，精确居中于 24px padding 区域）
+            .wrap::before {
+                content: '';
+                position: absolute;
+                right: 11.5px;
+                top: 0;
+                bottom: 0;
+                width: 1px;
+                background-color: var(--main-orange);
+                transition: background-color .4s;
+            }
+            // 顶部圆点（绝对定位，水平居中于竖线）
+            .wrap::after {
+                content: '';
+                position: absolute;
+                right: 9.5px;
+                top: -3px;
+                width: 5px;
+                height: 5px;
+                border-radius: 50%;
+                background-color: var(--main-orange);
+                transition: background-color .4s;
             }
             .right {
                 width: 100%;
-                img { width: 100%; }
+                flex: 1;
+                overflow: hidden;
+                border-radius: 10px;
+                margin-top: 16px;
+                img { width: 100%; height: 100%; object-fit: cover; }
             }
         }
     }
     @include mo {
-        height: auto !important;
+        // 移动端保留 sticky 叠加效果，高度由 JS 控制
     }
 }
 
 .s4 {
-    padding: tovw(80px) 0 tovw(160px);
+    padding: fluid(80px, 48px) 0 fluid(160px, 64px);
     .wrap {
 
     }
@@ -1360,18 +1457,16 @@ onUnmounted(() => {
     .s-a {
         text-align: center;
     }
+    .s-a {
+        text-wrap: balance;
+    }
     .news-list {
-        margin-top: tovw(80px);
+        margin-top: fluid(80px, 32px);
         padding-top: 1px;
     }
     .tools {
-        margin-top: tovw(80px);
+        margin-top: fluid(80px, 32px);
         text-align: center;
-    }
-    @include lap {
-        padding: 60px 0 100px;
-        .news-list { margin-top: 48px; }
-        .tools { margin-top: 48px; }
     }
     @include mo {
         padding: 48px 0 64px;
@@ -1477,6 +1572,11 @@ onUnmounted(() => {
                 border-right: 1px solid rgba(200, 210, 220, 0.6);
                 border-bottom: 1px solid rgba(200, 210, 220, 0.6);
             }
+            // 移动端使用 fixed 定位避免 overflow:hidden 裁切
+            &.fixed-mobile {
+                position: fixed;
+                z-index: 9999;
+            }
         }
     }
 
@@ -1484,7 +1584,7 @@ onUnmounted(() => {
         position: relative;
         z-index: 10;
         padding-top: calc(var(--HEADER_HEIGHT) + 20px);
-        padding-bottom: tovw(16px);
+        padding-bottom: fluid(16px, 8px);
         text-align: center;
         flex-shrink: 0;
         // tab (≤1024px)：移动导航高度更小
@@ -1507,7 +1607,7 @@ onUnmounted(() => {
 
     .s5-bottom {
         position: absolute;
-        bottom: tovw(100px);
+        bottom: fluid(100px, 40px);
         left: 50%;
         transform: translateX(-50%);
         z-index: 10;
@@ -1611,26 +1711,55 @@ onUnmounted(() => {
 
     @include lap {
         .s5-header {
-            .s5-title { font-size: 30px; }
             .s5-desc { font-size: 16px; }
-        }
-        .s5-bottom {
-            bottom: 60px;
         }
         .s5-stat {
             padding: 12px 24px;
         }
-        .s5-stat-num {
-            font-size: 36px;
-        }
     }
     @include mo {
         height: auto;
-        min-height: 80vh;
+        min-height: 70vh;
         .s5-header {
-            padding-top: 32px;
+            padding-top: calc(var(--HEADER_HEIGHT_MOB) + 24px);
             .s5-title { font-size: 24px; }
-            .s5-desc { font-size: 14px; padding: 0 24px; }
+            .s5-desc {
+                font-size: 16px;
+                padding: 0 24px;
+                text-wrap: balance;
+            }
+        }
+        .s5-map-wrap {
+            overflow-x: scroll;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            height: 60vw;
+            min-height: 240px;
+            flex: none;
+
+            .s5-map-zoom {
+                position: relative;
+                width: 240%;
+                aspect-ratio: 800 / 450;
+                height: auto;
+                top: 50%;
+                transform: translateY(-50%);
+                display: block;
+            }
+            .s5-map-img {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: fill;
+                object-position: center;
+            }
+            .s5-markers-svg {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+            }
         }
         .s5-bottom {
             position: relative;

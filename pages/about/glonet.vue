@@ -454,10 +454,9 @@ onUnmounted(() => {
         flex-flow: row nowrap;
         justify-content: center;
         align-items: center;
-        gap: tovw(80px);
+        gap: fluid(80px, 24px);
         @include mo {
             height: 60px;
-            gap: 24px;
         }
         .item {
             width: 400px;
@@ -621,7 +620,7 @@ onUnmounted(() => {
             height: 240px;
             position: absolute;
             left: 0;
-            top: tovw(100px);
+            top: fluid(100px, 40px);
             .cont {
                 width: 100%;
                 max-width: min(1000px, 90vw);
@@ -766,7 +765,7 @@ onUnmounted(() => {
             transform: translateX(-50%);
             width: 100%;
             max-width: min(1000px, 90vw);
-            top: calc(#{tovw(100px)} + 260px);
+            top: calc(#{fluid(100px, 40px)} + 260px);
             display: flex;
             flex-direction: row;
             gap: 16px;
@@ -857,7 +856,7 @@ onUnmounted(() => {
             flex-flow: row nowrap;
             justify-content: space-between;
             align-items: flex-end;
-            padding: 0 tovw(60px) tovw(140px);
+            padding: 0 fluid(60px, 24px) fluid(140px, 48px);
             gap: fluid(30px);
             .detail-list {
                 width: 100%;

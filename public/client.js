@@ -193,7 +193,7 @@ const indexBanner = [
         ],
         name: [''],
         t1: [''],
-        t2: ['承载数字科技，赋能智慧生活'],
+        t2: ['承载数字科技，', '赋能智慧生活'],
         t2En: ['Bearing Digital Technology, Empowering Smart Life'],
         t2m: [],
         abst: [
@@ -224,7 +224,7 @@ const indexBanner = [
             '/videos/home-video-04.mp4',
         ],
         name: [''],
-        t1: ['澳弘电子持续创新，PCB产品'],
+        t1: ['澳弘电子持续创新，', 'PCB产品'],
         t1En: [],
         t2: ['适用于多领域多场景的应用需求'],
         t2En: ['PCB Products for Multi-discipline & Multi-scenario Applications'],

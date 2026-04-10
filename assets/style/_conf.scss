@@ -50,7 +50,16 @@ $BASE_PADDING: 0.8vw;
 //}
 
 /**
- 边缘宽度为108px，稿件宽度为1440px
+ * 容器系统 Container System
+ * 默认（>1439px）：使用 tovw(160px) 提供比例边距，max-width: 1680px 封顶
+ *   → 1440px: 边距≈120px/侧, 内容≈1200px
+ *   → 1920px: 边距=160px/侧, 内容=1600px
+ * ≤1440px: 切换到 1440 基准的 tovw，边距逐步收窄
+ * ≤1024px: 固定 30px/侧
+ * ≤992px:  固定 24px/侧
+ *
+ * 注意: 容器的 tovw 是有意为之（比例边距适合容器），
+ *       组件/内容不应再使用 tovw，应改用 fluid() 或固定值+断点。
  */
 $WIDTH_SLIDE: tovw(160px);
 $WIDTH_SLIDE_HEADER: tovw(80px);
@@ -96,7 +105,8 @@ div{
 }
 
 
-// laptop (≤1400px)：修正公式，边距逐渐收窄而非扩张
+// ≤1440px（响应式区间入口）：边距逐渐收窄
+// 注意: 此断点保持 1440px 而非 1439px，因为容器在 1440px 处需要响应式规则
 @media screen and (max-width: 1440px) {
     .wrap {
         width: calc(100% - #{tovw(96px, 1440px)} * 2);

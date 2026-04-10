@@ -163,12 +163,12 @@ onUnmounted(() => {
 
 <style scoped lang="scss">
 .s1 {
-    padding: tovw(100px) 0;
+    padding: fluid(100px, 40px) 0;
     .wrap {
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-between;
-        gap: tovw(120px);
+        gap: fluid(120px, 32px);
         @include mo {
             flex-direction: column;
             gap: 32px;
@@ -231,20 +231,19 @@ onUnmounted(() => {
         font-style: normal;
         font-weight: 700;
         line-height: 130%;
-        margin-top: tovw(48px);
+        margin-top: fluid(48px, 20px);
         @include mo {
             font-size: 20px;
-            margin-top: 20px;
         }
     }
     .abst {
-        margin-top: tovw(32px);
+        margin-top: fluid(32px, 16px);
         p {
             color: var(--main-dark-gray, #3C3C3C);
             font-size: 18px;
             line-height: 1.75;
             & + p {
-                margin-top: tovw(20px);
+                margin-top: fluid(20px, 12px);
             }
             @include mo {
                 font-size: 16px;
@@ -271,13 +270,9 @@ onUnmounted(() => {
 }
 
 .s3 {
-    margin-top: tovw(100px);
-    padding: tovw(100px) 0;
+    margin-top: fluid(100px, 40px);
+    padding: fluid(100px, 40px) 0;
     background: #FAFAFA;
-    @include mo {
-        margin-top: 40px;
-        padding: 40px 0;
-    }
     .wrap {
         .r {
             display: flex;

@@ -245,7 +245,7 @@ onMounted(() => {
         flex-flow: row nowrap;
         justify-content: space-between;
         align-items: flex-start;
-        gap: tovw(60px);
+        gap: fluid(60px, 24px);
         @include mo {
             flex-direction: column;
             gap: 24px;
