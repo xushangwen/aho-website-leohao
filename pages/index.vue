@@ -172,8 +172,8 @@
         <section class="s5" ref="elS5Section">
             <div class="s5-bg"></div>
             <div class="s5-header">
-                <div class="s5-title">{{ $t('home.serviceTitle') }}</div>
-                <div class="s5-desc">{{ $t('home.serviceDesc') }}</div>
+                <div class="s-t">{{ $t('home.serviceTitle') }}</div>
+                <div class="s-a">{{ $t('home.serviceDesc') }}</div>
             </div>
             <div class="s5-map-wrap">
                 <div class="s5-map-zoom">
@@ -1591,15 +1591,11 @@ onUnmounted(() => {
         @include tab {
             padding-top: calc(var(--HEADER_HEIGHT_MOB) + 16px);
         }
-        .s5-title {
-            font-size: fluid(36px, 24px);
-            font-weight: 700;
-            color: #1e293b;
+        .s-t {
             margin-bottom: 8px;
         }
-        .s5-desc {
+        .s-a {
             font-size: 18px;
-            color: #475569;
             max-width: min(560px, 90vw);
             margin: 0 auto;
         }
@@ -1723,9 +1719,8 @@ onUnmounted(() => {
         .s5-header {
             padding-top: calc(var(--HEADER_HEIGHT_MOB) + 8px);
             padding-bottom: 8px;
-            .s5-title { font-size: 24px; }
-            .s5-desc {
-                font-size: 16px;
+            .s-a {
+                font-size: 15px;
                 padding: 0 24px;
                 text-wrap: balance;
             }
@@ -1734,8 +1729,8 @@ onUnmounted(() => {
             overflow-x: scroll;
             overflow-y: hidden;
             -webkit-overflow-scrolling: touch;
-            height: 72vw;
-            min-height: 280px;
+            height: 90vw;
+            min-height: 320px;
             flex: none;
 
             .s5-map-zoom {
@@ -1769,11 +1764,14 @@ onUnmounted(() => {
             width: 100%;
             padding: 12px 16px 28px;
         }
-        // 筛选按钮：2列网格（全部+全球客户/业务中心+研发基地）
+        // 全部按钮独占一行，其余三个筛选按钮一行（3列）
         .s5-filters {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 8px;
+            .s5-fbtn:first-child {
+                grid-column: 1 / -1;  // "全部" 跨满整行
+            }
         }
         .s5-stats {
             gap: 8px;
@@ -1793,11 +1791,11 @@ onUnmounted(() => {
             line-height: 1.4;
         }
         .s5-fbtn {
-            padding: 8px 12px;
-            gap: 6px;
+            padding: 8px 10px;
+            gap: 5px;
         }
-        .s5-flabel { font-size: 12px; }
-        .s5-fcount { font-size: 11px; }
+        .s5-flabel { font-size: 11px; }
+        .s5-fcount { font-size: 10px; }
         .s5-fdot { width: 10px; height: 10px; }
     }
 }
