@@ -1,5 +1,5 @@
 <template>
-    <div class="swiper-indexbanner" :class="className">
+    <div class="swiper-indexbanner" ref="swiperEl">
         <div class="swiper-wrapper">
             <div
                 class="swiper-slide"
@@ -19,10 +19,10 @@
 </template>
 
 <script setup>
-    const className = ref(`swiper-${Math.floor(Math.random() * 9999)}`)
+    const swiperEl = ref(null)
 
     onMounted(() => {
-        let swiper = new Swiper(`.${className.value}`, {
+        let swiper = new Swiper(swiperEl.value, {
             slidesPerView: 1, // 轮播区域展示的数量
             spaceBetween: 0,
             loop: true, // 循环播放

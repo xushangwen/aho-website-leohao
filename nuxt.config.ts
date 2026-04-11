@@ -30,7 +30,11 @@ export default defineNuxtConfig({
     port: process.env.NUXT_PORT,
     server: {},
     nitro: {
-        logLevel: 'info'
+        logLevel: 'info',
+        routeRules: {
+            // 客户端 API 请求走此代理，避免 CORS（服务端直连 127.0.0.1:3100）
+            '/api/proxy/**': { proxy: 'https://aohong.dist.ink/api/**' }
+        }
     },
 
     css: [
@@ -65,8 +69,8 @@ export default defineNuxtConfig({
 
     i18n: {
         locales: [
-            { code: 'zh', iso: 'zh-CN', name: '中文', file: 'zh.json' },
-            { code: 'en', iso: 'en-US', name: 'English', file: 'en.json' },
+            { code: 'zh', language: 'zh-CN', name: '中文', file: 'zh.json' },
+            { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
         ],
         lazy: true,
         langDir: 'locales/',

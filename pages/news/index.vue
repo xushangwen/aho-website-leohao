@@ -77,114 +77,73 @@
 <script setup>
 import useAppStore from "@/stores/app";
 const appConfig = useAppConfig()
-const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
 const router = useRouter()
 const appStore = useAppStore()
-
 const { t } = useI18n()
-const breadcrumb = computed(() => [{
-    name: t('news.coverTitle'),
-    link: '/news'
-}
-])
 
-// 分类统计数据
-const cateStats = ref({})
-// 新闻数据
-const newsList = ref([])
-const recommendNews = ref({})
-// 分页数据
-const totalCount = ref(0)
+const breadcrumb = computed(() => [{ name: t('news.coverTitle'), link: '/news' }])
+
 const pageNum = ref(1)
 const perPage = ref(12)
 const loading = ref(false)
 
-// 初始化数据
-async function initData() {
-    // 获取分类统计数据
-    await getCateStats()
-    // 获取新闻数据
-    await getNewsList()
-}
-
-// 获取分类统计数据
-async function getCateStats() {
+// 顶层 useAsyncData：SSR 端等待数据后再渲染，客户端从序列化状态水合
+// 避免「server 已渲染列表 / client loading=true」的 hydration mismatch
+const { data: cateStatsData } = await useAsyncData('post-cate-statistic', async () => {
     try {
-        const { data } = await useFetch(appConfig.api('/post/cate-statistic'))
-        if (data.value?.code === 0) {
-            cateStats.value = data.value.categories || {}
-        }
-    } catch (error) {
-        console.error('获取分类统计数据失败:', error)
+        const res = await $fetch(appConfig.api('/post/cate-statistic'))
+        return res?.code === 0 ? (res.categories || {}) : {}
+    } catch {
+        return {}
     }
-}
+})
 
-// 获取新闻数据
-async function getNewsList() {
-    loading.value = true
-    try {
-        const params = {
-            type: route.query.type || '',
-            per_page: perPage.value,
-            page_num: pageNum.value
+const { data: newsPageData, refresh: refreshNews } = await useAsyncData(
+    'news-list',
+    async () => {
+        try {
+            const res = await $fetch(appConfig.api('/post/list'), {
+                params: {
+                    type: route.query.type || '',
+                    per_page: perPage.value,
+                    page_num: pageNum.value
+                }
+            })
+            return res?.code === 0 ? res : null
+        } catch {
+            return null
         }
-        
-        const { data } = await useFetch(appConfig.api('/post/list'), {
-            params
-        })
-        
-        if (data.value?.code === 0) {
-            newsList.value = data.value.list || []
-            recommendNews.value = data.value.recommend || {}
-            totalCount.value = parseInt(data.value.total_count) || 0
-        }
-    } catch (error) {
-        console.error('获取新闻数据失败:', error)
-    } finally {
-        loading.value = false
     }
-}
+)
+
+const cateStats = computed(() => cateStatsData.value || {})
+const newsList = computed(() => newsPageData.value?.list || [])
+const recommendNews = computed(() => newsPageData.value?.recommend || {})
+const totalCount = computed(() => parseInt(newsPageData.value?.total_count) || 0)
+const postCate = computed(() => appStore.postCate || [])
+const recommendPost = computed(() => recommendNews.value)
+const postList = computed(() => newsList.value)
 
 // 切换分类
 function switchCate(type) {
-    if (type === '') {
-        router.push('/news')
-    } else {
-        router.push(`/news?type=${type}`)
-    }
+    router.push(type ? `/news?type=${type}` : '/news')
 }
 
-// 分页变化
-function handlePageChange(page) {
+// 分页变化（仅客户端触发，有 loading 状态）
+async function handlePageChange(page) {
     pageNum.value = page
-    getNewsList()
+    loading.value = true
+    await refreshNews()
+    loading.value = false
 }
 
-// 监听路由变化
-watch(() => route.query.type, () => {
+// 监听分类变化重新拉取（不含 immediate，初始加载由 useAsyncData 承担）
+watch(() => route.query.type, async () => {
     pageNum.value = 1
-    getNewsList()
-}, { immediate: true })
-
-// 初始化
-onMounted(() => {
-    initData()
-})
-
-// 使用 appStore 中的 postCate 数据
-const postCate = computed(() => {
-    return appStore.postCate || []
-})
-
-// 推荐新闻
-const recommendPost = computed(() => {
-    return recommendNews.value
-})
-
-// 新闻列表
-const postList = computed(() => {
-    return newsList.value
+    loading.value = true
+    await refreshNews()
+    loading.value = false
 })
 </script>
 

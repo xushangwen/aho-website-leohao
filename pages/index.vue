@@ -320,8 +320,6 @@ const scItems = computed(() => scIcons.map((icon, i) => ({
 })))
 const currentScIndex = ref(0)
 let scTimer = null
-const newsList = ref([])
-const loadingNews = ref(false)
 
 const bannerConfig = ref({
     clickable: true,
@@ -330,23 +328,17 @@ const bannerConfig = ref({
     },
 })
 
-// 获取推荐新闻数据
-async function getRecommendNews() {
-    loadingNews.value = true
+// 顶层 useAsyncData：SSR 等待数据渲染，避免 loadingNews=true 的 hydration mismatch
+const { data: recommendNewsData } = await useAsyncData('home-recommend-news', async () => {
     try {
-        const { data } = await useFetch(appConfig.api('/post/recommend'), {
-            params: { num: 3 }
-        })
-        
-        if (data.value?.code === 0) {
-            newsList.value = data.value.recommend || []
-        }
-    } catch (error) {
-        console.error('获取推荐新闻失败:', error)
-    } finally {
-        loadingNews.value = false
+        const res = await $fetch(appConfig.api('/post/recommend'), { params: { num: 3 } })
+        return res?.code === 0 ? (res.recommend || []) : []
+    } catch {
+        return []
     }
-}
+})
+const newsList = computed(() => recommendNewsData.value || [])
+const loadingNews = ref(false)
 
 function videoTester(url) {
     return /.(mp4|webm)$/.test(url)
@@ -598,7 +590,6 @@ function clearMapSelection() {
     }
 }
 
-getRecommendNews()
 
 let s3ScrollCleanup = null
 let mapScrollCleanup = null

@@ -14,7 +14,8 @@ export default defineAppConfig({
         }
     },
     // apiHost: process.server ? 'http://localhost:5000/api/api' : 'http://localhost:5000/api/api',
-    apiHost: process.server ? 'http://127.0.0.1:3100/api' : 'https://aohong.dist.ink/api',
+    // 服务端（SSR）直连本地后端；客户端走同源代理 /api/proxy 避免 CORS
+    apiHost: process.server ? 'http://127.0.0.1:3100/api' : '/api/proxy',
     api: function(route: string) {
         return this.apiHost + route
     },

@@ -148,9 +148,9 @@ const totalPage = ref(1)
 async function getRecommendData() {
     loadingRecommend.value = true
     try {
-        const { data } = await useFetch(appConfig.api('/cert/recommend'))
-        if (data.value?.code === 0) {
-            return data.value.list_model || []
+        const res = await $fetch(appConfig.api('/cert/recommend'))
+        if (res?.code === 0) {
+            return res.list_model || []
         }
         return []
     } catch (error) {
@@ -173,15 +173,13 @@ async function getListData(pageNum = 1) {
             category: activeTab.value
         }
         
-        const { data } = await useFetch(appConfig.api('/cert/list'), {
-            params
-        })
+        const res = await $fetch(appConfig.api('/cert/list'), { params })
         
-        if (data.value?.code === 0) {
-            const newList = data.value.list_model || []
+        if (res?.code === 0) {
+            const newList = res.list_model || []
             
             // 更新分页信息
-            totalPage.value = data.value.pagination?.total_page || 1
+            totalPage.value = res.pagination?.total_page || 1
             
             // 检查是否还有更多数据
             const hasMore = newList.length >= pageSize

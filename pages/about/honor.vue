@@ -72,15 +72,13 @@ async function getListData(pageNum = 1) {
             per_page: pageSize
         }
         
-        const { data } = await useFetch(appConfig.api('/honor/list'), {
-            params
-        })
+        const res = await $fetch(appConfig.api('/honor/list'), { params })
         
-        if (data.value?.code === 0) {
-            const newList = data.value.list_model || []
+        if (res?.code === 0) {
+            const newList = res.list_model || []
             
             // 更新分页信息
-            totalPage.value = data.value.pagination?.total_page || 1
+            totalPage.value = res.pagination?.total_page || 1
             
             // 检查是否还有更多数据
             const hasMore = newList.length >= pageSize

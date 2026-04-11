@@ -19,7 +19,6 @@
     "@nuxtjs/i18n": "8",
     "@pinia/nuxt": "^0.5.1",
     "bootstrap": "5.3.1",
-    "caniuse-lite": "^1.0.30001734",
     "element-plus": "^2.3.12",
     "gridjs": "^6.0.6",
     "motion-v": "^1.6.1",
