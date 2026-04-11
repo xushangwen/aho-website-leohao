@@ -551,7 +551,8 @@ nav.norm {
         border-bottom: 0.5px solid var(--main-light-gray, #DCDCDC);
         inset: 0;
         z-index: 2;
-        transition: background-color .3s, border-bottom .3s;
+        // 必须单独列出 border-bottom-color，shorthand 在部分浏览器不触发 color 过渡
+        transition: background-color .3s, border-bottom-color .3s;
     }
 
     &.transparent {
@@ -585,7 +586,7 @@ nav.norm {
         }
         .mask {
             background-color: transparent;
-            //border-bottom-color: transparent;
+            border-bottom-color: transparent;
         }
     }
 
@@ -761,7 +762,7 @@ nav.mobi {
         background-color: transparent;
         .menu-container {
             background-color: transparent;
-            border-bottom-color: rgba(255, 255, 255, 0.25);
+            border-bottom-color: transparent;
             .m-divider {
                 background-color: rgba(255, 255, 255, 0.4);
             }

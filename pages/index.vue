@@ -370,7 +370,9 @@ function initApplicationItem() {
     const { height } = elS3.value.getBoundingClientRect()
     itemLength = elApplication.value.length
     lastChildHeight = elApplication.value[itemLength - 1].getBoundingClientRect().height
-    step = (windowHeight.value - headerHeight - lastChildHeight) / (itemLength - 1)
+    // 与 CSS --s3-step 的 max() 兜底值对齐：桌面 90px，移动 80px
+    const minStep = windowWidth.value <= 1024 ? 80 : 90
+    step = Math.max(minStep, (windowHeight.value - headerHeight - lastChildHeight) / (itemLength - 1))
     elS3.value.style.height = `${height}px`
     updateApplicationItem()
 }
@@ -378,17 +380,26 @@ function initApplicationItem() {
 function updateApplicationItem() {
     const { top: s3Top, bottom: s3Bottom } = elS3.value.getBoundingClientRect()
     const delta = headerHeight - s3Top
-    if (s3Bottom < windowHeight.value) {
+
+    // 无缝切换临界点：当最后一张卡片 fixed 底边 = 视口底边时切换 absolute
+    // 公式推导：card_i fixed_bottom = header + (n-1)*step + cardHeight
+    // 当此值 = s3Bottom 时，fixed 与 absolute 坐标完全一致，无跳跃
+    const transitionThreshold = headerHeight + (itemLength - 1) * step + lastChildHeight
+
+    if (s3Bottom < transitionThreshold) {
+        // S3 底部已滚过临界点 → 全部切换 absolute，与 fixed 位置无缝对接
         elApplication.value.forEach((item) => {
             item.classList.remove('fixed-sticky')
             item.classList.add('absolute-sticky')
         })
     } else if (delta < 0) {
+        // S3 还未进入视口 → 全部恢复自然流
         elApplication.value.forEach((item) => {
             item.classList.remove('fixed-sticky')
             item.classList.remove('absolute-sticky')
         })
     } else {
+        // 滚动进行中 → 逐张卡片 fixed
         const length = Math.floor(delta / (lastChildHeight - step))
         elApplication.value.forEach((item, index) => {
             item.classList.remove('absolute-sticky')
@@ -590,6 +601,7 @@ function clearMapSelection() {
 getRecommendNews()
 
 let s3ScrollCleanup = null
+let mapScrollCleanup = null
 onMounted(async () => {
     await nextTick()
     initApplicationItem()
@@ -600,6 +612,11 @@ onMounted(async () => {
         rafId = requestAnimationFrame(() => {
             rafId = null
             updateApplicationItem()
+            // 页面滚动时关闭点击锁定的 tooltip，避免 tooltip 随容器漂移
+            if (clickedKey.value) {
+                clickedKey.value = null
+                hoveredMarker.value = null
+            }
         })
     }
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -613,15 +630,32 @@ onMounted(async () => {
     }, 1800)
 
     // 移动端/tablet 地图初始居中显示（避免停留在最左端）
-    if (windowWidth.value <= 1024) {
-        const mapWrap = document.querySelector('.s5-map-wrap')
-        if (mapWrap) {
-            mapWrap.scrollLeft = (mapWrap.scrollWidth - mapWrap.clientWidth) / 2
+    const mapWrap = document.querySelector('.s5-map-wrap')
+    if (windowWidth.value <= 1024 && mapWrap) {
+        mapWrap.scrollLeft = (mapWrap.scrollWidth - mapWrap.clientWidth) / 2
+    }
+
+    // 地图横向滚动时同步更新 tooltip 位置（移动端/tablet tooltip 为 fixed 定位，需随地图滚动重算坐标）
+    if (mapWrap) {
+        let mapScrollRafId = null
+        const onMapScroll = () => {
+            if (!hoveredMarker.value) return
+            if (mapScrollRafId) return
+            mapScrollRafId = requestAnimationFrame(() => {
+                mapScrollRafId = null
+                if (hoveredMarker.value) computeTooltipPos(hoveredMarker.value)
+            })
+        }
+        mapWrap.addEventListener('scroll', onMapScroll, { passive: true })
+        mapScrollCleanup = () => {
+            mapWrap.removeEventListener('scroll', onMapScroll)
+            if (mapScrollRafId) cancelAnimationFrame(mapScrollRafId)
         }
     }
 })
 onUnmounted(() => {
     s3ScrollCleanup?.()
+    mapScrollCleanup?.()
     if (elS5Section.value) s5Observer?.unobserve(elS5Section.value)
     if (scTimer) clearInterval(scTimer)
 })
@@ -905,7 +939,7 @@ onUnmounted(() => {
                 .t1,
                 .t2,
                 .t2m {
-                    line-height: 1;
+                    line-height: 1.3;
                     color: white;
                 }
                 .t1 {
@@ -930,6 +964,8 @@ onUnmounted(() => {
                 }
                 .t2.en-hero {
                     font-family: 'Google Sans', sans-serif;
+                    font-size: fluid(50px, 30px);
+                    line-height: 1.2;
                 }
                 .t2m {
                     margin-top: 6px;
@@ -1247,6 +1283,13 @@ onUnmounted(() => {
 .s3 {
     position: relative;
     $itemHeight: 320px;
+    // 最小露出 = padding-top(40px) + icon/name行高(~40px) + 10px余量 = 90px
+    // 刚好看到标题，不多不少
+    --s3-step: max(90px, calc((100vh - var(--HEADER_HEIGHT) - 320px) / 6));
+    @include tab {
+        // 移动端 padding-top(22px) + icon(26px) + name(16px) + 余量 = 80px
+        --s3-step: max(80px, calc((100vh - var(--HEADER_HEIGHT_MOB) - 340px) / 6));
+    }
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-end;
@@ -1317,29 +1360,32 @@ onUnmounted(() => {
             }
         }
         .right {
-            width: auto;
-            height: auto;
+            // 显式高度 = 卡片高度(320px) - 上下 padding(各40px)，确保图片始终铺满
+            width: 440px;
+            height: 240px;
             border-radius: 10px;
             overflow: hidden;
             flex-shrink: 0;
             img {
-                height: auto;
-                width: 440px;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: left center;
                 display: block;
             }
         }
         @for $i from 1 through 7 {
-            $header_height: var(--HEADER_HEIGHT);
-            $header_height_mob: var(--HEADER_HEIGHT_MOB);
-            $mobileItemHeight: 340px;
+            $idx: $i - 1;
+            $idx_end: 7 - $i;
             position: relative;
             &.fixed-sticky:nth-child(#{$i}) {
                 background-color: lighten(#1E3296, 5% * ($i - 1));
                 position: fixed;
                 left: 0;
-                top: calc(#{$header_height} + (#{$i} - 1) * (100vh - #{$header_height} - #{$itemHeight}) / 6);
+                // 使用 --s3-step (带 max() 兜底) 保证标题始终可见
+                top: calc(var(--HEADER_HEIGHT) + #{$idx} * var(--s3-step));
                 @include tab {
-                    top: calc(#{$header_height_mob} + (#{$i} - 1) * (100vh - #{$header_height_mob} - #{$mobileItemHeight}) / 6);
+                    top: calc(var(--HEADER_HEIGHT_MOB) + #{$idx} * var(--s3-step));
                 }
             }
             &.absolute-sticky:nth-child(#{$i}) {
@@ -1347,10 +1393,7 @@ onUnmounted(() => {
                 position: absolute;
                 left: 0;
                 top: unset;
-                bottom: calc((7 - #{$i}) * (100vh - #{$header_height} - #{$itemHeight}) / 6);
-                @include tab {
-                    bottom: calc((7 - #{$i}) * (100vh - #{$header_height_mob} - #{$mobileItemHeight}) / 6);
-                }
+                bottom: calc(#{$idx_end} * var(--s3-step));
             }
         }
         // laptop 断点：固定像素宽度超出容器，改用百分比
@@ -1365,7 +1408,39 @@ onUnmounted(() => {
                 }
             }
             .right {
-                img { width: 30vw; max-width: 400px; }
+                width: 30vw;
+                max-width: 400px;
+                height: 240px;
+                img { width: 100%; height: 100%; object-fit: cover; object-position: left center; }
+            }
+        }
+        // tablet 断点（993-1024px）：切换为纵向布局，图片居左对齐
+        @include tab {
+            padding: 16px 0;
+            .wrap {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .left {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                align-items: center;
+                border-right: none;
+                flex-shrink: 0;
+                &::after { display: none; }
+                .cont {
+                    width: calc(100% - 60px);
+                    height: auto;
+                    justify-content: flex-start;
+                    gap: 4px;
+                }
+            }
+            .right {
+                width: 100%;
+                height: 160px;
+                margin-top: 8px;
+                img { width: 100%; height: 100%; object-fit: cover; object-position: left center; }
             }
         }
         @include mo {
@@ -1435,11 +1510,12 @@ onUnmounted(() => {
             }
             .right {
                 width: 100%;
+                height: auto; // 覆盖 @include tab 的 160px，移动端高度由 flex: 1 撑开
                 flex: 1;
                 overflow: hidden;
                 border-radius: 10px;
                 margin-top: 16px;
-                img { width: 100%; height: 100%; object-fit: cover; }
+                img { width: 100%; height: 100%; object-fit: cover; object-position: left center; }
             }
         }
     }
@@ -1583,13 +1659,13 @@ onUnmounted(() => {
     .s5-header {
         position: relative;
         z-index: 10;
-        padding-top: calc(var(--HEADER_HEIGHT) + 20px);
-        padding-bottom: fluid(16px, 8px);
+        padding-top: calc(var(--HEADER_HEIGHT) + 8px);
+        padding-bottom: fluid(12px, 6px);
         text-align: center;
         flex-shrink: 0;
         // tab (≤1024px)：移动导航高度更小
         @include tab {
-            padding-top: calc(var(--HEADER_HEIGHT_MOB) + 16px);
+            padding-top: calc(var(--HEADER_HEIGHT_MOB) + 6px);
         }
         .s-t {
             margin-bottom: 8px;
@@ -1730,6 +1806,10 @@ onUnmounted(() => {
             overflow-y: hidden;
             -webkit-overflow-scrolling: touch;
             flex: none;
+            // 隐藏滚动条但保留滚动能力
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            &::-webkit-scrollbar { display: none; }
             // 高度由内容驱动，避免固定 vw 值与 aspect-ratio 产生裁切
 
             .s5-map-zoom {
