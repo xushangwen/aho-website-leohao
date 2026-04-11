@@ -248,7 +248,7 @@ function closeSubNav() {
     }, 200)
 }
 
-let timerRemoveLeave = ref()
+let timerRemoveLeave = null
 const indexNav = ref(-1)
 const indexNavPrev = ref(-1)
 function activeNav(index) {
@@ -300,6 +300,10 @@ function toggleSubMenuItem(index) {
 /***mobile部分结束***/
 
 onMounted(() => {})
+onUnmounted(() => {
+    clearTimeout(timerRemoveLeave)
+    clearTimeout(timerCloseSubNav)
+})
 </script>
 
 <style scoped lang="scss">

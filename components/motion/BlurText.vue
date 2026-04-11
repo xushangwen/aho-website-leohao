@@ -71,7 +71,7 @@ const buildKeyframes = (
 
 const elements = computed(() => (props.animateBy === 'words' ? props.text.split(' ') : props.text.split('')));
 
-const defaudefaultFromltFrom = computed<AnimationSnapshot>(() =>
+const defaultFrom = computed<AnimationSnapshot>(() =>
     props.direction === 'top' ? { filter: 'blur(10px)', opacity: 0, y: -50 } : { filter: 'blur(10px)', opacity: 0, y: 50 }
 );
 

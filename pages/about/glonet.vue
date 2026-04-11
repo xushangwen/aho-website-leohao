@@ -296,10 +296,12 @@ const lineGroup = ref([])
 const elChinaItem = ref(null)
 const elChinaPoints = ref(null)
 function changeChinaLine() {
+    if (!elChinaItem.value?.length) return
     const lines = []
     elChinaItem.value.forEach((item, index) => {
         const { col, row } = item.dataset
         const pointEle = findPointEle(col, row)
+        if (!pointEle) return
         const { left: pointLeft, top: pointTop, width: pointWidth, height: pointHeight } = pointEle.getBoundingClientRect()
         const { left: itemLeft, top: itemTop, width: itemWidth, height: itemHeight } = item.getBoundingClientRect()
         const { left: plateLeft, top:plateTop } = elChina.value.getBoundingClientRect()
@@ -419,12 +421,13 @@ function itemMouseLeaveHandler(event: Event, col: number, row: number) {
 }
 /*********china end********/
 let timerInitPlateHeight = null
+let lineResizeObserver = null
 onMounted(() => {
     // 页面加载结束后初始化高度
     timerInitPlateHeight = setTimeout(() => {
         plateHeightInit()
     }, 1000)
-    const lineResizeObserver = new ResizeObserver(entries => {
+    lineResizeObserver = new ResizeObserver(entries => {
         window.requestAnimationFrame(() => {
             for (const entry of entries) {
                 if (entry.target === elChina.value) {
@@ -444,6 +447,7 @@ onMounted(() => {
 })
 onUnmounted(() => {
     clearTimeout(timerInitPlateHeight)
+    lineResizeObserver?.disconnect()
 })
 </script>
 

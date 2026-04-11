@@ -82,7 +82,7 @@ async function getNewsDetail() {
 }
 
 const { data: newsDetail, pending: loading, refresh } = await useAsyncData(
-    'news-detail',
+    `news-detail-${route.params.uuid}`,
     () => getNewsDetail(),
     {
         watch: [() => route.params.uuid]

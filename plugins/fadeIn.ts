@@ -39,22 +39,22 @@ const fadeInDirective: Directive<HTMLElement, FadeInConfig | undefined> = {
             globalObserver = new IntersectionObserver(
                 (entries) => {
                     let delayNum = 0
-                    let delayFastNum = 0
                     entries.forEach((entry) => {
                         if (entry.isIntersecting) {
                             const el = entry.target as HTMLElement
-                            // 为元素添加类
-                            if (mode === 'delay') {
+                            // 从元素自身读取 mode，避免 closure 捕获问题
+                            const elementMode = el.dataset.fadeInMode || ''
+                            if (elementMode === 'delay') {
                                 setTimeout(() => {
                                     el.classList.add('show')
                                 }, 200 * delayNum)
                                 delayNum += 1
-                            } else if (mode === 'delay-fast') {
+                            } else if (elementMode === 'delay-fast') {
                                 setTimeout(() => {
                                     el.classList.add('show')
                                 }, 50 * delayNum)
                                 delayNum += 1
-                            }  else {
+                            } else {
                                 el.classList.add('show')
                             }
                             // 动画只触发一次，之后取消观察该元素
@@ -74,6 +74,8 @@ const fadeInDirective: Directive<HTMLElement, FadeInConfig | undefined> = {
             globalThis.__global_fade_in_observer__ = globalObserver
         }
 
+        // 将 mode 存储到元素上，供 Observer 回调读取
+        el.dataset.fadeInMode = mode || ''
         // 开始观察当前元素
         globalObserver?.observe(el)
 

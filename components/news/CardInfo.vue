@@ -1,7 +1,7 @@
 <template>
     <div class="info-container">
         <div class="top">
-            <div class="type">{{cate}}</div>
+            <div class="cate">{{cate}}</div>
             <div class="date">{{date}}</div>
             <div class="title">{{title}}</div>
         </div>

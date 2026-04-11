@@ -19,7 +19,6 @@ export default defineNuxtPlugin(nuxtApp => {
                 base = binding.value.base
                 ratio = binding.value.ratio
             } else {
-                const base = 'width'
                 ratio = binding.value
             }
 

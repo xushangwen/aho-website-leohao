@@ -295,10 +295,10 @@ function slideChangeHandler2(e) {
 }
 
 function slidePrev() {
-    instSwiper1.slidePrev()
+    instSwiper1?.slidePrev()
 }
 function slideNext() {
-    instSwiper1.slideNext()
+    instSwiper1?.slideNext()
 }
 </script>
 

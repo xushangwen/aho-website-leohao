@@ -34,7 +34,7 @@
                         <span>{{ orgInfo.telephone }}</span>
                     </div>
                     <div class="w">
-                        <div class="item"><a href="mailto: {{ orgInfo.email }}">{{ $t('footer.emailLabel') }}：{{ orgInfo.email }}</a></div>
+                        <div class="item"><a :href="`mailto:${orgInfo.email}`">{{ $t('footer.emailLabel') }}：{{ orgInfo.email }}</a></div>
                         <div class="item"><span>{{ $t('footer.addressLabel') }}：{{ orgInfo.address }}</span></div>
                     </div>
                 </div>

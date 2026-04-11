@@ -37,8 +37,6 @@ const { data: navData } = useFetch(appConfig.api('/layout/nav'), {server: true, 
 watch(navData, (newNav) => {
     // console.log('newNav', newNav)
     const { prod, post } = newNav || {}
-    console.log('prod', prod)
-    console.log('post', post)
     appStore.setProdCate(prod)
     appStore.setPostCate(post)
 }, { immediate: true })

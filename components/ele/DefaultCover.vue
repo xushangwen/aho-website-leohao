@@ -27,7 +27,7 @@ const props = defineProps({
     imageMobile: String,
 })
 
-const { image, imageMobile } = props
+const { image, imageMobile } = toRefs(props)
 
 const imageLoadStatus = ref(false)
 const refBg = ref(null)
@@ -36,7 +36,7 @@ const refBgMob = ref(null)
 onMounted(() => {
     if (import.meta.client) {
         const bgStyle = window.getComputedStyle(refBg.value)
-        const imageUrl = bgStyle.visibility === 'visible' ? image : imageMobile
+        const imageUrl = bgStyle.visibility === 'visible' ? image.value : imageMobile.value
         const imageInst = new Image()
         imageInst.src = imageUrl
         imageInst.onload = () => {

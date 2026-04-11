@@ -12,11 +12,12 @@ const { ratio, md, sm } = defineProps({
     innerClass: String
 })
 const el = ref(null)
+let observer = null
 
 onMounted(() => {
     if (import.meta.client) {
-        const observer = new IntersectionObserver((entries) => {
-            console.log(entries[0])
+        observer = new IntersectionObserver((entries) => {
+            // 占位：后续在此添加入场动画逻辑
         }, {
             threshold: 0.1
         })
@@ -24,7 +25,9 @@ onMounted(() => {
     }
 })
 
-
+onUnmounted(() => {
+    observer?.disconnect()
+})
 </script>
 
 <style scoped lang="scss">

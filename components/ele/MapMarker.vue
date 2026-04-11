@@ -36,8 +36,8 @@ const props = defineProps({
         default: () => false
     }
 })
-const mapImage = ref(props.mapImage)
-const enableClick = ref(props.enableClick)
+const mapImage = computed(() => props.mapImage)
+const enableClick = computed(() => props.enableClick)
 const imageLoadStatus = ref(false)
 
 function getPosition(e) {
@@ -48,7 +48,6 @@ function getPosition(e) {
         left: (offsetX / width * 100).toFixed(3) + '%',
         top: (offsetY / height * 100).toFixed(3) + '%'
     }
-    console.log(`{name: 'name', position: {left: '${pos.left}', top: '${pos.top}'}},`)
 }
 
 onMounted(() => {

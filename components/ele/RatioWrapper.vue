@@ -9,24 +9,22 @@
 </template>
 
 <script setup>
-const { ratio, md, sm } = defineProps({
-    ratio: String | Number,
-    md: String | Number,
-    sm: String | Number,
+const props = defineProps({
+    ratio: [String, Number],
+    md: [String, Number],
+    sm: [String, Number],
     innerClass: String
 })
-const lgRatio = computed(() => {
-    return `${ratio * 100}%`
-})
+const { ratio, md, sm } = toRefs(props)
+const lgRatio = computed(() => `${ratio.value * 100}%`)
 const mdRatio = computed(() => {
-    const realRatio = md ? md : ratio
+    const realRatio = md.value ? md.value : ratio.value
     return `${realRatio * 100}%`
 })
 const smRatio = computed(() => {
-    const realRatio = sm ? sm : ratio
+    const realRatio = sm.value ? sm.value : ratio.value
     return `${realRatio * 100}%`
 })
-// console.log(realRatio.value)
 </script>
 
 <style scoped lang="scss">

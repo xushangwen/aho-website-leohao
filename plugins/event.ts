@@ -50,12 +50,10 @@ export default defineNuxtPlugin(nuxtApp => {
     });
     nuxtApp.vueApp.directive('scroll-listener', {
         mounted(el, binding) {
-            console.log('scroll-listener', el)
             const { callback, throttleDelay = 200 } = binding.value;
 
             // 节流函数（避免频繁触发）
             const throttledHandler = throttle((event) => {
-                console.log('throttledHandler')
                 const scrollTop = el.scrollTop;
                 const scrollLeft = el.scrollLeft;
                 callback({ scrollTop, scrollLeft });

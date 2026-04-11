@@ -410,8 +410,6 @@
     const cateDetail = ref({})
     const detail = ref({})
     const cover = ref([])
-    const router = useRouter()
-    console.log(router.hasRoute('product'))
 
 
     onMounted(() => {

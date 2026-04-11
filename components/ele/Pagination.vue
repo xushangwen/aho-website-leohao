@@ -1,52 +1,36 @@
 <template>
 <div class="_pagi">
-    <div class="item tohead" v-if="pageNum > 1">
+    <div class="item tohead" v-if="props.pageNum > 1" @click="emit('page-change', 1)">
         <i class="icon ri-arrow-left-double-fill"></i>
     </div>
-    <div class="item prev" v-if="pageNum > 1">
+    <div class="item prev" v-if="props.pageNum > 1" @click="emit('page-change', props.pageNum - 1)">
         <i class="icon ri-arrow-left-s-line"></i>
     </div>
     <div
         class="item"
-        :class="{active: index === pageNum}"
+        :class="{active: index === props.pageNum}"
         v-for="index in totalPages"
         :key="index"
+        @click="emit('page-change', index)"
     ><span>{{index}}</span></div>
-    <div class="item next" v-if="pageNum < totalPages">
+    <div class="item next" v-if="props.pageNum < totalPages" @click="emit('page-change', props.pageNum + 1)">
         <i class="icon ri-arrow-right-s-line"></i>
     </div>
-    <div class="item toend" v-if="pageNum < totalPages">
+    <div class="item toend" v-if="props.pageNum < totalPages" @click="emit('page-change', totalPages)">
         <i class="icon ri-arrow-right-double-fill"></i>
     </div>
 </div>
 </template>
 
 <script setup>
-/**
- * 全局css中定义了.pagination，注意样式覆盖
- * @type {Prettify<Readonly<ExtractPropTypes<{total: {default: number, type: NumberConstructor}, pageSize: {default: number, type: NumberConstructor}, pageNum: {default: number, type: NumberConstructor}}>>>}
- */
 const props = defineProps({
-    total: {
-        type: Number,
-        default: 38
-    },
-    pageSize: {
-        type: Number,
-        default: 12
-    },
-    pageNum: {
-        type: Number,
-        default: 1
-    }
+    total: { type: Number, default: 0 },
+    pageSize: { type: Number, default: 12 },
+    pageNum: { type: Number, default: 1 }
 })
 
-const { total, pageSize, pageNum } = props
-const totalPages = computed(() => Math.ceil(Number(total) / Number(pageSize)))
-
-defineEmits(['navigate'])
-
-
+const totalPages = computed(() => Math.ceil(Number(props.total) / Number(props.pageSize)))
+const emit = defineEmits(['page-change'])
 </script>
 
 <style scoped lang="scss">

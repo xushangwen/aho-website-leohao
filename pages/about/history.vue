@@ -92,7 +92,6 @@ function updateHistoryDisplay() {
     // console.log('currentSection.value', currentSection.value.list)
     historyDisplay.value = currentSection.value.slice(start, start + 3)
     statusPrev.value = start > 0
-    console.log(len)
     statusNext.value = len > start + 3
 }
 updateHistoryDisplay()

@@ -35,7 +35,7 @@ const breadcrumb = ref([
         link: '/news'
     },
     {
-        name: '澳弘电子荣膺 LG “战略合作伙伴奖”',
+        name: '澳弘电子再次荣获美国伊顿公司”全球卓越供应商”奖项',
         link: ''
     },
 ])

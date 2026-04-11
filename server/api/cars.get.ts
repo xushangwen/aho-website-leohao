@@ -4,6 +4,7 @@ export default defineEventHandler(async (event) => {
   try {
     return cars;
   } catch (error) {
-    return error.message;
+    console.error('[api/cars]', error)
+    return { error: 'Failed to fetch data' }
   }
 });
