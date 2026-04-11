@@ -111,9 +111,11 @@
             </div>
         </section>
 
+        <!-- 点击暗色遮罩区域（.self）关闭弹窗，点击 video 本身不触发 -->
         <div
             class="video-pop"
             :class="{active: statusVideo}"
+            @click.self="closeVideo"
         >
             <div class="close" @click="closeVideo">
                 <i class="icon ri-close-large-line"></i>
@@ -280,14 +282,21 @@ onUnmounted(() => {
             justify-content: space-between;
             gap: fluid(20px);
             margin-bottom: fluid(20px);
+            // 最后一行无需底部间距，避免与 section padding 叠加
+            &:last-child {
+                margin-bottom: 0;
+            }
             @include mo {
                 flex-direction: column;
             }
         }
         .item {
             display: block;
+            position: relative; // <a> 标签不继承全局 div{position:relative}，必须显式声明
             border-radius: 10px;
             overflow: hidden;
+            // desktop：填满 flex-stretch 高度，保持同行等高
+            height: 100%;
             transition: all .4s ease-in-out;
             &:hover {
                 box-shadow: 0 5px 50px -3px rgba(0, 0, 0, .35);
@@ -298,8 +307,15 @@ onUnmounted(() => {
                 }
             }
             > img {
+                display: block; // 消除 inline baseline 底部间隙
                 width: 100%;
+                height: 100%;       // 填满卡片高度
+                object-fit: cover;  // 保持图片比例裁切，不变形
+            }
+            // 移动端单列：强制统一宽高比，所有卡片等高
+            @include mo {
                 height: auto;
+                aspect-ratio: 16 / 9;
             }
             .mask {
                 position: absolute;
@@ -357,6 +373,8 @@ onUnmounted(() => {
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
+    padding: 20px; // 防止视频贴边，mobile 安全边距
+    box-sizing: border-box;
     .close {
         position: absolute;
         right: 24px;
@@ -365,9 +383,22 @@ onUnmounted(() => {
         font-size: fluid(40px);
         cursor: pointer;
         transition: transform 0.2s ease;
+        z-index: 1; // 确保在 video 之上
         &:hover {
             transform: scale(1.1);
         }
+    }
+    video {
+        display: block;
+        // 宽度响应式：最大 90vw（留出遮罩边距）
+        width: min(90vw, 960px);
+        height: auto;
+        // 高度上限：防止超出屏幕（移动端竖屏尤其关键）
+        max-height: 85vh;
+        border-radius: 10px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+        // 确保视频不被 close 按钮遮挡
+        position: relative;
     }
     &.active {
         opacity: 1;

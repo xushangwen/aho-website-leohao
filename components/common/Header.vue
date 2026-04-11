@@ -318,8 +318,8 @@ nav.norm {
     @include flex-c(nowrap);
     justify-content: center;
     transition: all .3s;
-    // 1024px 以下切换到移动导航
-    @include tab {
+    // 1280px 以下切换到移动导航（1024-1280px 区间桌面导航内容溢出）
+    @media screen and (max-width: 1280px) {
         top: -100px;
     }
 
@@ -756,8 +756,8 @@ nav.mobi {
     top: -100px;
     transition: background-color .3s, top .3s;
 
-    // 1024px 以下显示移动导航
-    @include tab {
+    // 1280px 以下显示移动导航
+    @media screen and (max-width: 1280px) {
         top: 0;
     }
 
@@ -835,7 +835,7 @@ nav.mobi {
             gap: 8px;
 
             // 补偿 .btn 内部 padding，使汉堡包 icon 与 logo 左侧对齐
-            @include tab {
+            @media screen and (max-width: 1280px) {
                 margin-right: -6px;
             }
 
@@ -1008,7 +1008,7 @@ nav.mobi {
     height: var(--HEADER_HEIGHT);
     transition: height .3s;
 
-    @include tab {
+    @media screen and (max-width: 1280px) {
         height: var(--HEADER_HEIGHT_MOB);
     }
 }
