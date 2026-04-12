@@ -466,7 +466,7 @@ onUnmounted(() => {
             width: 400px;
             height: inherit;
             color: var(--main-light-gray, #DCDCDC);
-            font-size: fluid(38px, 18px);
+            font-size: fluid(28px);
             line-height: 85px;
             text-align: center;
             transition: all .3s;
@@ -474,7 +474,6 @@ onUnmounted(() => {
             cursor: pointer;
             @include mo {
                 width: auto;
-                font-size: 18px;
                 line-height: 60px;
             }
             //&:hover {

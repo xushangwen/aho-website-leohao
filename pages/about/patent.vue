@@ -331,7 +331,7 @@ function slideNext() {
 </style>
 <style scoped lang="scss">
 .s1 {
-    padding: fluid(100px) 0;
+    padding: fluid(100px, 40px) 0;
     .wrap {
     }
     .top {
@@ -447,7 +447,7 @@ function slideNext() {
         display: flex;
         justify-content: center;
         gap: 0;
-        margin-top: fluid(40px);
+        margin-top: 0;
         position: relative;
         // 灰色底线（伪元素）
         &::before {
@@ -467,6 +467,9 @@ function slideNext() {
             cursor: pointer;
             position: relative;
             transition: color .2s;
+            @include mo {
+                padding: 12px 24px;
+            }
             // 橙色选中线（3px，垂直居中在灰线上）
             &::after {
                 content: '';
@@ -474,7 +477,7 @@ function slideNext() {
                 bottom: -1px;
                 left: 0;
                 width: 100%;
-                height: 3px;
+                height: 1px;
                 background: var(--main-orange);
                 transform: scaleX(0);
                 transition: transform .2s;

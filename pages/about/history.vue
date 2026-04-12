@@ -144,7 +144,7 @@ onMounted(() => {
 $NARROW: 1200px;
 
 .s1 {
-    padding: fluid(100px) 0;
+    padding: fluid(100px, 40px) 0;
     position: relative;
 
     background-color: #fff; // 窄屏上方露出区域的底色

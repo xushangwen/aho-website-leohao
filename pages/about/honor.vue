@@ -148,7 +148,7 @@ watch(docScrollTop, () => {
 
 <style scoped lang="scss">
 .s1 {
-    padding: fluid(100px) 0;
+    padding: fluid(100px, 40px) 0;
 
     .wrap {
         > .t {
