@@ -75,8 +75,8 @@
                                     </clipPath>
                                 </defs>
                             </svg>
-                            <div class=”t1”>{{ $t('esg.etchantCirculationTitle') }}</div>
-                            <div class=”ab”>
+                            <div class="t1">{{ $t('esg.etchantCirculationTitle') }}</div>
+                            <div class="ab">
                                 <div><span>{{ $t('esg.zeroEtchantEmission') }}</span></div>
                                 <div><span>{{ $t('esg.reduceChemicalUsage') }}</span></div>
                             </div>
@@ -120,8 +120,8 @@
                                     </clipPath>
                                 </defs>
                             </svg>
-                            <div class=”t1”>{{ $t('esg.wastewaterTitle') }}</div>
-                            <div class=”ab”>
+                            <div class="t1">{{ $t('esg.wastewaterTitle') }}</div>
+                            <div class="ab">
                                 <div><span>{{ $t('esg.wastewaterFacility') }}</span></div>
                                 <div><span>{{ $t('esg.autoDosing') }}</span></div>
                                 <div><span>{{ $t('esg.onlineMonitoring') }}</span></div>
@@ -312,22 +312,35 @@ const esgReport = computed(() => appConfig.clientConfig?.esgReport || null)
         justify-content: space-between;
         align-items: stretch;
         gap: 16px;
+        // ≤992px：2-col grid（cate 全宽 + 两个 po 并排 1×2）
         @include mo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
             height: auto;
+        }
+        // ≤600px：1-col 堆叠（cate + po + po 垂直排列 = 1×3）
+        @media (max-width: 600px) {
+            display: flex;
             flex-direction: column;
+            gap: 12px;
         }
         .cate {
             width: 150px;
             flex: none;
             @include mo {
+                // grid 模式下跨满两列
+                grid-column: 1 / -1;
                 width: 100%;
-                height: 60px;
+                height: auto;
+                min-height: 64px;
                 flex-direction: row;
                 justify-content: flex-start;
                 align-items: center;
-                padding: 0 20px;
+                padding: 14px 20px;
                 gap: 16px;
-                svg { margin-top: 0; }
+                // 对应颜色 100% → 15%，从左到右
+                background: linear-gradient(90deg, currentColor 0%, color-mix(in srgb, currentColor 15%, transparent) 100%);
                 .name { font-size: 18px; }
             }
             display: flex;
@@ -335,9 +348,18 @@ const esgReport = computed(() => appConfig.clientConfig?.esgReport || null)
             align-items: center;
             overflow: hidden;
             gap: fluid(27px);
-            background: linear-gradient(180deg, currentColor 0%, rgba(30, 50, 150, 0.30) 100%);
+            // 对应颜色 100% → 15%，从上到下
+            background: linear-gradient(180deg, currentColor 0%, color-mix(in srgb, currentColor 15%, transparent) 100%);
             svg {
                 margin-top: fluid(32px);
+                // PC 端缩小大 icon
+                width: 52px;
+                height: auto;
+                @include mo {
+                    // 移到 svg 规则内部，确保覆盖上方的 fluid(32px)
+                    margin-top: 0;
+                    width: 28px;
+                }
             }
             .name {
                 font-size: fluid(24px, 18px);
@@ -354,6 +376,18 @@ const esgReport = computed(() => appConfig.clientConfig?.esgReport || null)
             justify-content: space-between;
             border-top: 1px solid currentColor;
             background: #F8F8F8;
+            @include mo {
+                // 2-col grid 模式：等高行 + space-between 让图片始终贴底
+                min-width: 0;
+                padding: 16px 14px 16px 18px;
+                justify-content: space-between;
+            }
+            @media (max-width: 600px) {
+                // 1-col 模式：内容自然流动，gap 控制间距
+                padding: 20px 18px;
+                gap: 24px;
+                justify-content: flex-start;
+            }
             .top {
                 display: flex;
                 flex-flow: column nowrap;
@@ -361,32 +395,28 @@ const esgReport = computed(() => appConfig.clientConfig?.esgReport || null)
             }
             .t1 {
                 color: var(--main-black, #000);
-                font-size: fluid(20px);
-                font-style: normal;
+                font-size: fluid(18px, 15px);
                 font-weight: 700;
-                line-height: normal;
+                line-height: 1.3;
             }
             .ab {
-                leading-trim: both;
-                text-edge: cap;
-                font-size: 16px;
-                font-style: normal;
+                font-size: 13px;
                 font-weight: 400;
-                line-height: 150%; /* 24px */
+                line-height: 1.7;
+                margin-top: 4px;
                 > div {
-                    text-indent: 1em;
+                    padding-left: 1.2em;
                     position: relative;
-                    text-indent: 1em;
                     span {
-                        color: var(--main-dark-gray);
+                        // 继承 .pla 的主题色（安全蓝/环保绿/节能浅蓝）
+                        color: currentColor;
                     }
-                    &:after {
+                    &:before {
                         content: '●';
-                        display: block;
                         position: absolute;
-                        font-size: 8px;
-                        left: -15px;
-                        top: 0px;
+                        font-size: 7px;
+                        left: 0;
+                        top: 4px;
                         color: currentColor;
                     }
                 }
@@ -432,6 +462,10 @@ const esgReport = computed(() => appConfig.clientConfig?.esgReport || null)
             flex-flow: column nowrap;
             justify-content: center;
             gap: 16px;
+            @include mo {
+                // 窄屏：补充上下 padding（原来为 0）
+                padding: 28px 20px;
+            }
             .tag {
                 display: inline-block;
                 padding: 4px 14px;

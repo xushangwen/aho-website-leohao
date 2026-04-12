@@ -9,10 +9,11 @@
             :navigate="breadcrumb"
         />
         <section class="s1">
-            <div
-                class="cont"
-            >
-                <img :src="philosophyImage" :alt="$t('culture.coverTitle')">
+            <div class="cont">
+                <!-- 桌面端图片 -->
+                <img :src="philosophyImage" :alt="$t('culture.coverTitle')" class="img-desktop">
+                <!-- 移动端图片（根据语言切换） -->
+                <img :src="philosophyImageMobile" :alt="$t('culture.coverTitle')" class="img-mobile">
             </div>
         </section>
         <section class="s2">
@@ -46,6 +47,11 @@ const philosophyImage = computed(() =>
         ? '/images/about/culture/s1-content-en.jpg'
         : '/images/about/culture/s1-content.jpg'
 )
+const philosophyImageMobile = computed(() =>
+    locale.value === 'en'
+        ? '/images/about/culture/s1-content-en-m.jpg'
+        : '/images/about/culture/s1-content-m.jpg'
+)
 const breadcrumb = computed(() => [
     { name: t('nav.about'), link: '/about' },
     { name: t('culture.coverTitle'), link: '' }
@@ -74,10 +80,25 @@ function indexValueUpdate(index) {
 .s1 {
     width: 100%;
     height: auto;
-    > .cont,
+    > .cont {
+        width: 100%;
+        height: auto;
+    }
     img {
         width: 100%;
         height: auto;
+        display: block;
+    }
+    .img-mobile {
+        display: none;
+    }
+    @include mo {
+        .img-desktop {
+            display: none;
+        }
+        .img-mobile {
+            display: block;
+        }
     }
 }
 .s2 {
@@ -104,7 +125,7 @@ function indexValueUpdate(index) {
         @include mo {
             height: auto;
             flex-direction: column;
-            gap: 2px;
+            gap: 0;
         }
         .item {
             width: 12.6%;
@@ -120,12 +141,14 @@ function indexValueUpdate(index) {
             gap: 14px;
             @include mo {
                 width: 100% !important;
-                height: 60px;
+                height: 120px;
                 padding: 16px 24px;
                 justify-content: center;
                 align-items: flex-start;
                 &.active {
-                    height: 260px;
+                    height: 280px;
+                    justify-content: flex-start;
+                    padding-top: 32px;
                 }
             }
             .t1 {
