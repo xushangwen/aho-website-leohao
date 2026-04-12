@@ -81,7 +81,10 @@
                     </div>
                     <div class="mid">
                         <NuxtLink class="item" v-for="(subItem, subIndex) in item.children" :key="`subItem-${subIndex}`"
-                                  :to="localePath(subItem.link)" :target="subItem.target ? subItem.target : '_self'"
+                                  :to="subItem.link.includes('#')
+                                      ? { path: localePath(subItem.link.split('#')[0]), hash: '#' + subItem.link.split('#')[1] }
+                                      : localePath(subItem.link)"
+                                  :target="subItem.target ? subItem.target : '_self'"
                                   @click="closeSubNav()">
                             <i class="icon ri-arrow-right-long-line"></i>
                             <span>{{ locale === 'en' ? (subItem.en || subItem.cn) : subItem.cn }}</span>
@@ -142,7 +145,9 @@
                         <div class="list" v-if="item.children.length > 0">
                             <NuxtLink class="item" v-for="(subItem, subIndex) in item.children"
                                       :key="`sub-menu-item-${subIndex}`"
-                                      :to="localePath(subItem.link)"
+                                      :to="subItem.link.includes('#')
+                                          ? { path: localePath(subItem.link.split('#')[0]), hash: '#' + subItem.link.split('#')[1] }
+                                          : localePath(subItem.link)"
                                       @click="closeSubMenu()">{{ locale === 'en' ? (subItem.en || subItem.cn) : subItem.cn }}</NuxtLink>
                         </div>
                     </div>
