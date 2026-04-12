@@ -648,7 +648,10 @@ nav.norm {
                     leading-trim: both;
                     text-edge: cap;
                     font-family: "TT Fors";
-                    font-size: 20px; // 控制在 170px 容器内，不溢出到相邻列
+                    // 流动字号：视口够宽时保持 40px 原始大小；
+                    // 随视口收窄按 2vw 线性缩小，在 1440px 时约 28.8px 恰好不溢出 170px 容器；
+                    // 最小 18px 保持装饰感
+                    font-size: clamp(18px, 2vw, 40px);
                     font-style: normal;
                     font-weight: 100;
                     line-height: 1.2;
