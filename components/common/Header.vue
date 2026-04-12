@@ -620,6 +620,24 @@ nav.norm {
             justify-content: space-between;
             align-items: flex-start;
 
+            // 1440-1600px 桥接区：防止 .en 英文字溢出压入 .mid
+            // 原因：@include lap (≤1439px) 与无断点 (≥1440px) 之间存在断崖：
+            //   margin 从 120px 跳到 160px，字号从 28px 跳到 40px，
+            //   导致 .list 可用间隙瞬间缩至 10px 而 .en 溢出约 50px。
+            @media screen and (min-width: 1440px) and (max-width: 1600px) {
+                margin: 0 100px;
+                .left .en {
+                    font-size: 30px;
+                }
+                .mid {
+                    width: 450px;
+                    .item { width: 210px; }
+                }
+                .right img {
+                    width: 300px;
+                }
+            }
+
             // ≤1439px：收窄子菜单面板边距
             @include lap {
                 margin: 0 fluid(120px, 60px);
@@ -638,6 +656,7 @@ nav.norm {
             .left {
                 width: 170px;
                 padding-top: 16px;
+                overflow: hidden; // 兜底：防止 .en 溢出流入相邻 .mid 区域
                 .cn {
                     color: var(--main-blue, #1E3296);
                     font-size: fluid(24px);
