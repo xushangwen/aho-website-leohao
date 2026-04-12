@@ -11,11 +11,8 @@
 
         <section class="s1">
             <div class="wrap">
-                <a
-                    class="ir-card"
-                    href="https://www.cninfo.com.cn/new/disclosure/stock?stockCode=605058&orgId=9900039836#latestAnnouncement"
-                    target="_blank"
-                >
+                <!-- 股票信息卡片：菜单锚点目标，了解更多才跳外链 -->
+                <div class="ir-card" id="stock-info">
                     <img
                         src="/images/investors/getty-images-AM3wYIikxO4-unsplash.jpg"
                         alt="股票信息"
@@ -26,18 +23,19 @@
                         <i class="card-icon ri-line-chart-line"></i>
                         <div class="card-en" v-if="locale !== 'en'">Stock Information</div>
                         <div class="card-cn">{{ $t('invest.stockInfo') }}</div>
-                        <div class="_btn">
+                        <a
+                            class="_btn"
+                            href="https://www.cninfo.com.cn/new/disclosure/stock?stockCode=605058&orgId=9900039836#latestAnnouncement"
+                            target="_blank"
+                        >
                             <div class="_str">{{ $t('invest.learnMore') }}</div>
                             <div class="_icon ri-arrow-right-line"></div>
-                        </div>
+                        </a>
                     </div>
-                </a>
+                </div>
 
-                <a
-                    class="ir-card"
-                    href="https://www.cninfo.com.cn/new/disclosure/stock?stockCode=605058&orgId=9900039836#latestAnnouncement"
-                    target="_blank"
-                >
+                <!-- 定期公告卡片：菜单锚点目标，了解更多才跳外链 -->
+                <div class="ir-card" id="announcements">
                     <img
                         src="/images/investors/getty-images-0aT1JDaGPyI-unsplash%20(1).jpg"
                         alt="定期公告"
@@ -48,12 +46,16 @@
                         <i class="card-icon ri-file-list-3-line"></i>
                         <div class="card-en" v-if="locale !== 'en'">Periodic Announcements</div>
                         <div class="card-cn">{{ $t('invest.announcements') }}</div>
-                        <div class="_btn">
+                        <a
+                            class="_btn"
+                            href="https://www.cninfo.com.cn/new/disclosure/stock?stockCode=605058&orgId=9900039836#latestAnnouncement"
+                            target="_blank"
+                        >
                             <div class="_str">{{ $t('invest.learnMore') }}</div>
                             <div class="_icon ri-arrow-right-line"></div>
-                        </div>
+                        </a>
                     </div>
-                </a>
+                </div>
             </div>
         </section>
     </main>
@@ -86,17 +88,17 @@ const breadcrumb = computed(() => [
 .ir-card {
     position: relative;
     display: block;
-    height: 400px;
+    height: 260px;
     overflow: hidden;
     text-decoration: none;
-    cursor: pointer;
+    /* 锚点跳转时留出固定 Header 的空间 */
+    scroll-margin-top: calc(var(--HEADER_HEIGHT) + 20px);
+    @include mo {
+        scroll-margin-top: calc(var(--HEADER_HEIGHT_MOB) + 20px);
+    }
     &:hover {
         .card-bg { transform: scale(1.04); }
         .card-overlay { opacity: 0.72; }
-        .card-arrow {
-            background: var(--main-orange);
-            transform: translateX(4px);
-        }
     }
     .card-bg {
         position: absolute;

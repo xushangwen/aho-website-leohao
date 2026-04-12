@@ -85,37 +85,37 @@ const nav = [
             {
                 cn: '智能家居',
                 en: 'Smart Home',
-                link: '/application',
+                link: '/application#smart-home',
             },
             {
                 cn: '汽车电子',
                 en: 'Automotive Electronics',
-                link: '/application',
+                link: '/application#automotive',
             },
             {
                 cn: '电源能源',
                 en: 'Power & Energy',
-                link: '/application',
+                link: '/application#power-energy',
             },
             {
                 cn: '消费办公',
                 en: 'Consumer & Office',
-                link: '/application',
+                link: '/application#consumer-office',
             },
             {
                 cn: '通讯安防',
                 en: 'Communications & Security',
-                link: '/application',
+                link: '/application#communications',
             },
             {
                 cn: '工业控制',
                 en: 'Industrial Control',
-                link: '/application',
+                link: '/application#industrial',
             },
             {
                 cn: '其他应用',
                 en: 'Other Applications',
-                link: '/application',
+                link: '/application#industrial',
             },
         ]
     },
@@ -130,14 +130,12 @@ const nav = [
             {
                 cn: '股票信息',
                 en: 'Stock Information',
-                link: 'https://www.cninfo.com.cn/new/disclosure/stock?stockCode=605058&orgId=9900039836#latestAnnouncement',
-                target: '_blank'
+                link: '/invest#stock-info',
             },
             {
                 cn: '定期公告',
                 en: 'Periodical Report',
-                link: 'https://www.cninfo.com.cn/new/disclosure/stock?stockCode=605058&orgId=9900039836#latestAnnouncement',
-                target: '_blank'
+                link: '/invest#announcements',
             },
         ]
     },
@@ -441,6 +439,7 @@ const indexApplication = [
     {
         name: '智能家居',
         nameEn: 'Smart Home',
+        anchorId: 'smart-home',
         iconClass: 'ri-home-office-line',
         region: '电视机、洗衣机、电冰箱、空调、热水器、微波炉、厨房电器、清洁电器、智能家居。',
         regionEn: 'Televisions, Washing Machines, Refrigerators, Air Conditioners, Water Heaters, Microwave Ovens, Kitchen Appliances, Cleaning Appliances, Smart Home Systems.',
@@ -456,6 +455,7 @@ const indexApplication = [
     {
         name: '汽车电子',
         nameEn: 'Automotive Electronics',
+        anchorId: 'automotive',
         iconClass: 'ri-police-car-line',
         region: '电池管理、车载电源、刹车控制、方向盘、水泵、冷却系统、车灯、后视镜、座椅、车内感知……',
         regionEn: 'Battery Management Systems (BMS), Onboard Chargers (OBC), Brake Control Systems, Steering Wheels, Water Pumps, Cooling Systems, Automotive Lighting, Rearview Mirrors, Seats, In-Cabin Sensing...',
@@ -485,6 +485,7 @@ const indexApplication = [
     {
         name: '电源能源',
         nameEn: 'Power & Energy',
+        anchorId: 'power-energy',
         iconClass: 'ri-battery-charge-line',
         region: '不间断电源(UPS)、光伏逆变器、各因适配器、电站储能、移动电源、照明。',
         regionEn: 'Uninterruptible Power Supplies (UPS), Photovoltaic Inverters, Various Power Adapters, Energy Storage Systems (ESS) for Power Stations, Portable Power Banks, Lighting.',
@@ -500,6 +501,7 @@ const indexApplication = [
     {
         name: '消费办公',
         nameEn: 'Consumer & Office',
+        anchorId: 'consumer-office',
         iconClass: 'ri-printer-line',
         region: '打印机、POS机、显示器、游戏机、电动工具。',
         regionEn: 'Printers, POS Terminals, Monitors, Game Consoles, Power Tools.',
@@ -515,6 +517,7 @@ const indexApplication = [
     {
         name: '通讯安防',
         nameEn: 'Communications & Security',
+        anchorId: 'communications',
         iconClass: 'ri-webcam-line',
         region: '光模块、机顶盒、安防控制、监控系统……',
         regionEn: 'Optical Modules, Set-Top Boxes, Security Control Units, Surveillance Systems...',
@@ -530,6 +533,7 @@ const indexApplication = [
     {
         name: '工控/医疗/其他',
         nameEn: 'Industrial Control / Medical / Others',
+        anchorId: 'industrial',
         iconClass: 'ri-router-line',
         region: '工业控制、精密电机、航空液压、各类EMS产品。',
         regionEn: 'Industrial Control Equipment, Precision Motors, Aviation Hydraulic Systems, Various EMS Products.',
