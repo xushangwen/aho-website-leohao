@@ -92,6 +92,38 @@ const breadcrumb = computed(() => [
             height: 100%;
             object-fit: cover;
         }
+        // 品牌蓝渐变蒙层：z-index 1，叠在图片上方、文字下方
+        // 窄屏卡片变矮，渐变覆盖比例随之增大，保证文字对比度
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: linear-gradient(
+                to top,
+                rgba(30, 50, 150, 0.82) 0%,
+                rgba(30, 50, 150, 0.25) 40%,
+                transparent 58%
+            );
+            // 断点 1 (≤1024px)：卡片 300px，延伸覆盖至 72%
+            @include tab {
+                background: linear-gradient(
+                    to top,
+                    rgba(30, 50, 150, 0.85) 0%,
+                    rgba(30, 50, 150, 0.30) 55%,
+                    transparent 72%
+                );
+            }
+            // 断点 2 (≤992px)：卡片 200px，覆盖至 85% 保证可读性
+            @include mo {
+                background: linear-gradient(
+                    to top,
+                    rgba(30, 50, 150, 0.88) 0%,
+                    rgba(30, 50, 150, 0.35) 65%,
+                    transparent 85%
+                );
+            }
+        }
         > .c {
             z-index: 2;
             padding: fluid(60px, 24px);
