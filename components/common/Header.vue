@@ -674,6 +674,7 @@ nav.norm {
                     font-weight: 100;
                     line-height: 100%; /* 40px */
                     text-transform: capitalize;
+                    white-space: nowrap; // 强制单行：避免大字号在 170px 容器内换行导致底部被 overflow:hidden 裁切
                 }
             }
             .mid {
