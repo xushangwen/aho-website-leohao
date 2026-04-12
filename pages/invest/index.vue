@@ -14,7 +14,7 @@
                 <!-- 股票信息卡片：菜单锚点目标，了解更多才跳外链 -->
                 <div class="ir-card" id="stock-info">
                     <img
-                        src="/images/investors/getty-images-AM3wYIikxO4-unsplash.jpg"
+                        src="/images/investors/stock-info-bg.jpg"
                         alt="股票信息"
                         class="card-bg"
                     >
