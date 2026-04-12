@@ -1,8 +1,8 @@
 <template>
     <main>
         <EleDefaultCover
-            image="/images/prod/cover.jpg"
-            image-mobile="/images/prod/cover-m.jpg"
+            image="/images/investors/application-invest-bg@2x.jpg"
+            image-mobile="/images/investors/application-invest-bg@2x.jpg"
             :text="$t('invest.coverTitle')"
         ></EleDefaultCover>
         <EleBreadcrumb
