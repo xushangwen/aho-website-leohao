@@ -32,8 +32,9 @@
                 class="glo"
                 :class="{active: indexPlate === 0}"
             >
-                <img src="/images/about/glonet/glo.jpg" alt="">
-                <div class="point-layer">
+                <div class="map-scroll-wrap">
+                    <img src="/images/about/glonet/glo.jpg" alt="">
+                    <div class="point-layer">
                     <div
                         class="item"
                         ref="elGloPoints"
@@ -54,32 +55,6 @@
                         </div>
 
                     </div>
-                </div>
-                <div class="profile">
-                    <div class="cont">
-                        <div class="item" style="color: var(--main-yellow)">
-                            <div class="t1">{{ $t('glonet.baseTitle') }}</div>
-                            <div class="num">3</div>
-                            <div class="t2">{{ $t('glonet.baseCount') }}</div>
-                            <div class="t3">{{ $t('glonet.baseNames') }}</div>
-                            <i class="icon ri-hotel-line"></i>
-                        </div>
-                        <div class="item" style="color: var(--main-blue)">
-                            <div class="t1">{{ $t('glonet.centerTitle') }}</div>
-                            <div class="num">5</div>
-                            <div class="t2">{{ $t('glonet.centerCount') }}</div>
-                            <div class="t3">{{ $t('glonet.centerNames') }}</div>
-                            <i class="icon ri-global-line"></i>
-                        </div>
-                        <div class="item" style="color: var(--main-orange)">
-                            <div class="t1">{{ $t('glonet.customerTitle') }}</div>
-                            <div class="num">20<span>+</span></div>
-                            <div class="t2">{{ $t('glonet.customerCount') }}</div>
-                            <div class="t3">{{ $t('glonet.customerRegions') }}</div>
-                            <i class="icon ri-user-location-line"></i>
-                        </div>
-                    </div>
-
                 </div>
                 <div class="legend">
                 <div class="item">
@@ -117,6 +92,39 @@
                     />
                 </svg>
             </div>
+            </div>
+            <!-- 移动端滑动提示 -->
+            <div class="map-scroll-hint">
+                <i class="ri-arrow-left-s-line"></i>
+                <span>左右滑动</span>
+                <i class="ri-arrow-right-s-line"></i>
+            </div>
+                <div class="profile">
+                    <div class="cont">
+                        <div class="item" style="color: var(--main-yellow)">
+                            <div class="t1">{{ $t('glonet.baseTitle') }}</div>
+                            <div class="num">3</div>
+                            <div class="t2">{{ $t('glonet.baseCount') }}</div>
+                            <div class="t3">{{ $t('glonet.baseNames') }}</div>
+                            <i class="icon ri-hotel-line"></i>
+                        </div>
+                        <div class="item" style="color: var(--main-blue)">
+                            <div class="t1">{{ $t('glonet.centerTitle') }}</div>
+                            <div class="num">5</div>
+                            <div class="t2">{{ $t('glonet.centerCount') }}</div>
+                            <div class="t3">{{ $t('glonet.centerNames') }}</div>
+                            <i class="icon ri-global-line"></i>
+                        </div>
+                        <div class="item" style="color: var(--main-orange)">
+                            <div class="t1">{{ $t('glonet.customerTitle') }}</div>
+                            <div class="num">20<span>+</span></div>
+                            <div class="t2">{{ $t('glonet.customerCount') }}</div>
+                            <div class="t3">{{ $t('glonet.customerRegions') }}</div>
+                            <i class="icon ri-user-location-line"></i>
+                        </div>
+                    </div>
+
+                </div>
             <!-- 工厂卡片 -->
             <div class="glo-factory-cards">
                 <div
@@ -146,40 +154,44 @@
                 class="china"
                 :class="{active: indexPlate === 1}"
             >
-                <img src="/images/about/glonet/china.jpg" alt="">
-                <div class="line-group">
-                    <svg
-                        :width="lineGroupWidth"
-                        :height="lineGroupHeight"
-                    >
-                        <path
-                            class="line-path"
-                            :class="{active: activeItemIndex === index}"
-                            v-for="(item, index) in lineGroup"
-                            :key="`line${index}`"
-                            :d="item"
-                            fill="none"
-                        ></path>
-                    </svg>
-                </div>
-                <div class="point-layer">
-                    <div
-                        class="item"
-                        ref="elChinaPoints"
-                        :class="{'large-item': item.largeItem, 'active': activeItemIndex === index}"
-                        v-for="(item, index) in chinaPointsList"
-                        :key="`item${index}`"
-                        :style="{
-                            left: item.position?.left || 0,
-                            top: item.position?.top || 0
-                        }"
-                    >
-                        <div class="dot"></div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="34" viewBox="0 0 28 34" fill="none">
-                            <path d="M23.5461 24.046L13.9911 33.586L4.43607 24.031C-0.843926 18.751 -0.843926 10.201 4.43607 4.93602C9.70107 -0.343982 18.2511 -0.343982 23.5161 4.93452C28.7811 10.1995 28.7811 18.7495 23.5161 24.0145L23.5461 24.046ZM12.4911 12.991H7.99107V15.991H12.4911V20.491H15.4911V15.991H19.9911V12.991H15.4911V8.49102H12.4911V12.991Z" fill="#FF6400"/>
+                <div class="map-scroll-wrap">
+                    <!-- map-inner 作为整体缩放单元：img + 标记点层同步偏移，避免错位 -->
+                    <div class="map-inner">
+                        <img src="/images/about/glonet/china.jpg" alt="">
+                        <div class="line-group">
+                        <svg
+                            :width="lineGroupWidth"
+                            :height="lineGroupHeight"
+                        >
+                            <path
+                                class="line-path"
+                                :class="{active: activeItemIndex === index}"
+                                v-for="(item, index) in lineGroup"
+                                :key="`line${index}`"
+                                :d="item"
+                                fill="none"
+                            ></path>
                         </svg>
                     </div>
-                </div>
+                    <div class="point-layer">
+                        <div
+                            class="item"
+                            ref="elChinaPoints"
+                            :class="{'large-item': item.largeItem, 'active': activeItemIndex === index}"
+                            v-for="(item, index) in chinaPointsList"
+                            :key="`item${index}`"
+                            :style="{
+                                left: item.position?.left || 0,
+                                top: item.position?.top || 0
+                            }"
+                        >
+                            <div class="dot"></div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="34" viewBox="0 0 28 34" fill="none">
+                                <path d="M23.5461 24.046L13.9911 33.586L4.43607 24.031C-0.843926 18.751 -0.843926 10.201 4.43607 4.93602C9.70107 -0.343982 18.2511 -0.343982 23.5161 4.93452C28.7811 10.1995 28.7811 18.7495 23.5161 24.0145L23.5461 24.046ZM12.4911 12.991H7.99107V15.991H12.4911V20.491H15.4911V15.991H19.9911V12.991H15.4911V8.49102H12.4911V12.991Z" fill="#FF6400"/>
+                            </svg>
+                        </div>
+                    </div>
+                    </div><!-- /map-inner -->
                 <div class="detail-group">
                     <div
                         class="detail-list"
@@ -207,6 +219,7 @@
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
 
             </div>
@@ -491,9 +504,10 @@ onUnmounted(() => {
         position: relative;
         transition: all .3s;
         overflow: hidden;
+        // 移动端：覆盖 JS 内联高度，让容器自适应内容
         @include mo {
-            overflow-x: auto;
-            min-width: 320px;
+            height: auto !important;
+            overflow: visible;
         }
         .glo,
         .china {
@@ -513,13 +527,78 @@ onUnmounted(() => {
                 transform: translateY(0);
                 z-index: 9;
             }
-            > img {
+            .map-scroll-wrap > img,
+            .map-scroll-wrap .map-inner > img {
                 width: 100%;
                 height: auto;
+            }
+            // map-inner：图片 + 标记层的整体容器，作为 point-layer 的 containing block
+            .map-inner {
+                position: relative;
+                width: 100%;
             }
             .point-layer {
                 position: absolute;
                 inset: 0;
+            }
+            // 移动端：改为文档流，用 display 切换，彻底绕开 JS 高度系统
+            @include mo {
+                position: relative;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                transition: none;
+                &:not(.active) {
+                    display: none;
+                }
+            }
+        }
+        // 地图滚动容器：移动端水平滑动查看完整地图点位
+        .map-scroll-wrap {
+            position: relative;
+            @include mo {
+                overflow-x: auto;
+                overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none; // Firefox
+                &::-webkit-scrollbar { display: none; } // Chrome/Safari
+                > img {
+                    min-width: 1100px;
+                }
+                .point-layer {
+                    min-width: 1100px;
+                }
+            }
+        }
+        // 移动端滑动提示 pill（仅 .glo 使用）
+        .map-scroll-hint {
+            display: none;
+            @include mo {
+                display: flex;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 10;
+                align-items: center;
+                gap: 4px;
+                background: rgba(0, 0, 0, 0.32);
+                backdrop-filter: blur(6px);
+                -webkit-backdrop-filter: blur(6px);
+                color: #fff;
+                font-size: 12px;
+                padding: 6px 12px 6px 8px;
+                border-radius: 100px;
+                pointer-events: none;
+                white-space: nowrap;
+
+                i {
+                    font-size: 15px;
+                    opacity: 0.9;
+                    // 左箭头向左 nudge
+                    &.ri-arrow-left-s-line  { animation: hint-nudge-left  1.8s ease-in-out infinite; }
+                    // 右箭头向右 nudge
+                    &.ri-arrow-right-s-line { animation: hint-nudge-right 1.8s ease-in-out infinite; }
+                }
             }
         }
     }
@@ -843,6 +922,117 @@ onUnmounted(() => {
             transform: scale(2.5) !important;
             background-color: var(--main-orange) !important;
         }
+
+        // ============================================================
+        // Mobile 响应式（≤992px）
+        // 模板已将 .profile / .glo-factory-cards 移到 .map-scroll-wrap 外部
+        // 两组卡片 position:absolute 在 .glo 上，不跟随地图横滑
+        // 地图 min-width:1100px 放大，容器 ~760px 高度
+        // ============================================================
+        @include mo {
+            overflow: visible;
+            // 上下各延伸：顶部给数据卡片留位，底部给工厂卡片留位
+            // 数据卡3张垂直叠放约 3×(10+32+4+12+4+12+10) = ~252px + gap
+            padding-top: 100px;
+            padding-bottom: 240px;
+            background-color: #e6eaed; // 匹配 glo.jpg 边缘灰色（像素取样值）
+
+            .legend         { display: none; }
+            .glo-line-group { display: none; }
+
+            // ── 统计卡片：全宽 · 顶部 · 不随地图滚动 ──
+            .profile {
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: auto;
+                z-index: 6;
+                pointer-events: none;
+
+                .cont {
+                    width: 100%;
+                    max-width: 100%;
+                    height: auto;
+                    flex-direction: column;
+                    gap: 6px;
+                    padding: 10px 16px;
+                    margin: 0;
+                }
+
+                .item {
+                    pointer-events: auto;
+                    position: relative;
+                    flex: none;
+                    height: auto;
+                    min-height: 0;
+                    width: 100%;
+                    background-color: rgba(255, 255, 255, .3);
+                    backdrop-filter: blur(8px);
+                    -webkit-backdrop-filter: blur(8px);
+                    padding: 10px 15px 10px 16px;
+                    display: grid;
+                    grid-template-columns: 1fr auto;
+                    grid-template-rows: auto auto auto auto;
+
+                    &::before {
+                        top: 31px;
+                        height: 32px;
+                        width: 3px;
+                    }
+
+                    .t1  { grid-column: 1; grid-row: 1; font-size: 13px; line-height: 1.3; }
+                    .num { grid-column: 1; grid-row: 2; font-size: 32px; line-height: 1; margin-top: 4px; letter-spacing: -0.6px; }
+                    .t2  { grid-column: 1; grid-row: 3; font-size: 12px; line-height: 1.3; margin-top: 4px; }
+                    .t3  { grid-column: 1; grid-row: 4; font-size: 12px; line-height: 1.3; }
+
+                    .icon {
+                        grid-column: 2;
+                        grid-row: 1 / span 4;
+                        position: static;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        align-self: center;
+                        font-size: 24px;
+                        margin-left: 10px;
+                    }
+                }
+            }
+
+            // ── 工厂卡片：全宽 · 绝对定位底部 · 叠在延伸区上 ──
+            .glo-factory-cards {
+                position: absolute;
+                top: auto;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                transform: none;
+                flex-direction: column;
+                gap: 6px;
+                padding: 10px 16px;
+                max-width: 100%;
+                z-index: 6;
+                pointer-events: none;
+            }
+
+            .glo-card {
+                pointer-events: auto;
+                width: 100%;
+                flex: none;
+
+                .card-img   { width: 80px; }
+                .card-body  { padding: 8px 12px; gap: 4px; }
+                .card-header { margin-bottom: 2px; }
+                .card-icon  { font-size: 16px; }
+                .card-type  { font-size: 11px; }
+                .card-name  { font-size: 13px; margin-top: 0; }
+            }
+
+            // 滑动提示定位：factory cards 上方留足够空间
+            .map-scroll-hint {
+                bottom: calc(240px + 48px);
+            }
+        }
     }
 
     .china {
@@ -975,15 +1165,77 @@ onUnmounted(() => {
                 }
             }
         }
+
+        // ============================================================
+        // Mobile 响应式（≤992px）
+        // .map-inner（img + 标记点）作为整体缩放单元，彻底避免错位
+        // ============================================================
+        @include mo {
+            overflow: visible;
+            background-color: #e6eaed;
+
+            .line-group { display: none; }
+            .map-scroll-hint { display: none !important; }
+
+            // map-scroll-wrap：overflow:hidden 裁剪超出部分，不滚动
+            .map-scroll-wrap {
+                overflow: hidden;
+
+                // map-inner 整体 2× 放大，左移使中国居中
+                // offset = -(57% × 2 - 50%) = -64%
+                .map-inner {
+                    width: 200%;
+                    margin-left: -50%;
+                    // img 和 point-layer 都在 map-inner 内部，百分比坐标自动对齐
+                    > img { width: 100%; height: auto; min-width: 0; }
+                    .point-layer { inset: 0; min-width: 0; width: 100%; left: 0; right: 0; }
+                }
+            }
+
+            // detail-group：在 map-scroll-wrap 内，绝对底部叠加
+            .detail-group {
+                inset: auto;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: auto;
+                overflow: visible;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 5px;
+                padding: 10px 14px;
+                background: none;
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+                z-index: 6;
+                align-items: start;
+
+                .detail-list { display: contents; }
+
+                .item {
+                    max-width: none;
+                    padding: 6px 8px;
+                    background-color: rgba(255, 255, 255, 0.5);
+                    border-top: 1.5px solid var(--main-blue);
+                }
+
+                .name { font-size: 12px; line-height: 1.4; color: #231815; }
+                .cus  { display: none; }
+            }
+        }
     }
 </style>
 <style>
 @keyframes stroke-animate {
-    0% {
-        stroke-dashoffset: 0;
-    }
-    100% {
-        stroke-dashoffset: 100%;
-    }
+    0%   { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: 100%; }
+}
+@keyframes hint-nudge-left {
+    0%, 100% { transform: translateX(0);   opacity: 0.75; }
+    50%       { transform: translateX(-4px); opacity: 1; }
+}
+@keyframes hint-nudge-right {
+    0%, 100% { transform: translateX(0);  opacity: 0.75; }
+    50%       { transform: translateX(4px); opacity: 1; }
 }
 </style>
