@@ -131,8 +131,8 @@ function openCate(index) {
         currentCate.value = cate.link.split('=')[1]
         router.push(`/products?cate=${currentCate.value}`)
     }
-    // 滚动到顶部
-    window.scrollTo({ top: 400, behavior: 'smooth' })
+    // 滚动到顶部（仅客户端，SSR 无 window）
+    if (process.client) window.scrollTo({ top: 400, behavior: 'smooth' })
     // 重置分页
     page.value = 1
     noMore.value = false
@@ -184,11 +184,11 @@ async function loadProducts() {
     }
 }
 
-// 监听路由变化
+// 监听路由变化（immediate:true 会在 SSR 阶段触发，需守卫 window）
 watch(() => route.query.cate, () => {
     initCate()
-    // 滚动到顶部
-    window.scrollTo({ top: 400, behavior: 'smooth' })
+    // 滚动到顶部（仅客户端）
+    if (process.client) window.scrollTo({ top: 400, behavior: 'smooth' })
     // 重置分页
     page.value = 1
     noMore.value = false
