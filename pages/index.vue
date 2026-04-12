@@ -936,12 +936,16 @@ onUnmounted(() => {
                 .t1 {
                     font-size: fluid(36px, 26px);
                     font-weight: 300;
-                    margin-bottom: 16px;
+                    // t1+t2 同属一个语义整体，去掉块间额外间距，
+                    // 用自然行高(1.3)拉近为连续文字感
+                    margin-bottom: 0;
                     @include mo {
                         font-size: 24px;
                         font-weight: 300;
-                        margin-bottom: 10px;
-                        span { display: block; }
+                        margin-bottom: 4px;
+                        // keep-all：只在标点/空格处断行，"PCB产品"不会被拆分；
+                        // 全角逗号"，"是合法断点，宽度不够时整体在逗号后换行
+                        word-break: keep-all;
                     }
                 }
                 .t2,
@@ -950,6 +954,11 @@ onUnmounted(() => {
                     font-weight: 700;
                     @include mo {
                         font-size: 24px;
+                        // display: block 只在极窄屏（≤460px）生效：
+                        // slide4 t2 最宽=14字×24px=336px，
+                        // 容器=viewport-88，424px时恰好容纳，460px留安全余量
+                    }
+                    @media screen and (max-width: 460px) {
                         span { display: block; }
                     }
                 }
@@ -957,6 +966,7 @@ onUnmounted(() => {
                     font-family: 'Google Sans', sans-serif;
                     font-size: fluid(50px, 30px);
                     line-height: 1.2;
+                    text-wrap: balance;
                 }
                 .t2m {
                     margin-top: 6px;
@@ -967,11 +977,19 @@ onUnmounted(() => {
                 .prd-abst {
                     margin-top: 12px;
                     color: white;
-                    max-width: min(560px, 85vw);
+                    // 不限制宽度，让英文自然比中文标题宽；
+                    // 90vw 兜底防止超长文本溢出容器
+                    max-width: min(900px, 90vw);
+                    text-wrap: balance;
                     span {
                         font-size: fluid(30px, 20px);
                         font-family: TTFors;
                         font-weight: 400;
+                    }
+                }
+                @include tab {
+                    .prd-abst {
+                        span { font-size: 20px; }
                     }
                 }
                 @include mo {
@@ -979,7 +997,7 @@ onUnmounted(() => {
                     .prd-abst {
                         margin-top: 10px;
                         max-width: 85vw;
-                        span { font-size: 15px; }
+                        span { font-size: 18px; }
                     }
                 }
 

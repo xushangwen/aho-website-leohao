@@ -148,9 +148,9 @@
                     <div class="lang">
                         <i class="icon ri-global-line"></i>
                         <div class="switcher">
-                            <NuxtLink class="link" :class="{ active: locale === 'zh' }" :to="switchLocalePath('zh')">中文</NuxtLink>
+                            <NuxtLink class="link" :class="{ active: locale === 'zh' }" :to="switchLocalePath('zh')" @click="closeSubMenu()">中文</NuxtLink>
                             &nbsp;&nbsp;/&nbsp;&nbsp;
-                            <NuxtLink class="link" :class="{ active: locale === 'en' }" :to="switchLocalePath('en')">English</NuxtLink>
+                            <NuxtLink class="link" :class="{ active: locale === 'en' }" :to="switchLocalePath('en')" @click="closeSubMenu()">English</NuxtLink>
                         </div>
                     </div>
                 </div>

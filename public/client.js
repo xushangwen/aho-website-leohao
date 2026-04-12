@@ -209,7 +209,7 @@ const indexBanner = [
         ],
         name: [''],
         t1: [''],
-        t2: ['成为全世界优质客户信赖的合作伙伴'],
+        t2: ['成为全世界优质客户', '信赖的合作伙伴'],
         t2En: ['Reliable Partner for High-level Customers Worldwide'],
         t2m: [],
         abst: [
@@ -226,7 +226,7 @@ const indexBanner = [
         name: [''],
         t1: ['澳弘电子持续创新，', 'PCB产品'],
         t1En: [],
-        t2: ['适用于多领域多场景的应用需求'],
+        t2: ['适用于多领域', '多场景的应用需求'],
         t2En: ['PCB Products for Multi-discipline & Multi-scenario Applications'],
         t2m: [],
         abst: [
