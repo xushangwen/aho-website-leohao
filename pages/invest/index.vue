@@ -88,7 +88,13 @@ const breadcrumb = computed(() => [
 .ir-card {
     position: relative;
     display: block;
-    height: 260px;
+    height: 400px;       // 宽屏原始高度
+    @include tab {
+        height: 300px;   // ≤1024px 平板收缩
+    }
+    @include mo {
+        height: 220px;   // ≤992px 手机再收缩
+    }
     overflow: hidden;
     text-decoration: none;
     /* 锚点跳转时留出固定 Header 的空间 */
