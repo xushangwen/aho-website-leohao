@@ -620,30 +620,9 @@ nav.norm {
             justify-content: space-between;
             align-items: flex-start;
 
-            // 1440-1600px 桥接区：防止 .en 英文字溢出压入 .mid
-            // 原因：@include lap (≤1439px) 与无断点 (≥1440px) 之间存在断崖：
-            //   margin 从 120px 跳到 160px，字号从 28px 跳到 40px，
-            //   导致 .list 可用间隙瞬间缩至 10px 而 .en 溢出约 50px。
-            @media screen and (min-width: 1440px) and (max-width: 1600px) {
-                margin: 0 100px;
-                .left .en {
-                    font-size: 30px;
-                }
-                .mid {
-                    width: 450px;
-                    .item { width: 210px; }
-                }
-                .right img {
-                    width: 300px;
-                }
-            }
-
             // ≤1439px：收窄子菜单面板边距
             @include lap {
                 margin: 0 fluid(120px, 60px);
-                .left .en {
-                    font-size: 28px;
-                }
                 .mid {
                     width: 400px;
                     .item { width: 185px; }
@@ -669,37 +648,17 @@ nav.norm {
                     leading-trim: both;
                     text-edge: cap;
                     font-family: "TT Fors";
-                    font-size: fluid(40px, 28px);
+                    font-size: 20px; // 控制在 170px 容器内，不溢出到相邻列
                     font-style: normal;
                     font-weight: 100;
-                    line-height: 100%; /* 40px */
+                    line-height: 1.2;
                     text-transform: capitalize;
-                    white-space: nowrap; // 强制单行：避免大字号在 170px 容器内换行导致底部被 overflow:hidden 裁切
                 }
             }
             .mid {
                 width: 530px;
                 height: 200px;
-                position: relative;
-                z-index: 1;
                 display: flex;
-                // ::before 向左延伸，覆盖 space-between gap 中裸露的 .en 装饰文字溢出
-                // 原因：.left/.mid/.right 各因 transform 形成独立堆叠上下文，
-                //   .mid{z-index:1} 仅覆盖 .mid 自身区域，gap 无元素遮挡。
-                // 方案：::before 从 .mid 左边向左延伸 600px（超过最大 gap），
-                //   z-index:-1 置于 .mid 内容之后，但整体仍在 .left 堆叠上下文之后，
-                //   从而覆盖 gap 中的溢出文字而不遮挡导航链接。
-                &::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                    bottom: 0;
-                    left: -600px; // 向左延伸 600px，覆盖任意宽度的 gap
-                    background: #FAFAFA;
-                    z-index: -1;
-                    pointer-events: none;
-                }
                 flex-flow: column wrap;
                 justify-content: flex-start;
                 align-content: space-between;
