@@ -680,10 +680,26 @@ nav.norm {
             .mid {
                 width: 530px;
                 height: 200px;
-                position: relative; // 确保 z-index 生效，覆盖 .left .en 的溢出装饰文字
+                position: relative;
                 z-index: 1;
-                background: #FAFAFA; // 与面板底色一致，遮住从 .left 溢出的文字
                 display: flex;
+                // ::before 向左延伸，覆盖 space-between gap 中裸露的 .en 装饰文字溢出
+                // 原因：.left/.mid/.right 各因 transform 形成独立堆叠上下文，
+                //   .mid{z-index:1} 仅覆盖 .mid 自身区域，gap 无元素遮挡。
+                // 方案：::before 从 .mid 左边向左延伸 600px（超过最大 gap），
+                //   z-index:-1 置于 .mid 内容之后，但整体仍在 .left 堆叠上下文之后，
+                //   从而覆盖 gap 中的溢出文字而不遮挡导航链接。
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: -600px; // 向左延伸 600px，覆盖任意宽度的 gap
+                    background: #FAFAFA;
+                    z-index: -1;
+                    pointer-events: none;
+                }
                 flex-flow: column wrap;
                 justify-content: flex-start;
                 align-content: space-between;
