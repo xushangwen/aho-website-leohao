@@ -81,7 +81,8 @@
                     </div>
                     <div class="mid">
                         <NuxtLink class="item" v-for="(subItem, subIndex) in item.children" :key="`subItem-${subIndex}`"
-                                  :to="localePath(subItem.link)" :target="subItem.target ? subItem.target : '_self'">
+                                  :to="localePath(subItem.link)" :target="subItem.target ? subItem.target : '_self'"
+                                  @click="closeSubNav()">
                             <i class="icon ri-arrow-right-long-line"></i>
                             <span>{{ locale === 'en' ? (subItem.en || subItem.cn) : subItem.cn }}</span>
                             <div class="dot"></div>
