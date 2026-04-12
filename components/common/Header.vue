@@ -656,7 +656,6 @@ nav.norm {
             .left {
                 width: 170px;
                 padding-top: 16px;
-                overflow: hidden; // 兜底：防止 .en 溢出流入相邻 .mid 区域
                 .cn {
                     color: var(--main-blue, #1E3296);
                     font-size: fluid(24px);
@@ -680,6 +679,9 @@ nav.norm {
             .mid {
                 width: 530px;
                 height: 200px;
+                position: relative; // 确保 z-index 生效，覆盖 .left .en 的溢出装饰文字
+                z-index: 1;
+                background: #FAFAFA; // 与面板底色一致，遮住从 .left 溢出的文字
                 display: flex;
                 flex-flow: column wrap;
                 justify-content: flex-start;
