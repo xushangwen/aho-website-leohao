@@ -70,10 +70,6 @@
                     <div class="loading" v-if="loading">
                         {{ $t('common.loading') }}
                     </div>
-                    <!-- 没有更多数据 -->
-                    <div class="no-more" v-if="noMore && prod.length > 0">
-                        {{ $t('common.noMore') }}
-                    </div>
                 </div>
             </div>
         </section>
