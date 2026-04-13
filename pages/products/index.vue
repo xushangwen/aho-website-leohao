@@ -261,11 +261,12 @@ onMounted(() => {
     aside {
         width: 216px;
         flex: none;
-        @include mo {
-            width: 100%;
-        }
         height: auto;
         min-height: 1px;
+        @include mo {
+            width: 100%;
+            .cate-name { display: none; }
+        }
         .aside-wrapper {
             width: inherit;
             height: auto;
@@ -275,25 +276,20 @@ onMounted(() => {
                 top: 100px;
             }
             @include mo {
-                &.fixed {
-                    position: relative;
-                    top: 0;
-                }
+                &.fixed { position: relative; top: 0; }
+                // 横向滚动 tab 条，与 patent 页保持同一设计语言
+                display: flex;
+                flex-flow: row nowrap;
+                overflow-x: auto;
+                gap: 0;
+                border-bottom: 1px solid var(--main-light-gray);
+                &::-webkit-scrollbar { display: none; }
             }
         }
         .cate-name {
             color: var(--main-orange, #FF6400);
             font-size: 12px;
             margin-bottom: 12px;
-        }
-        @include mo {
-            .cate-name { display: none; }
-            display: flex;
-            flex-flow: row nowrap;
-            overflow-x: auto;
-            gap: 8px;
-            padding-bottom: 8px;
-            &::-webkit-scrollbar { display: none; }
         }
         .item:first-child {
             border-top: 1px solid var(--main-light-gray, #DCDCDC);
@@ -309,16 +305,32 @@ onMounted(() => {
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
+            transition: color .2s;
             @include mo {
+                // 重置桌面端边框
+                border-bottom: none;
                 flex-shrink: 0;
-                padding: 8px 16px;
-                border: 1px solid var(--main-light-gray);
-                border-radius: 20px;
+                padding: 10px 20px;
                 font-size: 14px;
+                font-weight: 500;
+                color: var(--main-dark-gray);
+                position: relative;
+                // 橙色下划线 active 指示器
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -1px;
+                    left: 0;
+                    width: 100%;
+                    height: 2px;
+                    background: var(--main-orange);
+                    transform: scaleX(0);
+                    transition: transform .2s;
+                }
                 &.active {
-                    background: var(--main-blue);
-                    color: white;
-                    border-color: var(--main-blue);
+                    color: var(--main-blue);
+                    font-weight: 700;
+                    &::after { transform: scaleX(1); }
                 }
                 .icon { display: none; }
             }
