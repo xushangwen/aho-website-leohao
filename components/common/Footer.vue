@@ -31,11 +31,11 @@
                 <div class="contact">
                     <i class="icon ri-customer-service-2-line"></i>
                     <div class="item phone">
-                        <span>{{ orgInfo.telephone }}</span>
+                        <span>{{ locale === 'en' ? (orgInfo.telephone_en || orgInfo.telephone) : orgInfo.telephone }}</span>
                     </div>
                     <div class="w">
                         <div class="item"><a :href="`mailto:${orgInfo.email}`">{{ $t('footer.emailLabel') }}：{{ orgInfo.email }}</a></div>
-                        <div class="item"><span>{{ $t('footer.addressLabel') }}：{{ orgInfo.address }}</span></div>
+                        <div class="item"><span>{{ $t('footer.addressLabel') }}：{{ locale === 'en' ? (orgInfo.address_en || orgInfo.address) : orgInfo.address }}</span></div>
                     </div>
                 </div>
                 <div class="sl l2"></div>
@@ -71,7 +71,7 @@
             <div class="wrap">
                 <div class="left">
                     <a href="https://beian.miit.gov.cn/" target="_blank">{{ orgInfo.beian }}</a>
-                    <span>© {{year}} {{ orgInfo.name }} All Rights Reserved.</span>
+                    <span>© {{year}} {{ locale === 'en' ? (orgInfo.name_en || orgInfo.name) : orgInfo.name }} All Rights Reserved.</span>
                     <!--<a href="javascript:;" class="ga">-->
                     <!--    <img src="/images/ga.png" alt="">-->
                     <!--    <span>苏公网安备32041102001590号</span>-->
