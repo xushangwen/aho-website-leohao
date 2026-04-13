@@ -159,7 +159,7 @@
                     <span>{{ $t('home.newsDesc') }}</span>
                 </div>
                 <div class="loading" v-if="loadingNews">{{ $t('common.loading') }}</div>
-                <EleNewsList v-else class="news-list" :news-list="newsList"></EleNewsList>
+                <EleNewsList v-else class="news-list" :news-list="newsList" :carousel="true"></EleNewsList>
                 <div class="tools">
                     <NuxtLink class="_btn" :to="newsPath">
                         <div class="_str">{{ $t('home.newsBtn') }}</div>
@@ -1293,11 +1293,11 @@ onUnmounted(() => {
     position: relative;
     $itemHeight: 320px;
     // 最小露出 = padding-top(40px) + icon/name行高(~40px) + 10px余量 = 90px
-    // 刚好看到标题，不多不少
-    --s3-step: max(90px, calc((100vh - var(--HEADER_HEIGHT) - 320px) / 6));
+    // 除以 5（itemLength-1=间隔数）而非 6（总数），与 JS step 公式对齐，确保 fixed→absolute 无跳变
+    --s3-step: max(90px, calc((100vh - var(--HEADER_HEIGHT) - 320px) / 5));
     @include tab {
         // 移动端 padding-top(22px) + icon(26px) + name(16px) + 余量 = 80px
-        --s3-step: max(80px, calc((100vh - var(--HEADER_HEIGHT_MOB) - 340px) / 6));
+        --s3-step: max(80px, calc((100vh - var(--HEADER_HEIGHT_MOB) - 340px) / 5));
     }
     display: flex;
     flex-flow: column nowrap;
@@ -1383,9 +1383,9 @@ onUnmounted(() => {
                 display: block;
             }
         }
-        @for $i from 1 through 7 {
+        @for $i from 1 through 6 {
             $idx: $i - 1;
-            $idx_end: 7 - $i;
+            $idx_end: 6 - $i;
             position: relative;
             &.fixed-sticky:nth-child(#{$i}) {
                 background-color: lighten(#1E3296, 5% * ($i - 1));
@@ -1534,7 +1534,7 @@ onUnmounted(() => {
 }
 
 .s4 {
-    padding: fluid(80px, 48px) 0 fluid(160px, 64px);
+    padding: fluid(80px, 48px) 0 fluid(100px, 48px);
     .wrap {
 
     }
@@ -1554,7 +1554,7 @@ onUnmounted(() => {
         text-align: center;
     }
     @include mo {
-        padding: 48px 0 64px;
+        padding: 48px 0 48px;
         .news-list {
             margin-top: 32px;
         }

@@ -33,7 +33,9 @@ export default defineNuxtConfig({
         logLevel: 'info',
         routeRules: {
             // 客户端 API 请求走此代理，避免 CORS（服务端直连 127.0.0.1:3100）
-            '/api/proxy/**': { proxy: 'https://aohong.dist.ink/api/**' }
+            '/api/proxy/**': { proxy: 'http://localhost:8080/api/**' },
+            // 新闻详情页正文图片路径为 /upload/，需代理到后端文件服务
+            '/upload/**': { proxy: 'http://localhost:8080/upload/**' }
         }
     },
 

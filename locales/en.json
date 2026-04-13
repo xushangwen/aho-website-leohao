@@ -147,7 +147,10 @@
     "coverTitle": "News",
     "allNews": "All News",
     "recommendSlogan": "Connect Smart World for Better Future",
-    "readMore": "Read More"
+    "readMore": "Read More",
+    "prevArticle": "Previous",
+    "nextArticle": "Next",
+    "backToList": "Back to List"
   },
   "application": {
     "coverTitle": "Industry Applications",

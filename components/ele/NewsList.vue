@@ -1,6 +1,7 @@
 <template>
-    <div class="_news-list">
+    <div class="_news-list" :class="{ '--carousel': carousel }">
         <NuxtLink class="item animate-show-delay"
+            :class="{ 'show': carousel }"
             v-for="(item, index) in newsList"
             :key="index"
             :href="`/news/detail/${item.uuid}`"
@@ -19,15 +20,14 @@
                 </div>
             </EleRatioWrapper>
             <div class="info">
-                <div class="left">
+                <div class="meta">
                     <div class="date">{{ item.pub_time }}</div>
                     <div class="title">{{ item.title }}</div>
+                    <div class="abst" v-if="item.abst">{{ item.abst }}</div>
                 </div>
-                <div class="right">
-                    <div class="more">
-                        <span>{{ $t('common.learnMore') }}</span>
-                        <i class="icon ri-arrow-right-line"></i>
-                    </div>
+                <div class="more">
+                    <span>{{ $t('news.readMore') }}</span>
+                    <i class="icon ri-arrow-right-line"></i>
                 </div>
             </div>
         </NuxtLink>
@@ -38,15 +38,22 @@
 import useAppStore from "@/stores/app";
 
 defineProps({
-    newsList: Array
+    newsList: Array,
+    carousel: {
+        type: Boolean,
+        default: false
+    }
 })
 
 const appStore = useAppStore()
+const { locale } = useI18n()
 
-// 获取分类名称
+// 分类名称跟随语言切换：postCate 含 cn / en 字段
 function getCategoryName(type) {
     const category = appStore.postCate?.find(cate => cate.link.includes(type))
-    return category?.cn || ''
+    return locale.value === 'en'
+        ? (category?.en || category?.cn || '')
+        : (category?.cn || '')
 }
 </script>
 
@@ -89,8 +96,8 @@ function getCategoryName(type) {
         font-style: normal;
         line-height: 1.5;
         position: absolute;
-        left: 32px;
-        top: 32px;
+        left: 16px;
+        top: 16px;
     }
     .mask {
         position: absolute;
@@ -130,23 +137,25 @@ function getCategoryName(type) {
         transition: transform .3s ease-in-out;
     }
     .info {
-        padding: 32px;
-        height: 180px;
+        padding: 20px 24px 24px;
+        flex: 1;
         display: flex;
-        flex-flow: row;
+        flex-direction: column;
         justify-content: space-between;
-        align-items: stretch;
-        .left {
-            flex: auto;
+        .meta {
             .date {
+                font-family: 'Google Sans', SpaceGrotesk, sans-serif;
                 color: var(--main-orange, #FF6400);
-                font-family: "TT Fors";
-                font-size: 14px;
-                font-style: normal;
+                font-size: 13px;
                 font-weight: 400;
-                line-height: 150%; /* 21px */
+                line-height: 1.5;
             }
             .title {
+                margin-top: 8px;
+                // 标题稍窄于摘要/按钮，形成视觉层次
+                max-width: 85%;
+                // 锁定 2 行高度：确保卡片间内容对齐（1 行标题也占两行空间）
+                min-height: calc(2 * 1.4em);
                 display: -webkit-box;
                 -webkit-box-orient: vertical;
                 -webkit-line-clamp: 2;
@@ -154,30 +163,84 @@ function getCategoryName(type) {
                 overflow: hidden;
                 color: var(--main-dark-gray, #3C3C3C);
                 text-overflow: ellipsis;
+                // pretty: 只防尾行孤字，不强制等行宽，换行更自然
+                text-wrap: pretty;
                 font-size: 18px;
-                font-style: normal;
-                line-height: 130%; /* 23.4px */
+                font-weight: 600;
+                line-height: 1.4;
+                @include mo {
+                    font-size: 15px;
+                }
+            }
+            .abst {
+                margin-top: 10px;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                font-size: 14px;
+                line-height: 1.6;
+                // 中间灰：比 #C8C9C7 深、比 #5C5C5C 浅，可读且不抢眼
+                color: #888;
             }
         }
-        .right {
-            width: 80px;
+        .more {
+            align-self: flex-end;
+            margin-top: 24px;
+            // 宽度跟随内容自适应（英文 "Read More" 比中文长），不强制 76px
             flex: none;
+            padding-bottom: 8px;
             display: flex;
-            flex-flow: column nowrap;
-            justify-content: flex-end;
-            align-items: flex-end;
-            .more {
-                width: 76px;
-                padding-bottom: 8px;
-                display: flex;
-                flex-flow: row nowrap;
-                justify-content: space-between;
-                align-items: center;
-                font-size: 12px;
-                border-bottom: 1px solid var(--main-orange);
-                .icon {
-                    font-size: 16px;
-                }
+            flex-flow: row nowrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            border-bottom: 1px solid var(--main-orange);
+            color: var(--main-dark-gray);
+            .icon {
+                font-size: 16px;
+                color: var(--main-orange);
+            }
+        }
+    }
+    // 移动端横划走马灯（首页使用，:carousel="true"）
+    @include mo {
+        &.--carousel {
+            // 突破父级 .wrap 的 24px 侧边距，实现全宽横滚
+            margin-left: -24px;
+            margin-right: -24px;
+            // scroll-padding-left 告知 snap 引擎，快照锚点从 24px 处开始
+            scroll-padding-left: 24px;
+            // 覆盖 grid 为横向 flex
+            display: flex;
+            flex-direction: row;
+            gap: 14px;
+            overflow-x: auto;
+            overflow-y: visible;
+            overscroll-behavior-x: contain;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            &::-webkit-scrollbar { display: none; }
+            // ::before 伪元素作为固定 24px 占位符（比 padding-left 在 scroll container 中更可靠）
+            &::before {
+                content: '';
+                flex: none;
+                min-width: 24px;
+            }
+            // ::after 给末尾留出少量空白，防止最后一张卡贴右边
+            &::after {
+                content: '';
+                flex: none;
+                min-width: 10px;
+            }
+            .item {
+                flex: none;
+                // 露出约 10vw 的下一张提示用户可继续滑动
+                width: 82vw;
+                scroll-snap-align: start;
             }
         }
     }

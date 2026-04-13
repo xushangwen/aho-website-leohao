@@ -27,7 +27,7 @@
                         :class="{active: route.query.type === item.link.split('=')[1]}"
                         @click="switchCate(item.link.split('=')[1])"
                     >
-                        <span>{{ item.cn }}</span>
+                        <span>{{ locale === 'en' ? (item.en || item.cn) : item.cn }}</span>
                         <div class="num">{{ cateStats[item.link.split('=')[1]] || 0 }}</div>
                     </div>
                 </div>
@@ -40,7 +40,10 @@
                     <div class="cover">
                         <img :src="recommendPost.cover_list?.[0] || ''" class="norm" alt="">
                         <div class="category-name">
-                            {{ postCate.find(cate => cate.link.includes(recommendPost.type))?.cn || '' }}
+                            {{ locale === 'en'
+                                ? (postCate.find(cate => cate.link.includes(recommendPost.type))?.en || postCate.find(cate => cate.link.includes(recommendPost.type))?.cn || '')
+                                : (postCate.find(cate => cate.link.includes(recommendPost.type))?.cn || '')
+                            }}
                         </div>
                         <div class="mask">
                             <div class="rect-1"></div>
@@ -49,7 +52,6 @@
                     </div>
                     <div class="info">
                         <div class="date">{{ recommendPost.pub_time }}</div>
-                        <div class="t1">{{ $t('news.recommendSlogan') }}</div>
                         <div class="t2">{{ recommendPost.title }}</div>
                         <div class="abst">{{ recommendPost.abst }}</div>
                         <div class="_btn">
@@ -80,7 +82,7 @@ const appConfig = useAppConfig()
 const route = useRoute()
 const router = useRouter()
 const appStore = useAppStore()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const breadcrumb = computed(() => [{ name: t('news.coverTitle'), link: '/news' }])
 
@@ -123,7 +125,12 @@ const recommendNews = computed(() => newsPageData.value?.recommend || {})
 const totalCount = computed(() => parseInt(newsPageData.value?.total_count) || 0)
 const postCate = computed(() => appStore.postCate || [])
 const recommendPost = computed(() => recommendNews.value)
-const postList = computed(() => newsList.value)
+const postList = computed(() => {
+    const recommend = recommendPost.value
+    // 推荐文章已在顶部大卡展示，从列表中排除避免重复
+    if (!recommend?.uuid) return newsList.value
+    return newsList.value.filter(item => item.uuid !== recommend.uuid)
+})
 
 // 切换分类
 function switchCate(type) {
@@ -161,20 +168,35 @@ watch(() => route.query.type, async () => {
         align-items: flex-start;
         gap: fluid(24px, 12px);
         @include mo {
-            flex-wrap: wrap;
-            gap: 12px;
+            // 禁止回行，改用横向滚动兜底
+            flex-wrap: nowrap;
+            gap: 10px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            &::-webkit-scrollbar { display: none; }
+            // 防止外层 wrap 裁切滚动内容
+            padding-bottom: 4px;
         }
         .item {
-            padding: 4px 10px;
+            padding: 8px 18px;
             color: #000;
-            font-size: 12px;
+            font-size: 15px;
             line-height: 1;
             border: 1px solid var(--main-orange);
             border-radius: 40px;
             @include flex-r(nowrap);
-            align-items: flex-start;
+            align-items: center;
+            gap: 5px;
+            // 防止单个 tag 内部文字折行
+            white-space: nowrap;
+            flex-shrink: 0;
             transition: all .3s;
             cursor: pointer;
+            @include mo {
+                // 按比例随视口缩小：320px→11px / 390px→14px / 428px→15px
+                font-size: clamp(11px, 3.6vw, 15px);
+                padding: clamp(5px, 1.4vw, 8px) clamp(12px, 4vw, 18px);
+            }
             &:hover {
                 background-color: rgba(255, 100, 0, .5);
                 color: white;
@@ -186,8 +208,11 @@ watch(() => route.query.type, async () => {
             .num {
                 transition: all .3s;
                 color: inherit;
-                font-feature-settings: 'sups' on;
-                transform: scale(.6) translateY(-3px);
+                font-size: 11px;
+                font-family: 'Google Sans', SpaceGrotesk, sans-serif;
+                opacity: 0.8;
+                align-self: flex-start;
+                margin-top: 1px;
             }
         }
     }
@@ -224,8 +249,8 @@ watch(() => route.query.type, async () => {
             font-style: normal;
             line-height: 1.5;
             position: absolute;
-            left: 32px;
-            top: 32px;
+            left: 16px;
+            top: 16px;
         }
         .mask {
             position: absolute;
@@ -274,28 +299,26 @@ watch(() => route.query.type, async () => {
             }
             color: var(--main-dark-gray);
             .date {
-                font-size: 14px;
+                font-size: 18px;
+                font-family: 'Google Sans', SpaceGrotesk, sans-serif;
                 color: var(--main-orange);
             }
-            .t1,
             .t2 {
                 font-size: fluid(22px);
-            }
-            .t1 {
-                margin-top: 12px;
-            }
-            .t2 {
                 font-weight: 700;
-                margin-top: 5px;
+                margin-top: 12px;
             }
             .abst {
-                height: 40px;
-                overflow: hidden;
-                font-size: 16px;
-                text-overflow: ellipsis;
+                // 多行截断需要 -webkit-box + line-clamp 配合
+                display: -webkit-box;
                 -webkit-box-orient: vertical;
-                -webkit-line-clamp: 2;
-                margin-top: 12px;
+                -webkit-line-clamp: 3;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                font-size: 16px;
+                line-height: 1.6;
+                color: #888;
+                margin-top: 10px;
             }
             ._btn {
                 margin-top: fluid(60px, 24px);

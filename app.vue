@@ -22,12 +22,9 @@ const appStore = useAppStore()
  */
 // 企业信息
 const { data: enterpriseInfo } = useFetch(appConfig.api('/layout/enterprise-info'), {server: true, immediate: true})
-layoutStore.setOrgInfo(enterpriseInfo.value || {})
-// 监听企业信息变化
-// watch(enterpriseInfo, (newInfo) => {
-//     console.log('newInfo', newInfo)
-//     layoutStore.setOrgInfo(newInfo || {})
-// }, { immediate: true })
+watch(enterpriseInfo, (newInfo) => {
+    layoutStore.setOrgInfo(newInfo || {})
+}, { immediate: true })
 // 导航
 // const menu = []
 const originNav = appConfig.clientConfig.nav

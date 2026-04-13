@@ -147,7 +147,10 @@
     "coverTitle": "新闻中心",
     "allNews": "所有新闻",
     "recommendSlogan": "智导世界，互联未来",
-    "readMore": "查看更多"
+    "readMore": "查看更多",
+    "prevArticle": "上一篇",
+    "nextArticle": "下一篇",
+    "backToList": "返回列表"
   },
   "application": {
     "coverTitle": "行业应用",
