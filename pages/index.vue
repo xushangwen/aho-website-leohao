@@ -249,6 +249,12 @@
                     :style="{ left: tooltipScreenPos.x + 'px', top: tooltipScreenPos.y + 'px' }"
                 >{{ hoveredMarker.name }}</div>
             </div>
+            <!-- 移动端滑动提示（仅窄屏显示） -->
+            <div class="s5-scroll-hint">
+                <i class="ri-arrow-left-s-line"></i>
+                <span>{{ $t('common.swipeHint') }}</span>
+                <i class="ri-arrow-right-s-line"></i>
+            </div>
             <div class="s5-bottom">
                 <div class="s5-filters">
                     <button class="s5-fbtn" :class="{ active: activeFilter === 'all' }" @click="activeFilter = 'all'">
@@ -1884,11 +1890,30 @@ onUnmounted(() => {
             padding: 8px 10px;
             gap: 5px;
         }
-        .s5-flabel { font-size: 11px; }
+        .s5-flabel { font-size: 11px; text-wrap: balance; }
         .s5-fcount { font-size: 10px; }
         .s5-fdot { width: 10px; height: 10px; }
+        .s5-scroll-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            width: fit-content;
+            margin: 8px auto 0;
+            background: rgba(0, 0, 0, 0.28);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            color: #fff;
+            font-size: 12px;
+            padding: 6px 12px 6px 8px;
+            border-radius: 100px;
+            pointer-events: none;
+            white-space: nowrap;
+            i { font-size: 15px; opacity: 0.8; }
+        }
     }
 }
+.s5-scroll-hint { display: none; }
 
 
 </style>

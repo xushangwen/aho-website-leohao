@@ -203,6 +203,7 @@ footer {
             justify-content: flex-start;
             gap: 11px;
             flex-shrink: 0;
+            max-width: 260px;  // 限制最大宽度，防止英文长地址压缩右侧内容
 
             .icon {
                 font-size: fluid(36px, 24px);
@@ -216,6 +217,8 @@ footer {
                 font-size: 16px;
                 line-height: 1.4;
                 font-family: -apple-system, SpaceGrotesk, HarmonyOS_Sans;
+                overflow-wrap: break-word;
+                word-break: break-word;
                 a { color: inherit; }
                 &.phone {
                     font-size: fluid(20px, 16px);

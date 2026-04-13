@@ -96,7 +96,7 @@
             <!-- 移动端滑动提示 -->
             <div class="map-scroll-hint">
                 <i class="ri-arrow-left-s-line"></i>
-                <span>左右滑动</span>
+                <span>{{ $t('common.swipeHint') }}</span>
                 <i class="ri-arrow-right-s-line"></i>
             </div>
                 <div class="profile">
@@ -240,9 +240,9 @@ const gloPoints = ref(appConfig.clientConfig.gloPoints)
 
 // 工厂卡片数据（pointIndex 对应 gloPoints 中的索引：23=常州, 24=泰国）
 const gloFactoryCards = [
-    { name: '常州澳弘电子股份有限公司', nameEn: 'Changzhou Aohong Electronics Co., Ltd.', type: '双面 / 多层 / HDI板', typeEn: 'Double-sided / Multi-layer / HDI PCB', image: '/images/home/about-bg.jpg', pointIndex: 23 },
-    { name: '常州海弘电子有限公司', nameEn: 'Changzhou Haihong Electronics Co., Ltd.', type: '单面PCB', typeEn: 'Single-sided PCB', image: '/images/contact/haihong.png', pointIndex: 23 },
-    { name: '澳弘（泰国）电子有限公司', nameEn: 'Aohong Electronics (Thailand) Co., Ltd.', type: '单面 / 双面 / 多层 / HDI', typeEn: 'Single-sided / Double-sided / Multi-layer / HDI', image: '/images/contact/thailand.png', pointIndex: 24 },
+    { name: '常州澳弘电子股份有限公司', nameEn: 'Changzhou Aohong\u200B Electronics Co., Ltd.', type: '双面 / 多层 / HDI板', typeEn: 'Double-sided /\u200B Multi-layer / HDI PCB', image: '/images/home/about-bg.jpg', pointIndex: 23 },
+    { name: '常州海弘电子有限公司', nameEn: 'Changzhou Haihong\u200B Electronics Co., Ltd.', type: '单面PCB', typeEn: 'Single-sided PCB', image: '/images/contact/haihong.png', pointIndex: 23 },
+    { name: '澳弘（泰国）电子有限公司', nameEn: 'Aohong Electronics\u200B (Thailand) Co., Ltd.', type: '单面 / 双面 / 多层 / HDI', typeEn: 'Single-sided / Double-sided /\u200B Multi-layer / HDI', image: '/images/contact/thailand.png', pointIndex: 24 },
 ]
 const gloLineGroup = ref<string[]>([])
 const gloLineDots = ref<{x: number, y: number}[]>([])
@@ -934,7 +934,7 @@ onUnmounted(() => {
             // 上下各延伸：顶部给数据卡片留位，底部给工厂卡片留位
             // 数据卡3张垂直叠放约 3×(10+32+4+12+4+12+10) = ~252px + gap
             padding-top: 100px;
-            padding-bottom: 240px;
+            padding-bottom: 280px;
             background-color: #e6eaed; // 匹配 glo.jpg 边缘灰色（像素取样值）
 
             .legend         { display: none; }
@@ -1025,12 +1025,12 @@ onUnmounted(() => {
                 .card-header { margin-bottom: 2px; }
                 .card-icon  { font-size: 16px; }
                 .card-type  { font-size: 11px; }
-                .card-name  { font-size: 13px; margin-top: 0; }
+                .card-name  { font-size: 13px; margin-top: 0; text-wrap: balance; }
             }
 
             // 滑动提示定位：factory cards 上方留足够空间
             .map-scroll-hint {
-                bottom: calc(240px + 48px);
+                bottom: calc(280px + 60px);
             }
         }
     }
