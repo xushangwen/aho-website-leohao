@@ -242,7 +242,7 @@ const gloPoints = ref(appConfig.clientConfig.gloPoints)
 const gloFactoryCards = [
     { name: '常州澳弘电子股份有限公司', nameEn: 'Changzhou Aohong\u200B Electronics Co., Ltd.', type: '双面 / 多层 / HDI板', typeEn: 'Double-sided /\u200B Multi-layer / HDI PCB', image: '/images/home/about-bg.jpg', pointIndex: 23 },
     { name: '常州海弘电子有限公司', nameEn: 'Changzhou Haihong\u200B Electronics Co., Ltd.', type: '单面PCB', typeEn: 'Single-sided PCB', image: '/images/contact/haihong.png', pointIndex: 23 },
-    { name: '澳弘（泰国）电子有限公司', nameEn: 'Aohong Electronics\u200B (Thailand) Co., Ltd.', type: '单面 / 双面 / 多层 / HDI', typeEn: 'Single-sided / Double-sided /\u200B Multi-layer / HDI', image: '/images/contact/thailand.png', pointIndex: 24 },
+    { name: '澳弘（泰国）电子有限公司', nameEn: 'Aohong Electronics\u200B (Thailand) Co., Ltd.', type: '单面 / 双面 / 多层 / HDI', typeEn: 'Single-sided / Double-sided /\u200B Multi-layer\u00A0/\u00A0HDI', image: '/images/contact/thailand.png', pointIndex: 24 },
 ]
 const gloLineGroup = ref<string[]>([])
 const gloLineDots = ref<{x: number, y: number}[]>([])

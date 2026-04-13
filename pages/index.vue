@@ -1853,6 +1853,7 @@ onUnmounted(() => {
         }
         .s5-bottom {
             position: relative;
+            bottom: auto;
             left: 0;
             transform: none;
             width: 100%;
@@ -1909,11 +1910,25 @@ onUnmounted(() => {
             border-radius: 100px;
             pointer-events: none;
             white-space: nowrap;
-            i { font-size: 15px; opacity: 0.8; }
+            i {
+                font-size: 15px;
+                opacity: 0.8;
+                &.ri-arrow-left-s-line  { animation: s5-hint-left  1.8s ease-in-out infinite; }
+                &.ri-arrow-right-s-line { animation: s5-hint-right 1.8s ease-in-out infinite; }
+            }
         }
     }
 }
 .s5-scroll-hint { display: none; }
+
+@keyframes s5-hint-left {
+    0%, 100% { transform: translateX(0);   opacity: 0.7; }
+    50%       { transform: translateX(-4px); opacity: 1; }
+}
+@keyframes s5-hint-right {
+    0%, 100% { transform: translateX(0);  opacity: 0.7; }
+    50%       { transform: translateX(4px); opacity: 1; }
+}
 
 
 </style>
