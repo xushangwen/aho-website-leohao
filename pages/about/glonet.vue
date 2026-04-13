@@ -192,6 +192,7 @@
                         </div>
                     </div>
                     </div><!-- /map-inner -->
+                </div><!-- /map-scroll-wrap -->
                 <div class="detail-group">
                     <div
                         class="detail-list"
@@ -219,7 +220,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
                 </div>
 
             </div>
@@ -1172,7 +1172,7 @@ onUnmounted(() => {
         // ============================================================
         @include mo {
             overflow: visible;
-            background-color: #e6eaed;
+            background-color: #E6E9EC;
 
             .line-group { display: none; }
             .map-scroll-hint { display: none !important; }
@@ -1192,11 +1192,12 @@ onUnmounted(() => {
                 }
             }
 
-            // detail-group：在 map-scroll-wrap 内，绝对底部叠加
+            // detail-group：移出 map-scroll-wrap 外，流式布局贴于地图下方
             .detail-group {
+                position: relative;
                 inset: auto;
-                bottom: 0;
-                left: 0;
+                bottom: auto;
+                left: auto;
                 width: 100%;
                 height: auto;
                 overflow: visible;
@@ -1207,8 +1208,7 @@ onUnmounted(() => {
                 background: none;
                 backdrop-filter: none;
                 -webkit-backdrop-filter: none;
-                z-index: 6;
-                align-items: start;
+                align-items: stretch;
 
                 .detail-list { display: contents; }
 

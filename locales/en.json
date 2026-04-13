@@ -103,8 +103,8 @@
   },
   "patent": {
     "coverTitle": "Certifications & Patents",
-    "patentTab": "Patent Certificates",
-    "certTab": "Qualification Certificates"
+    "patentTab": "Patents",
+    "certTab": "Qualifications"
   },
   "honor": {
     "coverTitle": "Honours",

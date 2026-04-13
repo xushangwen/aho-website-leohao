@@ -27,7 +27,7 @@
                             :key="`${index}-${item.cn}`"
                             @click="openCate(index)"
                         >
-                            <span>{{item.cn}}</span>
+                            <span>{{ locale === 'en' ? (item.en || item.cn) : item.cn }}</span>
                             <i class="icon ri-arrow-right-line"></i>
                         </NuxtLink>
                     </div>
@@ -46,15 +46,24 @@
                             </div>
                         </EleRatioWrapper>
                         <div class="info">
-                            <div class="name">{{item.name}}</div>
-                            <p
-                                class="intro"
-                                v-for="(pItem, pIndex) in item.p"
-                                :key="`${pIndex}-${pItem.label}`"
-                            >
-                                <span class="label">{{pItem.label}}</span>：
-                                {{pItem.content}}
-                            </p>
+                            <div class="name">{{ locale === 'en' ? (item.name_en || item.name) : item.name }}</div>
+                            <template v-if="locale === 'en'">
+                                <p class="intro" v-if="item.feature_en || item.feature">
+                                    <span class="label">Features</span>：{{ item.feature_en || item.feature }}
+                                </p>
+                                <p class="intro" v-if="item.scene_en || item.scene">
+                                    <span class="label">Applications</span>：{{ item.scene_en || item.scene }}
+                                </p>
+                            </template>
+                            <template v-else>
+                                <p
+                                    class="intro"
+                                    v-for="(pItem, pIndex) in item.p"
+                                    :key="`${pIndex}-${pItem.label}`"
+                                >
+                                    <span class="label">{{pItem.label}}</span>：{{pItem.content}}
+                                </p>
+                            </template>
                         </div>
                     </div>
                     <!-- 加载状态 -->
@@ -81,6 +90,8 @@ const appStore = useAppStore()
 const route = useRoute()
 const router = useRouter()
 const docScrollTop = computed(() => eventStore.docScrollTop)
+const localePath = useLocalePath()
+const { locale } = useI18n()
 
 // 使用 appStore 中的 prodCate 数据
 const prodNav = computed(() => {
@@ -113,8 +124,8 @@ function initCate() {
             const firstCate = prodNav.value[0]
             currentCate.value = firstCate.link.split('=')[1]
             indexCate.value = 0
-            // 重定向到第一个分类
-            router.push(`/products?cate=${currentCate.value}`)
+            // 重定向到第一个分类（保持当前语言前缀）
+            router.push(`${localePath('/products')}?cate=${currentCate.value}`)
         } else {
             currentCate.value = ''
             indexCate.value = -1
@@ -129,7 +140,7 @@ function openCate(index) {
     const cate = prodNav.value[index]
     if (cate) {
         currentCate.value = cate.link.split('=')[1]
-        router.push(`/products?cate=${currentCate.value}`)
+        router.push(`${localePath('/products')}?cate=${currentCate.value}`)
     }
     // 滚动到顶部（仅客户端，SSR 无 window）
     if (process.client) window.scrollTo({ top: 400, behavior: 'smooth' })

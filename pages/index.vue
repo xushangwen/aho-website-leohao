@@ -1884,14 +1884,14 @@ onUnmounted(() => {
         }
         .s5-stat-txt {
             font-size: 11px;
-            text-wrap: balance;
+            white-space: nowrap;
             line-height: 1.4;
         }
         .s5-fbtn {
-            padding: 8px 10px;
-            gap: 5px;
+            padding: 8px 7px;
+            gap: 4px;
         }
-        .s5-flabel { font-size: 11px; text-wrap: balance; }
+        .s5-flabel { font-size: 11px; white-space: nowrap; }
         .s5-fcount { font-size: 10px; }
         .s5-fdot { width: 10px; height: 10px; }
         .s5-scroll-hint {

@@ -35,7 +35,7 @@
                     </div>
                     <div class="w">
                         <div class="item"><a :href="`mailto:${orgInfo.email}`">{{ $t('footer.emailLabel') }}：{{ orgInfo.email }}</a></div>
-                        <div class="item"><span>{{ $t('footer.addressLabel') }}：{{ locale === 'en' ? (orgInfo.address_en || orgInfo.address) : orgInfo.address }}</span></div>
+                        <div class="item" :class="{ 'addr-wrap': locale === 'en' }"><span>{{ $t('footer.addressLabel') }}：{{ locale === 'en' ? (orgInfo.address_en || orgInfo.address) : orgInfo.address }}</span></div>
                     </div>
                 </div>
                 <div class="sl l2"></div>
@@ -203,7 +203,6 @@ footer {
             justify-content: flex-start;
             gap: 11px;
             flex-shrink: 0;
-            max-width: 260px;  // 限制最大宽度，防止英文长地址压缩右侧内容
 
             .icon {
                 font-size: fluid(36px, 24px);
@@ -217,8 +216,13 @@ footer {
                 font-size: 16px;
                 line-height: 1.4;
                 font-family: -apple-system, SpaceGrotesk, HarmonyOS_Sans;
-                overflow-wrap: break-word;
-                word-break: break-word;
+                white-space: nowrap;
+                &.addr-wrap {
+                    white-space: normal;
+                    overflow-wrap: break-word;
+                    word-break: break-word;
+                    max-width: 260px;
+                }
                 a { color: inherit; }
                 &.phone {
                     font-size: fluid(20px, 16px);
@@ -229,6 +233,9 @@ footer {
                 }
                 @include mo {
                     font-size: 14px;
+                    white-space: normal;
+                    overflow-wrap: break-word;
+                    word-break: break-word;
                 }
             }
             .w {

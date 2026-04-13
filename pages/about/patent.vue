@@ -111,7 +111,6 @@
                         </EleRatioWrapper>
                     </MotionGlareHover>
                     <div class="loading" v-if="loading">{{ $t('common.loading') }}</div>
-                    <div class="no-more" v-if="noMore && patentList.length > 0">{{ $t('common.noMore') }}</div>
                 </div>
             </div>
         </section>
@@ -469,6 +468,7 @@ function slideNext() {
             cursor: pointer;
             position: relative;
             transition: color .2s;
+            text-align: center;
             @include mo {
                 padding: 12px 24px;
             }
