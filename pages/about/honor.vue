@@ -28,11 +28,11 @@
                                 <div class="cont">
                                     <img :src="item.image?.[0] || ''" alt="">
                                 </div>
+                                <div class="year-tag" v-if="item.year">{{ item.year }}</div>
                             </div>
                         </EleRatioWrapper>
                     </MotionGlareHover>
                     <div class="loading" v-if="loading">{{ $t('common.loading') }}</div>
-                    <div class="no-more" v-if="noMore && honorList.length > 0">{{ $t('common.noMore') }}</div>
                 </div>
             </div>
         </section>
@@ -201,6 +201,18 @@ watch(docScrollTop, () => {
                     height: 90%;
                     width: auto;
                 }
+            }
+            .year-tag {
+                position: absolute;
+                top: 12px;
+                left: 12px;
+                background: rgba(0,0,0,0.55);
+                color: #fff;
+                font-size: 12px;
+                font-family: var(--font-num);
+                padding: 3px 10px;
+                border-radius: 100px;
+                backdrop-filter: blur(4px);
             }
         }
         .loading,

@@ -281,7 +281,21 @@ const breadcrumb = computed(() => [
     { name: t('nav.about'), link: '/about' },
     { name: 'ESG', link: '' }
 ])
-const esgReport = computed(() => appConfig.clientConfig?.esgReport || null)
+
+// 从 API 获取 ESG 报告信息（企业信息接口返回 esg_report_* 字段）
+const { data: enterpriseInfo } = await useAsyncData(
+    'esg-enterprise-info',
+    () => $fetch(appConfig.api('/layout/enterprise-info'))
+)
+const esgReport = computed(() => {
+    const info = enterpriseInfo.value
+    if (!info?.esg_report_title && !info?.esg_report_year) return null
+    return {
+        title: info.esg_report_title || '',
+        year: info.esg_report_year || '',
+        url: info.esg_report_pdf || ''
+    }
+})
 </script>
 
 <style scoped lang="scss">
