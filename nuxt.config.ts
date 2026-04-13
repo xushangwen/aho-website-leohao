@@ -31,12 +31,14 @@ export default defineNuxtConfig({
     server: {},
     nitro: {
         logLevel: 'info',
-        routeRules: {
-            // 客户端 API 请求走此代理，避免 CORS（服务端直连 127.0.0.1:3100）
-            '/api/proxy/**': { proxy: 'http://localhost:8080/api/**' },
-            // 新闻详情页正文图片路径为 /upload/，需代理到后端文件服务
-            '/upload/**': { proxy: 'http://localhost:8080/upload/**' }
-        }
+        routeRules: (() => {
+            // 后端地址通过 NUXT_BACKEND_URL 配置，便于多环境切换（本地/测试/生产）
+            const backend = process.env.NUXT_BACKEND_URL || 'http://localhost:8080'
+            return {
+                '/api/proxy/**': { proxy: `${backend}/api/**` },
+                '/upload/**':    { proxy: `${backend}/upload/**` }
+            }
+        })()
     },
 
     css: [
