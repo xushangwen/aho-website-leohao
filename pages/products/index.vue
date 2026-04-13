@@ -277,13 +277,9 @@ onMounted(() => {
             }
             @include mo {
                 &.fixed { position: relative; top: 0; }
-                // 横向滚动 tab 条，与 patent 页保持同一设计语言
-                display: flex;
-                flex-flow: row nowrap;
-                overflow-x: auto;
-                gap: 0;
-                border-bottom: 1px solid var(--main-light-gray);
-                &::-webkit-scrollbar { display: none; }
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 8px;
             }
         }
         .cate-name {
@@ -307,32 +303,34 @@ onMounted(() => {
             cursor: pointer;
             transition: color .2s;
             @include mo {
-                // 重置桌面端边框
-                border-bottom: none;
-                flex-shrink: 0;
-                padding: 10px 20px;
-                font-size: 14px;
-                font-weight: 500;
-                color: var(--main-dark-gray);
+                padding: 14px 16px;
+                font-size: 15px;
+                background: rgba(255, 255, 255, 0.5);
+                border-top: none;
+                border-right: none;
+                border-bottom: 1px solid var(--main-orange);
                 position: relative;
-                // 橙色下划线 active 指示器
+                // 橙色下划线用伪元素做 scaleX 动画
                 &::after {
                     content: '';
                     position: absolute;
                     bottom: -1px;
                     left: 0;
                     width: 100%;
-                    height: 2px;
+                    height: 1px;
                     background: var(--main-orange);
                     transform: scaleX(0);
-                    transition: transform .2s;
+                    transform-origin: left center;
+                    transition: transform .25s ease;
                 }
                 &.active {
-                    color: var(--main-blue);
+                    background: var(--main-blue);
+                    color: white;
                     font-weight: 700;
-                    &::after { transform: scaleX(1); }
+                    border-bottom-color: var(--main-blue);
+                    .icon { color: white; }
+                    &::after { display: none; }
                 }
-                .icon { display: none; }
             }
             &.active {
                 font-weight: 700;
@@ -395,6 +393,7 @@ onMounted(() => {
                 }
                 .intro {
                     font-weight: bold;
+                    text-wrap: pretty;
                     .label {
                        font-weight: normal;
                     }
