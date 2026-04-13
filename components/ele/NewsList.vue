@@ -4,7 +4,7 @@
             :class="{ 'show': carousel }"
             v-for="(item, index) in newsList"
             :key="index"
-            :href="`/news/detail/${item.uuid}`"
+            :to="localePath(`/news/detail/${item.uuid}`)"
             v-fade-in="{ mode: 'delay' }"
         >
 
@@ -22,8 +22,8 @@
             <div class="info">
                 <div class="meta">
                     <div class="date">{{ item.pub_time }}</div>
-                    <div class="title">{{ item.title }}</div>
-                    <div class="abst" v-if="item.abst">{{ item.abst }}</div>
+                    <div class="title">{{ locale === 'en' ? (item.title_en || item.title) : item.title }}</div>
+                    <div class="abst" v-if="item.abst_en || item.abst">{{ locale === 'en' ? (item.abst_en || item.abst) : item.abst }}</div>
                 </div>
                 <div class="more">
                     <span>{{ $t('news.readMore') }}</span>
@@ -47,6 +47,7 @@ defineProps({
 
 const appStore = useAppStore()
 const { locale } = useI18n()
+const localePath = useLocalePath()
 
 // 分类名称跟随语言切换：postCate 含 cn / en 字段
 function getCategoryName(type) {

@@ -35,7 +35,7 @@
                 <NuxtLink
                     v-if="recommendPost.uuid"
                     class="recommend"
-                    :href="`/news/detail/${recommendPost.uuid}`"
+                    :to="localePath(`/news/detail/${recommendPost.uuid}`)"
                 >
                     <div class="cover">
                         <img :src="recommendPost.cover_list?.[0] || ''" class="norm" alt="">
@@ -52,8 +52,8 @@
                     </div>
                     <div class="info">
                         <div class="date">{{ recommendPost.pub_time }}</div>
-                        <div class="t2">{{ recommendPost.title }}</div>
-                        <div class="abst">{{ recommendPost.abst }}</div>
+                        <div class="t2">{{ locale === 'en' ? (recommendPost.title_en || recommendPost.title) : recommendPost.title }}</div>
+                        <div class="abst">{{ locale === 'en' ? (recommendPost.abst_en || recommendPost.abst) : recommendPost.abst }}</div>
                         <div class="_btn">
                             <div class="_str">{{ $t('news.readMore') }}</div>
                             <div class="_icon ri-arrow-right-line"></div>
@@ -83,6 +83,7 @@ const route = useRoute()
 const router = useRouter()
 const appStore = useAppStore()
 const { t, locale } = useI18n()
+const localePath = useLocalePath()
 
 const breadcrumb = computed(() => [{ name: t('news.coverTitle'), link: '/news' }])
 

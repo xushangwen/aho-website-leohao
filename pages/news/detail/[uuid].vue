@@ -6,8 +6,8 @@
     <div class="wrap" v-if="newsDetail.uuid">
         <div class="arti">
             <div class="date">{{ newsDetail.pub_time }}</div>
-            <div class="title">{{ newsDetail.title }}</div>
-            <div class="cont" v-html="newsDetail.content"></div>
+            <div class="title">{{ locale === 'en' ? (newsDetail.title_en || newsDetail.title) : newsDetail.title }}</div>
+            <div class="cont" v-html="locale === 'en' ? (newsDetail.content_en || newsDetail.content) : newsDetail.content"></div>
         </div>
 
         <!-- 上一篇 / 下一篇 / 返回列表 -->
@@ -16,12 +16,12 @@
                 <NuxtLink
                     v-if="prev"
                     class="nav-item"
-                    :href="`/news/detail/${prev.uuid}`"
+                    :to="localePath(`/news/detail/${prev.uuid}`)"
                 >
                     <i class="ri-arrow-left-line"></i>
                     <div class="nav-content">
                         <span class="nav-label">{{ $t('news.prevArticle') }}</span>
-                        <span class="nav-title">{{ prev.title }}</span>
+                        <span class="nav-title">{{ locale === 'en' ? (prev.title_en || prev.title) : prev.title }}</span>
                     </div>
                 </NuxtLink>
                 <div v-else class="nav-item --disabled"></div>
@@ -29,18 +29,18 @@
                 <NuxtLink
                     v-if="next"
                     class="nav-item --right"
-                    :href="`/news/detail/${next.uuid}`"
+                    :to="localePath(`/news/detail/${next.uuid}`)"
                 >
                     <div class="nav-content">
                         <span class="nav-label">{{ $t('news.nextArticle') }}</span>
-                        <span class="nav-title">{{ next.title }}</span>
+                        <span class="nav-title">{{ locale === 'en' ? (next.title_en || next.title) : next.title }}</span>
                     </div>
                     <i class="ri-arrow-right-line"></i>
                 </NuxtLink>
                 <div v-else class="nav-item --disabled --right"></div>
             </div>
 
-            <NuxtLink class="_btn" href="/news">
+            <NuxtLink class="_btn" :to="localePath('/news')">
                 <div class="_str">{{ $t('news.backToList') }}</div>
                 <div class="_icon"><i class="ri-list-check"></i></div>
             </NuxtLink>
@@ -63,13 +63,17 @@ definePageMeta({ layout: 'news' })
 
 const route = useRoute()
 const appConfig = useAppConfig()
-const { t } = useI18n()
+const { t, locale } = useI18n()
+const localePath = useLocalePath()
 
 const breadcrumb = computed(() => {
     if (newsDetail.value?.title) {
+        const articleTitle = locale.value === 'en'
+            ? (newsDetail.value.title_en || newsDetail.value.title)
+            : newsDetail.value.title
         return [
             { name: t('news.coverTitle'), link: '/news' },
-            { name: newsDetail.value.title, link: '' },
+            { name: articleTitle, link: '' },
         ]
     }
     return [{ name: t('news.coverTitle'), link: '/news' }]
