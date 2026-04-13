@@ -144,11 +144,13 @@ const page = ref(1)
 const pageSize = 12
 const totalPage = ref(1)
 
-// 获取推荐数据
+// 获取推荐数据（随当前 tab 过滤）
 async function getRecommendData() {
     loadingRecommend.value = true
     try {
-        const res = await $fetch(appConfig.api('/cert/recommend'))
+        const res = await $fetch(appConfig.api('/cert/recommend'), {
+            params: { category: activeTab.value }
+        })
         if (res?.code === 0) {
             return res.list_model || []
         }
@@ -202,7 +204,7 @@ async function getListData(pageNum = 1) {
 const activeTab = ref('patent')
 
 // 使用 useAsyncData 获取推荐数据
-const { data: patentBanner } = await useAsyncData(
+const { data: patentBanner, refresh: refreshBanner } = await useAsyncData(
     'patent-recommend',
     () => getRecommendData()
 )
@@ -223,14 +225,14 @@ watch(initialListData, (newData) => {
     }
 }, { immediate: true })
 
-// 切换 tab，重置并重新加载
+// 切换 tab，重置并重新加载（banner + list 都跟随 tab 过滤）
 async function switchTab(tab: string) {
     if (activeTab.value === tab) return
     activeTab.value = tab
     patentList.value = []
     noMore.value = false
     page.value = 1
-    await refreshList()
+    await Promise.all([refreshBanner(), refreshList()])
 }
 
 // 加载更多数据
