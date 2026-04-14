@@ -92,7 +92,6 @@ const { locale } = useI18n()
             justify-content: flex-start;
             align-items: flex-end;
             color: var(--main-blue);
-            @include lap { font-size: 48px; }
             @include mo {
                 font-size: clamp(24px, 7vw, 36px);
             }
