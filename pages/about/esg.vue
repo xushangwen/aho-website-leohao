@@ -457,6 +457,10 @@ const esgReport = computed(() => {
             width: 480px;
             height: fluid(280px);
             flex: none;
+            // laptop (≤1439px)：缩小图片比例，给 card-info 更多空间
+            @include lap {
+                width: 360px;
+            }
             @include mo {
                 width: 100%;
                 height: 200px;

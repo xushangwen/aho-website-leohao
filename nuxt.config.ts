@@ -108,10 +108,12 @@ export default defineNuxtConfig({
         head: {
             title: '澳弘',
             meta: [
-                {
+                // upgrade-insecure-requests 仅在生产环境注入
+                // 本地 dev server 跑 HTTP，注入后浏览器会把所有资源升级为 HTTPS 导致全部 404
+                ...(process.env.NODE_ENV === 'production' ? [{
                     "http-equiv": "Content-Security-Policy",
                     content: "upgrade-insecure-requests"
-                },
+                }] : []),
                 {
                     "name": "viewport",
                     "content": "width=device-width, initial-scale=1"

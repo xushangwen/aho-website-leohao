@@ -324,9 +324,32 @@ nav.norm {
     @include flex-c(nowrap);
     justify-content: center;
     transition: all .3s;
-    // 1280px 以下切换到移动导航（1024-1280px 区间桌面导航内容溢出）
-    @media screen and (max-width: 1280px) {
+    // 1200px 以下切换到移动导航
+    // 原为 1280px，但 MacBook Air 13"（CSS 宽度恰好 1280px）会命中该规则导致桌面导航消失
+    // 1200-1280px 区间通过 @media 额外压缩导航项确保不溢出
+    @media screen and (max-width: 1200px) {
         top: -100px;
+    }
+
+    // 1200-1440px：导航项压缩，防止英文版在中等宽度屏幕溢出
+    @media screen and (min-width: 1201px) and (max-width: 1440px) {
+        .logo svg {
+            width: 160px;
+        }
+        .top-menu {
+            gap: 2px;
+            .item {
+                padding: 0 5px;
+                font-size: 14px;
+            }
+            .item.contact {
+                padding: 8px 6px 8px 12px;
+            }
+        }
+        .tools {
+            gap: 0;
+            .lang { width: 65px; }
+        }
     }
 
     > .header-wrap {
@@ -762,8 +785,8 @@ nav.mobi {
     top: -100px;
     transition: background-color .3s, top .3s;
 
-    // 1280px 以下显示移动导航
-    @media screen and (max-width: 1280px) {
+    // 1200px 以下显示移动导航（与桌面导航断点保持一致）
+    @media screen and (max-width: 1200px) {
         top: 0;
     }
 
@@ -841,7 +864,7 @@ nav.mobi {
             gap: 8px;
 
             // 补偿 .btn 内部 padding，使汉堡包 icon 与 logo 左侧对齐
-            @media screen and (max-width: 1280px) {
+            @media screen and (max-width: 1200px) {
                 margin-right: -6px;
             }
 
@@ -1014,7 +1037,7 @@ nav.mobi {
     height: var(--HEADER_HEIGHT);
     transition: height .3s;
 
-    @media screen and (max-width: 1280px) {
+    @media screen and (max-width: 1200px) {
         height: var(--HEADER_HEIGHT_MOB);
     }
 }

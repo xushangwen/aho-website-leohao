@@ -156,9 +156,21 @@ onMounted(() => {
             @include flex-r();
             justify-content: space-between;
             align-items: center;
+            // laptop (≤1439px)：列宽变小后，固定高度会让内容过挤，改为自适应高度
+            @include lap {
+                height: auto;
+                min-height: 160px;
+                padding: 24px 28px;
+                align-items: flex-start;
+            }
             .left {
                 margin-right: 36px;
                 max-width: 450px;
+                // laptop 下最大宽度跟随列宽自适应
+                @include lap {
+                    max-width: calc(100% - 100px);
+                    margin-right: 16px;
+                }
                 height: 100%;
                 .t1 {
                     color: var(--main-blue, #196BB6);

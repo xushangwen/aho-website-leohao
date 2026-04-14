@@ -69,6 +69,10 @@ function getCategoryName(type) {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: fluid(60px, 16px);
+    // laptop (≤1439px)：3列卡片在1025-1280px区间单卡宽度不足280px，改为2列
+    @include lap {
+        grid-template-columns: repeat(2, 1fr);
+    }
     @include mo {
         grid-template-columns: 1fr;
         gap: 24px;
