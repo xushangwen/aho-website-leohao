@@ -637,31 +637,27 @@ nav.norm {
         overflow: hidden;
         transition: opacity .3s, transform .3s ease-in-out;
         .list {
-            margin: 0 160px;
-            padding: 40px 0 80px;
+            margin: 0;
+            padding: 40px 160px 80px;
             position: absolute;
             inset: 0;
             transform: translateY(-100%);
             transition: none;
             opacity: 0.5;
-            @include flex-r();
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: minmax(150px, 0.72fr) minmax(0, 1.55fr) minmax(220px, 1fr);
+            column-gap: 48px;
             align-items: flex-start;
 
-            // ≤1439px：收窄子菜单面板边距
+            // ≤1439px：收窄子菜单面板边距，并压缩右侧图片区占比
             @include lap {
-                margin: 0 fluid(120px, 60px);
-                .mid {
-                    width: 400px;
-                    .item { width: 185px; }
-                }
-                .right img {
-                    width: 260px;
-                }
+                padding: 36px 60px 64px;
+                column-gap: 28px;
+                grid-template-columns: minmax(140px, 0.7fr) minmax(0, 1.65fr) minmax(180px, 0.82fr);
             }
 
             .left {
-                width: 170px;
+                min-width: 0;
                 padding-top: 16px;
                 .cn {
                     color: var(--main-blue, #1E3296);
@@ -679,6 +675,7 @@ nav.norm {
                     // 流动字号：视口够宽时保持 40px 原始大小；
                     // 随视口收窄按 2vw 线性缩小，在 1440px 时约 28.8px 恰好不溢出 170px 容器；
                     // 最小 18px 保持装饰感
+                    font-size: 24px;
                     font-size: clamp(18px, 2vw, 40px);
                     font-style: normal;
                     font-weight: 100;
@@ -687,15 +684,18 @@ nav.norm {
                 }
             }
             .mid {
-                width: 530px;
-                height: 200px;
-                display: flex;
-                flex-flow: column wrap;
-                justify-content: flex-start;
-                align-content: space-between;
+                min-width: 0;
+                height: auto;
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                column-gap: 34px;
+                row-gap: 10px;
+                align-content: start;
                 .item {
-                    width: 248px;
-                    height: 48px;
+                    width: auto;
+                    min-width: 0;
+                    min-height: 48px;
+                    padding: 10px 0;
                     border-bottom: 0.5px solid var(--main-light-gray, #DCDCDC);
                     display: flex;
                     flex-flow: row nowrap;
@@ -707,8 +707,12 @@ nav.norm {
                         color: var(--main-blue);
                         transform: scale(0) translateX(-50px);
                         transition: transform .3s;
+                        flex-shrink: 0;
                     }
                     span {
+                        display: block;
+                        max-width: calc(100% - 28px);
+                        line-height: 1.35;
                         transform: translateX(-20px);
                         transition: transform .3s;
                     }
@@ -738,10 +742,21 @@ nav.norm {
 
             }
             .right {
+                min-width: 0;
+                display: flex;
+                justify-content: flex-end;
                 img {
-                    width: 400px;
-                    height: auto;
+                    width: 100%;
+                    max-width: 360px;
+                    max-height: 240px;
                     border-radius: 10px;
+                    object-fit: cover;
+                }
+                @include lap {
+                    img {
+                        max-width: 260px;
+                        max-height: 220px;
+                    }
                 }
             }
 

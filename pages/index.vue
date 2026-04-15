@@ -72,9 +72,6 @@
         </ClientOnly>
 
         <section class="s1">
-            <div class="right">
-                <div class="bg"></div>
-            </div>
             <div class="wrap">
                 <div class="left">
                     <div class="s-t">
@@ -89,6 +86,9 @@
                         <div class="_str">{{ $t('home.aboutBtn') }}</div>
                         <div class="_icon ri-arrow-right-line"></div>
                     </NuxtLink>
+                </div>
+                <div class="right">
+                    <div class="bg"></div>
                 </div>
             </div>
         </section>
@@ -360,6 +360,7 @@ let headerHeight, s3Height, itemLength, lastChildHeight, step
 
 // 初始化前必须先重置所有 class，确保 getBoundingClientRect 读到正确的自然高度
 function initApplicationItem() {
+    if (!elS3.value || !elApplication.value?.length) return
     elApplication.value?.forEach(item => {
         item.classList.remove('fixed-sticky', 'absolute-sticky')
     })
@@ -371,11 +372,13 @@ function initApplicationItem() {
     // 与 CSS --s3-step 的 max() 兜底值对齐：桌面 90px，移动 80px
     const minStep = windowWidth.value <= 1024 ? 80 : 90
     step = Math.max(minStep, (windowHeight.value - headerHeight - lastChildHeight) / (itemLength - 1))
+    elS3.value.style.setProperty('--s3-step', `${step}px`)
     elS3.value.style.height = `${height}px`
     updateApplicationItem()
 }
 
 function updateApplicationItem() {
+    if (!elS3.value || !elApplication.value?.length) return
     const { top: s3Top, bottom: s3Bottom } = elS3.value.getBoundingClientRect()
     const delta = headerHeight - s3Top
 
@@ -985,7 +988,7 @@ onUnmounted(() => {
                     color: white;
                     // 不限制宽度，让英文自然比中文标题宽；
                     // 90vw 兜底防止超长文本溢出容器
-                    max-width: min(900px, 90vw);
+                    max-width: 900px;
                     text-wrap: balance;
                     span {
                         font-size: fluid(30px, 20px);
@@ -1091,9 +1094,14 @@ onUnmounted(() => {
     position: relative;
     .wrap {
         min-height: fluid(514px);
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 44%);
+        column-gap: fluid(72px, 28px);
+        align-items: stretch;
     }
     .left {
-        width: 575px;
+        width: auto;
+        max-width: 640px;
         padding: fluid(83px, 36px) 0 35px 0;
     }
     .t2 {
@@ -1113,12 +1121,8 @@ onUnmounted(() => {
         margin-top: fluid(48px, 20px);
     }
     .right {
-        position: absolute;
-        right: 0;
-        top: 0;
-        height: 100%;
-        width: 45%;
-        min-width: 500px;
+        min-width: 0;
+        position: relative;
         .bg {
             position: absolute;
             inset: 0;
@@ -1129,22 +1133,24 @@ onUnmounted(() => {
     }
     // laptop (≤1439px)：左侧内容与右侧图片按比例压缩
     @include lap {
-        .left {
-            width: 48%;
+        .wrap {
+            grid-template-columns: minmax(0, 1fr) minmax(280px, 42%);
+            column-gap: 24px;
         }
-        .right {
-            min-width: 0;
-            width: 48%;
+        .left {
+            max-width: none;
         }
     }
-    // mobile (≤992px)：图片沉底，文字全宽
+    // mobile (≤992px)：纵向堆叠，图片回到正常文档流
     @include mo {
         .wrap {
             min-height: unset;
+            display: block;
         }
         .left {
             width: 100%;
-            padding: 36px 0 340px;
+            max-width: none;
+            padding: 36px 0 0;
         }
         .t2 {
             font-size: 20px;
@@ -1158,12 +1164,9 @@ onUnmounted(() => {
             margin-top: 28px;
         }
         .right {
-            position: absolute;
-            bottom: 0;
-            top: unset;
+            margin-top: 24px;
             height: 280px;
             width: 100%;
-            min-width: 0;
             .bg {
                 border-radius: 0;
             }
@@ -1298,12 +1301,9 @@ onUnmounted(() => {
 .s3 {
     position: relative;
     $itemHeight: 320px;
-    // 最小露出 = padding-top(40px) + icon/name行高(~40px) + 10px余量 = 90px
-    // 除以 5（itemLength-1=间隔数）而非 6（总数），与 JS step 公式对齐，确保 fixed→absolute 无跳变
-    --s3-step: max(90px, calc((100vh - var(--HEADER_HEIGHT) - 320px) / 5));
+    --s3-step: 90px;
     @include tab {
-        // 移动端 padding-top(22px) + icon(26px) + name(16px) + 余量 = 80px
-        --s3-step: max(80px, calc((100vh - var(--HEADER_HEIGHT_MOB) - 340px) / 5));
+        --s3-step: 80px;
     }
     display: flex;
     flex-flow: column nowrap;
@@ -1318,17 +1318,23 @@ onUnmounted(() => {
             display: flex;
             flex-flow: row nowrap;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: stretch;
+            gap: fluid(48px, 24px);
+            height: 100%;
         }
         .left {
-            width: 700px;
-            height: 180px;
+            flex: 1 1 0;
+            min-width: 0;
+            height: 100%;
             display: flex;
             flex-flow: row nowrap;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: flex-start;
+            gap: fluid(20px, 13px);
+            padding-right: fluid(40px, 24px);
             border-right: 1px solid var(--main-orange);
             transition: border-color .4s cubic-bezier(.4, 0, .2, 1);
+            position: relative;
             .icon {
                 font-size: fluid(40px, 26px);
                 color: var(--main-orange);
@@ -1338,12 +1344,15 @@ onUnmounted(() => {
                 margin-top: -4px;
             }
             .cont {
-                width: 460px;
-                height: inherit;
-                margin-left: fluid(20px, 13px);
+                flex: 1 1 auto;
+                min-width: 0;
+                width: auto;
+                height: 100%;
+                margin-left: 0;
                 display: flex;
                 flex-flow: column nowrap;
                 justify-content: space-between;
+                gap: 16px;
                 .name {
                     color: var(--main-blue, #1E3296);
                     font-size: fluid(28px, 20px);
@@ -1375,12 +1384,13 @@ onUnmounted(() => {
             }
         }
         .right {
-            // 显式高度 = 卡片高度(320px) - 上下 padding(各40px)，确保图片始终铺满
-            width: 440px;
-            height: 240px;
+            flex: 0 0 34%;
+            width: 34%;
+            max-width: 440px;
+            min-width: 0;
+            height: 100%;
             border-radius: 10px;
             overflow: hidden;
-            flex-shrink: 0;
             img {
                 width: 100%;
                 height: 100%;
@@ -1413,20 +1423,13 @@ onUnmounted(() => {
         }
         // laptop 断点：固定像素宽度超出容器，改用百分比
         @include lap {
-            .wrap {
-                align-items: center;
-            }
             .left {
-                width: 55%;
-                .cont {
-                    width: calc(100% - 60px);
-                }
+                padding-right: 24px;
             }
             .right {
-                width: 30vw;
-                max-width: 400px;
-                height: 240px;
-                img { width: 100%; height: 100%; object-fit: cover; object-position: left center; }
+                flex-basis: 32%;
+                width: 32%;
+                max-width: 360px;
             }
         }
         // tablet 断点（993-1024px）：切换为纵向布局，图片居左对齐
@@ -1441,6 +1444,8 @@ onUnmounted(() => {
                 height: auto;
                 flex-direction: row;
                 align-items: center;
+                gap: 16px;
+                padding-right: 0;
                 border-right: none;
                 flex-shrink: 0;
                 &::after { display: none; }
@@ -1476,6 +1481,8 @@ onUnmounted(() => {
                 border-right: none;
                 border-bottom: none;
                 flex-direction: column;
+                gap: 0;
+                padding-right: 0;
                 align-items: flex-start;
                 padding-bottom: 0;
                 flex-shrink: 0;
@@ -1687,7 +1694,7 @@ onUnmounted(() => {
         }
         .s-a {
             font-size: 18px;
-            max-width: min(560px, 90vw);
+            max-width: 560px;
             margin: 0 auto;
         }
     }
@@ -1829,9 +1836,10 @@ onUnmounted(() => {
 
             .s5-map-zoom {
                 position: relative;
-                // min(280% viewport, 800px SVG原始宽度)：
+                // 兼容旧浏览器：用 width + max-width 代替 min()
                 // 手机端 ≈ 280% 缩放（可横划），tablet 宽时不超 800px 避免过高
-                width: min(280%, 800px);
+                width: 280%;
+                max-width: 800px;
                 aspect-ratio: 800 / 450;
                 height: auto;   // 高度 = width × 450/800，完全由宽度推导，不裁切
                 display: block;
@@ -1932,5 +1940,3 @@ onUnmounted(() => {
 
 
 </style>
-
-

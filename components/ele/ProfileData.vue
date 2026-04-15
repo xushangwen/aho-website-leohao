@@ -33,53 +33,45 @@ const { locale } = useI18n()
 <style scoped lang="scss">
 .profile-list {
     >.wrap {
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: space-between;
-        @include mo {
-            flex-flow: row wrap;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        column-gap: 24px;
+        row-gap: 28px;
+    }
+
+    @media screen and (max-width: 1320px) {
+        >.wrap {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
     }
+
+    @media screen and (max-width: 560px) {
+        >.wrap {
+            grid-template-columns: 1fr;
+        }
+    }
+
     .item {
-        width: 305px;
-        height: 226px;
-        padding-left: 20px;
+        width: auto;
+        min-width: 0;
+        min-height: 226px;
+        padding: 0 20px 20px;
         border-left: 1px solid var(--main-light-gray);
         position: relative;
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+        row-gap: 16px;
 
-        // laptop (≤1400px)：item 宽度随容器缩放
-        @include lap {
-            width: auto;
-            flex: 1;
-            height: auto;
-            min-height: 180px;
-            padding: 0 16px 16px 20px;
-        }
-        // mobile (≤992px)：2列网格
         @include mo {
-            width: 50%;
-            flex: none;
-            height: auto;
-            min-height: 140px;
+            min-height: 160px;
             padding: 16px 12px 16px 16px;
             border-left: 0.5px solid var(--main-light-gray);
-        }
-
-        &:nth-child(odd) {
-            @include mo {
-                border-right: 0.5px solid var(--main-light-gray);
-            }
-        }
-        &:nth-child(3), &:nth-child(4) {
-            @include mo {
-                margin-top: 24px;
-            }
         }
 
         .label {
             color: var(--main-black, #000);
             font-size: 18px;
-            @include lap { font-size: 16px; }
+            line-height: 1.35;
             @include mo { font-size: 14px; }
         }
         .data {
@@ -91,14 +83,18 @@ const { locale } = useI18n()
             flex-flow: row nowrap;
             justify-content: flex-start;
             align-items: flex-end;
+            gap: 4px;
             color: var(--main-blue);
             @include mo {
+                font-size: 28px;
                 font-size: clamp(24px, 7vw, 36px);
             }
         }
         .abst {
             font-size: 14px;
             color: var(--main-blue);
+            align-self: end;
+            padding-right: 72px;
             @include mo { font-size: 12px; }
             p {
                 margin-block-start: 0;
@@ -126,10 +122,9 @@ const { locale } = useI18n()
         }
         .icon {
             position: absolute;
-            left: 20px;
-            bottom: -2px;
+            right: 20px;
+            bottom: 6px;
             @include mo {
-                left: auto;
                 right: 8px;
                 bottom: 0;
                 opacity: 0.15;

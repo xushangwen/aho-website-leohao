@@ -1,5 +1,7 @@
 import ElementPlus from 'unplugin-element-plus/vite';
 const clientConfig = require('./public/client.js');
+const autoprefixer = require('autoprefixer');
+const { insetFallback, clampFallback } = require('./build/postcss-plugins.cjs');
 // https://nuxt.com/docs/api/configuration/nuxt-config
 //https://nuxt.com/modules
 // @ts-ignore
@@ -49,15 +51,23 @@ export default defineNuxtConfig({
         './public/fonts/HarmonyOS_Sans/HarmonyOS_Sans.css',
         './public/fonts/SpaceGrotesk/SpaceGrotesk.css',
         './public/fonts/TT_Fors/TT_Fors.css',
+        './assets/style/_global.scss',
         'normalize.css',
         'bootstrap/dist/css/bootstrap-grid.css',
     ],
 
     vite: {
         css: {
+            postcss: {
+                plugins: [
+                    insetFallback(),
+                    clampFallback(),
+                    autoprefixer(),
+                ]
+            },
             preprocessorOptions: {
                 scss: {
-                    additionalData: '@use "~/assets/style/_global.scss" as *;'
+                    additionalData: '@import "~/assets/style/_context.scss";'
                 }
             }
         }

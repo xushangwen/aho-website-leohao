@@ -468,15 +468,20 @@ onUnmounted(() => {
     .plate-switcher {
         height: 85px;
         display: flex;
-        flex-flow: row nowrap;
+        flex-flow: row wrap;
         justify-content: center;
         align-items: center;
         gap: fluid(80px, 24px);
+        padding: 0 24px;
         @include mo {
             height: 60px;
+            gap: 16px;
+            padding: 0 16px;
         }
         .item {
-            width: 400px;
+            flex: 1 1 280px;
+            max-width: 400px;
+            min-width: 0;
             height: inherit;
             color: var(--main-light-gray, #DCDCDC);
             font-size: fluid(28px);
@@ -486,7 +491,8 @@ onUnmounted(() => {
             border-bottom: 1px solid transparent;
             cursor: pointer;
             @include mo {
-                width: auto;
+                flex: 1 1 0;
+                max-width: none;
                 line-height: 60px;
             }
             //&:hover {
@@ -563,10 +569,14 @@ onUnmounted(() => {
                 scrollbar-width: none; // Firefox
                 &::-webkit-scrollbar { display: none; } // Chrome/Safari
                 > img {
-                    min-width: 1100px;
+                    width: 180vw;
+                    max-width: none;
+                    min-width: 760px;
                 }
                 .point-layer {
-                    min-width: 1100px;
+                    width: 180vw;
+                    max-width: none;
+                    min-width: 760px;
                 }
             }
         }
@@ -705,7 +715,7 @@ onUnmounted(() => {
             top: fluid(100px, 40px);
             .cont {
                 width: 100%;
-                max-width: min(1000px, 90vw);
+                max-width: 1000px;
                 height: inherit;
                 display: flex;
                 flex-flow: row nowrap;
@@ -846,7 +856,7 @@ onUnmounted(() => {
             left: 50%;
             transform: translateX(-50%);
             width: 100%;
-            max-width: min(1000px, 90vw);
+            max-width: 1000px;
             top: calc(#{fluid(100px, 40px)} + 260px);
             display: flex;
             flex-direction: row;
@@ -1053,7 +1063,7 @@ onUnmounted(() => {
             gap: fluid(30px);
             .detail-list {
                 width: 100%;
-                max-width: min(300px, 90vw);
+                max-width: 300px;
                 display: flex;
                 flex-flow: column nowrap;
                 justify-content: flex-end;
@@ -1062,7 +1072,7 @@ onUnmounted(() => {
             }
             .item {
                 width: 100%;
-                max-width: min(300px, 90vw);
+                max-width: 300px;
                 background-color: white;
                 border-top: 2px solid var(--main-blue);
                 padding: 12px 18px;
@@ -1195,7 +1205,8 @@ onUnmounted(() => {
             // detail-group：移出 map-scroll-wrap 外，流式布局贴于地图下方
             .detail-group {
                 position: relative;
-                inset: auto;
+                // inset: auto 展开为四方向（Chrome < 87 / 微信 WebView 兼容）
+                top: auto; right: auto;
                 bottom: auto;
                 left: auto;
                 width: 100%;

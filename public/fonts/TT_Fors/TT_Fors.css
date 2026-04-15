@@ -15,7 +15,15 @@
     src: url("TT_Fors_Light.ttf") format("truetype");
     font-display: swap;
     font-style: normal;
-    font-weight: light;
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: "TT Fors";
+    src: url("TT_Fors_Light.ttf") format("truetype");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 300;
 }
 
 /*:is(div, span, a, p, b, strong):only-child(:matches('/^\d+$/')) {*/
