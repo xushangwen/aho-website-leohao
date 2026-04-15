@@ -1560,6 +1560,7 @@ onUnmounted(() => {
                         line-height: 1.25;
                     }
                     .region { font-size: 14px; line-height: 1.45;
+                        margin-top: -6px;
                         margin-bottom: 0;
                         .c { margin-top: 5px; }
                     }
