@@ -208,7 +208,7 @@ onUnmounted(() => {
         }
         img.bg {
             width: 100%;
-            max-width: min(660px, 90vw);
+            max-width: 660px;
             height: 100%;
             transition: all 1s;
         }
@@ -275,7 +275,19 @@ onUnmounted(() => {
     margin-top: fluid(100px, 40px);
     padding: fluid(100px, 40px) 0;
     background: #FAFAFA;
+    @media screen and (max-width: 1024px) and (min-width: 768px) {
+        padding: 56px 0;
+    }
+    @media screen and (max-width: 767px) {
+        padding: 36px 0;
+    }
     .wrap {
+        // iPad：2 列网格，所有卡片统一排列（.r 用 display:contents 透明化）
+        @media screen and (max-width: 1024px) and (min-width: 768px) {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
         .r {
             display: flex;
             flex-flow: row nowrap;
@@ -288,6 +300,10 @@ onUnmounted(() => {
             }
             @include mo {
                 flex-direction: column;
+            }
+            // iPad：.r 透明化，让所有卡片直接流入 .wrap 的 2 列网格
+            @media screen and (max-width: 1024px) and (min-width: 768px) {
+                display: contents;
             }
         }
         .item {
@@ -327,6 +343,9 @@ onUnmounted(() => {
                 flex-flow: column nowrap;
                 justify-content: space-between;
                 align-items: flex-start;
+                @include mo {
+                    padding: 16px;
+                }
                 &.blue {
                     color: var(--main-blue);
                 }
@@ -336,6 +355,9 @@ onUnmounted(() => {
                     font-style: normal;
                     font-weight: 700;
                     line-height: 1.3;
+                    @include mo {
+                        font-size: 18px;
+                    }
                 }
                 .icon {
                     width: 46px;
@@ -349,9 +371,16 @@ onUnmounted(() => {
                     border-radius: 40px;
                     background-color: rgba(255, 255, 255, .1);
                     transition: all .3s;
+                    @include mo {
+                        width: 32px;
+                        height: 32px;
+                    }
                     i {
                         font-size: fluid(24px);
                         color: currentColor;
+                        @include mo {
+                            font-size: 16px;
+                        }
                     }
                 }
             }
@@ -390,8 +419,9 @@ onUnmounted(() => {
     }
     video {
         display: block;
-        // 宽度响应式：最大 90vw（留出遮罩边距）
-        width: min(90vw, 960px);
+        // 兼容旧浏览器：用 width + max-width 代替 min()
+        width: 90vw;
+        max-width: 960px;
         height: auto;
         // 高度上限：防止超出屏幕（移动端竖屏尤其关键）
         max-height: 85vh;
