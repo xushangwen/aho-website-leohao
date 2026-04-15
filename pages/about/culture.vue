@@ -25,9 +25,15 @@
                         v-for="(item, index) in valueList"
                         :key="index"
                         :class="{active: index === indexValue}"
-                        @mouseenter="indexValueUpdate(index)"
+                        role="button"
+                        tabindex="0"
+                        :aria-expanded="index === indexValue"
+                        @click="indexValueUpdate(index)"
+                        @focusin="indexValueUpdate(index)"
+                        @keydown.enter.prevent="indexValueUpdate(index)"
+                        @keydown.space.prevent="indexValueUpdate(index)"
                     >
-                        <img :src="item.cover" alt="" class="bg">
+                        <img :src="item.cover" :alt="item.t1" class="bg">
                         <div class="t1">{{ item.t1 }}</div>
                         <div class="ab">{{ item.abst }}</div>
                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
@@ -71,7 +77,7 @@ const valueList = computed(() => valueKeys.map((key, i) => ({
     abst: t(`culture.${key}Desc`),
 })))
 const indexValue = ref(0)
-function indexValueUpdate(index) {
+function indexValueUpdate(index: number) {
     indexValue.value = index
 }
 </script>
@@ -139,31 +145,58 @@ function indexValueUpdate(index) {
             justify-content: flex-end;
             align-items: center;
             gap: 14px;
+            @include tab {
+                &.active {
+                    padding-top: 28px;
+                }
+            }
             @include mo {
                 width: 100% !important;
-                height: 120px;
+                height: 104px;
                 padding: 16px 24px;
-                justify-content: center;
-                align-items: flex-start;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
                 &.active {
-                    height: 280px;
+                    height: 260px;
+                    flex-direction: column;
                     justify-content: flex-start;
-                    padding-top: 32px;
+                    align-items: flex-start;
+                    padding-top: 28px;
                 }
             }
             .t1 {
                 color: white;
                 font-size: fluid(24px);
+                @include tab {
+                    font-size: 20px;
+                }
+                @include mo {
+                    font-size: 18px;
+                    flex: 1;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
             }
             .ab {
                 visibility: hidden;
                 opacity: 0;
                 height: 0;
                 color: white;
+                font-size: fluid(18px, 16px);
+                overflow-wrap: break-word;
+                word-break: break-word;
+                @include mo {
+                    display: none;
+                }
             }
             .icon {
                 z-index: 9;
                 opacity: .5;
+                @include mo {
+                    flex: none;
+                }
             }
             &.active {
                 width: 37%;
@@ -171,11 +204,30 @@ function indexValueUpdate(index) {
                 align-items: flex-start;
                 .t1 {
                     font-size: fluid(36px);
+                    @include tab {
+                        font-size: 26px;
+                    }
+                    @include mo {
+                        font-size: 24px;
+                        flex: none;
+                        white-space: normal;
+                    }
                 }
                 .ab {
                     visibility: visible;
-                    opacity: 1;
+                    opacity: 0.8;
                     height: auto;
+                    @include tab {
+                        font-size: 17px;
+                        word-break: keep-all;
+                        overflow-wrap: break-word;
+                    }
+                    @include mo {
+                        display: block;
+                        font-size: 16px;
+                        word-break: keep-all;
+                        overflow-wrap: break-word;
+                    }
                 }
                 .icon {
                     display: none;
