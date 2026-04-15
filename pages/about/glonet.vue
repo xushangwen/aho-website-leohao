@@ -32,7 +32,9 @@
                 class="glo"
                 :class="{active: indexPlate === 0}"
             >
-                <div class="map-scroll-wrap">
+                <div class="map-scroll-wrap" ref="elGloMapScroll">
+                    <!-- map-inner 作为整体缩放单元：img + 标记点层同步扩宽，彻底避免错位 -->
+                    <div class="map-inner">
                     <img src="/images/about/glonet/glo.jpg" alt="">
                     <div class="point-layer">
                     <div
@@ -56,6 +58,7 @@
 
                     </div>
                 </div>
+                    </div><!-- /map-inner -->
                 <div class="legend">
                 <div class="item">
                     <div class="circle customer"></div>
@@ -154,7 +157,7 @@
                 class="china"
                 :class="{active: indexPlate === 1}"
             >
-                <div class="map-scroll-wrap">
+                <div class="map-scroll-wrap" ref="elChinaMapScroll">
                     <!-- map-inner 作为整体缩放单元：img + 标记点层同步偏移，避免错位 -->
                     <div class="map-inner">
                         <img src="/images/about/glonet/china.jpg" alt="">
@@ -277,6 +280,8 @@ const indexPlate = ref(0)
 const elGlo = ref(null)
 const elChina = ref(null)
 const elPlateContainer = ref(null)
+const elGloMapScroll = ref<HTMLElement | null>(null)
+const elChinaMapScroll = ref<HTMLElement | null>(null)
 const plateHeight = ref(0)
 function changePlateIndex(index: number) {
     indexPlate.value = index
@@ -436,6 +441,14 @@ function itemMouseLeaveHandler(event: Event, col: number, row: number) {
 let timerInitPlateHeight = null
 let lineResizeObserver = null
 onMounted(() => {
+    // 手机端地图初始居中
+    if (window.innerWidth <= 992) {
+        nextTick(() => {
+            for (const el of [elGloMapScroll.value, elChinaMapScroll.value]) {
+                if (el) el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2
+            }
+        })
+    }
     // 页面加载结束后初始化高度
     timerInitPlateHeight = setTimeout(() => {
         plateHeightInit()
@@ -473,10 +486,14 @@ onUnmounted(() => {
         align-items: center;
         gap: fluid(80px, 24px);
         padding: 0 24px;
+        @include tab {
+            margin-top: 28px;
+        }
         @include mo {
             height: 60px;
             gap: 16px;
             padding: 0 16px;
+            margin-top: 20px;
         }
         .item {
             flex: 1 1 280px;
@@ -494,6 +511,7 @@ onUnmounted(() => {
                 flex: 1 1 0;
                 max-width: none;
                 line-height: 60px;
+                font-size: 16px;
             }
             //&:hover {
             //    color: #656565;
@@ -562,21 +580,22 @@ onUnmounted(() => {
         // 地图滚动容器：移动端水平滑动查看完整地图点位
         .map-scroll-wrap {
             position: relative;
+            @include tab {
+                margin-top: 32px;
+            }
             @include mo {
+                margin-top: 64px;
                 overflow-x: auto;
                 overflow-y: hidden;
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: none; // Firefox
                 &::-webkit-scrollbar { display: none; } // Chrome/Safari
-                > img {
-                    width: 180vw;
+                // GLO 和 China 地图均用 map-inner 包裹 img + point-layer
+                // map-inner 整体扩宽，point-layer 以 map-inner 为 containing block，百分比坐标精确对齐
+                .map-inner {
+                    width: 360vw;
                     max-width: none;
-                    min-width: 760px;
-                }
-                .point-layer {
-                    width: 180vw;
-                    max-width: none;
-                    min-width: 760px;
+                    min-width: 1080px;
                 }
             }
         }
