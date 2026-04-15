@@ -133,7 +133,8 @@ const contactInfo = computed(() => [
 /* ===== Section 1: 制造基地 ===== */
 .s1 {
     padding: fluid(100px, 40px) 0 fluid(80px, 32px);
-
+    @include tab { padding: 56px 0 44px; }
+    @include mo { padding: 36px 0 28px; }
     .section-hd {
         margin-bottom: fluid(48px, 20px);
         text-align: center;
@@ -374,8 +375,9 @@ const contactInfo = computed(() => [
     .feedback {
         margin-top: fluid(60px, 32px);
     }
+    @include tab { padding: 56px 0; }
     @include mo {
-        padding: 48px 0;
+        padding: 36px 0;
         .section-name { font-size: 26px; }
         .feedback { margin-top: 32px; }
     }
@@ -389,8 +391,9 @@ const contactInfo = computed(() => [
         font-weight: 700;
         text-align: center;
     }
+    @include tab { padding: 56px 0; }
     @include mo {
-        padding: 48px 0;
+        padding: 36px 0;
         .section-name { font-size: 26px; }
     }
     .pos-list {

@@ -158,9 +158,8 @@ watch(() => route.query.type, async () => {
 <style scoped lang="scss">
 .s1 {
     padding: fluid(100px) 0;
-    @include mo {
-        padding: 40px 0 60px;
-    }
+    @include tab { padding: 56px 0 64px; }
+    @include mo { padding: 36px 0 48px; }
     .wrap {
 
     }
@@ -195,7 +194,9 @@ watch(() => route.query.type, async () => {
             cursor: pointer;
             @include mo {
                 // 按比例随视口缩小：320px→11px / 390px→14px / 428px→15px
+                font-size: 13px;
                 font-size: clamp(11px, 3.6vw, 15px);
+                padding: 6px 15px;
                 padding: clamp(5px, 1.4vw, 8px) clamp(12px, 4vw, 18px);
             }
             &:hover {

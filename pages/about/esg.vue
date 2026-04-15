@@ -304,11 +304,13 @@ const esgReport = computed(() => {
     background-repeat: no-repeat;
     background-position: center bottom;
     padding: fluid(100px) 0;
+    @include tab { padding: 56px 0; }
+    @include mo { padding: 36px 0; }
     .wrap {
         display: flex;
         flex-flow: column nowrap;
         gap: fluid(64px);
-        max-width: min(1120px, 90vw);
+        max-width: 1120px;
     }
     .pla.blue {
         color: var(--main-blue)
@@ -395,6 +397,7 @@ const esgReport = computed(() => {
                 min-width: 0;
                 padding: 16px 14px 16px 18px;
                 justify-content: space-between;
+                gap: 20px;
             }
             @media (max-width: 600px) {
                 // 1-col 模式：内容自然流动，gap 控制间距

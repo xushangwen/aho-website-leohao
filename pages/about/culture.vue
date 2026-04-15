@@ -109,9 +109,8 @@ function indexValueUpdate(index: number) {
 }
 .s2 {
     padding: fluid(100px, 48px) 0;
-    @include mo {
-        padding: 48px 0;
-    }
+    @include tab { padding: 56px 0; }
+    @include mo { padding: 36px 0; }
     .t {
         font-size: fluid(38px, 26px);
         font-weight: bold;

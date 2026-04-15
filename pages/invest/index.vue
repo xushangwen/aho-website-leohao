@@ -71,9 +71,8 @@ const breadcrumb = computed(() => [
 <style scoped lang="scss">
 .s1 {
     padding: fluid(80px, 40px) 0 fluid(100px, 60px);
-    @include mo {
-        padding: 40px 0 60px;
-    }
+    @include tab { padding: 56px 0 64px; }
+    @include mo { padding: 36px 0 48px; }
     .wrap {
         display: grid;
         grid-template-columns: 1fr 1fr;

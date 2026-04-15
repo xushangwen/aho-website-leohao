@@ -78,11 +78,13 @@
 <style scoped lang="scss">
     .main {
         padding: fluid(94px) 0 fluid(220px);
+        @include tab { padding-top: 56px; }
+        @include mo { padding-top: 36px; }
         background: #F4F4F4;;
     }
     .abst {
         width: 100%;
-        max-width: min(800px, 90vw);
+        max-width: 800px;
         margin-top: fluid(24px);
         color: #666;
         font-size: 18px;

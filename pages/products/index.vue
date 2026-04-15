@@ -244,9 +244,8 @@ onMounted(() => {
 .s1 {
     padding: fluid(100px, 40px) 0;
     background-color: #F8F8F8;
-    @include mo {
-        padding: 40px 0 60px;
-    }
+    @include tab { padding: 56px 0 64px; }
+    @include mo { padding: 36px 0 48px; }
     .wrap {
         display: flex;
         flex-flow: row nowrap;

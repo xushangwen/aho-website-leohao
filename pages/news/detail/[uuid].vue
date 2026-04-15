@@ -111,6 +111,8 @@ const next = computed(() => detailData.value?.next || null)
 }
 .arti {
     padding: 64px 0 80px;
+    @include tab { padding: 48px 0 64px; }
+    @include mo { padding: 32px 0 48px; }
     .date {
         color: var(--main-orange);
         // 全局数字字体

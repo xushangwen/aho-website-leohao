@@ -145,6 +145,8 @@ $NARROW: 1200px;
 
 .s1 {
     padding: fluid(100px, 40px) 0;
+    @include tab { padding: 56px 0; }
+    @include mo { padding: 36px 0; }
     position: relative;
 
     background-color: #fff; // 窄屏上方露出区域的底色
@@ -161,7 +163,8 @@ $NARROW: 1200px;
         // 窄屏：内容竖排后 section 变高，图片强制拉伸模糊
         // 改为贴底自然比例 + 顶部渐变遮罩，彻底消除拼接感
         @media screen and (max-width: $NARROW) {
-            inset: auto 0 0 0; // 仅锚定底部，高度随图片自然比例
+            // inset: auto 0 0 0 展开为四方向兼容旧版浏览器（Chrome < 87 / 微信 WebView）
+            top: auto; right: 0; bottom: 0; left: 0;
 
             img {
                 display: block;
@@ -190,7 +193,7 @@ $NARROW: 1200px;
         .nav {
             margin: 0 auto;
             width: 100%;
-            max-width: min(940px, 90vw);
+            max-width: 940px;
             display: flex;
             flex-flow: row nowrap;
             justify-content: space-between;
@@ -285,7 +288,7 @@ $NARROW: 1200px;
         // ─── 历程卡片内容区 ───────────────────────────────────────
         .content {
             width: 92%;
-            max-width: min(1150px, 90vw);
+            max-width: 1150px;
             margin: fluid(120px, 40px) auto 0;
             position: relative;
 
@@ -342,7 +345,7 @@ $NARROW: 1200px;
 
             .item {
                 width: 100%;
-                max-width: min(288px, 90vw);
+                max-width: 288px;
                 height: fluid(450px);
                 padding: 0 0 0 20px;
                 display: flex;
