@@ -369,8 +369,8 @@ function initApplicationItem() {
     const { height } = elS3.value.getBoundingClientRect()
     itemLength = elApplication.value.length
     lastChildHeight = elApplication.value[itemLength - 1].getBoundingClientRect().height
-    // 与 CSS --s3-step 的 max() 兜底值对齐：桌面 90px，移动 80px
-    const minStep = windowWidth.value <= 1024 ? 80 : 90
+    // 与 CSS --s3-step 的 max() 兜底值对齐：桌面 90px，平板 80px，手机 96px
+    const minStep = windowWidth.value <= 767 ? 96 : windowWidth.value <= 1024 ? 80 : 90
     step = Math.max(minStep, (windowHeight.value - headerHeight - lastChildHeight) / (itemLength - 1))
     elS3.value.style.setProperty('--s3-step', `${step}px`)
     elS3.value.style.height = `${height}px`
@@ -765,8 +765,15 @@ onUnmounted(() => {
         &.absolute-sticky {
             .left {
                 border-right: 1px solid white !important;
-                // 移动端不加右侧白色 border（会产生多余白线）
-                @include mo {
+                // iPad：border-right 已被 ::before 代替，同步变白
+                @media screen and (max-width: 1024px) and (min-width: 768px) {
+                    border-right: none !important;
+                    &::before {
+                        background-color: white !important;
+                    }
+                }
+                // 手机端不加右侧白色 border（会产生多余白线）
+                @media screen and (max-width: 767px) {
                     border-right: none !important;
                 }
                 .icon {
@@ -1123,6 +1130,7 @@ onUnmounted(() => {
     .right {
         min-width: 0;
         position: relative;
+        margin-right: calc(50% - 50vw);
         .bg {
             position: absolute;
             inset: 0;
@@ -1166,7 +1174,9 @@ onUnmounted(() => {
         .right {
             margin-top: 24px;
             height: 280px;
-            width: 100%;
+            width: 100vw;
+            margin-left: calc(50% - 50vw);
+            margin-right: calc(50% - 50vw);
             .bg {
                 border-radius: 0;
             }
@@ -1305,6 +1315,9 @@ onUnmounted(() => {
     @include tab {
         --s3-step: 80px;
     }
+    @media screen and (max-width: 767px) {
+        --s3-step: 96px;
+    }
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-end;
@@ -1319,19 +1332,20 @@ onUnmounted(() => {
             flex-flow: row nowrap;
             justify-content: space-between;
             align-items: stretch;
-            gap: fluid(48px, 24px);
             height: 100%;
         }
         .left {
-            flex: 1 1 0;
+            flex: 0 0 52%;
+            width: 52%;
+            max-width: 650px;
             min-width: 0;
             height: 100%;
             display: flex;
             flex-flow: row nowrap;
-            justify-content: flex-start;
+            justify-content: space-between;
             align-items: flex-start;
             gap: fluid(20px, 13px);
-            padding-right: fluid(40px, 24px);
+            padding-right: fluid(26px, 18px);
             border-right: 1px solid var(--main-orange);
             transition: border-color .4s cubic-bezier(.4, 0, .2, 1);
             position: relative;
@@ -1347,12 +1361,14 @@ onUnmounted(() => {
                 flex: 1 1 auto;
                 min-width: 0;
                 width: auto;
+                max-width: 420px;
                 height: 100%;
                 margin-left: 0;
                 display: flex;
                 flex-flow: column nowrap;
-                justify-content: space-between;
-                gap: 16px;
+                justify-content: flex-start;
+                gap: 28px;
+                padding-top: 2px;
                 .name {
                     color: var(--main-blue, #1E3296);
                     font-size: fluid(28px, 20px);
@@ -1363,6 +1379,8 @@ onUnmounted(() => {
                     font-size: 18px;
                     line-height: 1.5;
                     color: #000;
+                    margin-top: 32px;
+                    margin-bottom: 0;
                     transition: color .4s cubic-bezier(.4, 0, .2, 1);
                     .c {
                         margin-top: 9px;
@@ -1384,9 +1402,9 @@ onUnmounted(() => {
             }
         }
         .right {
-            flex: 0 0 34%;
-            width: 34%;
-            max-width: 440px;
+            flex: 0 0 31%;
+            width: 31%;
+            max-width: 400px;
             min-width: 0;
             height: 100%;
             border-radius: 10px;
@@ -1424,56 +1442,86 @@ onUnmounted(() => {
         // laptop 断点：固定像素宽度超出容器，改用百分比
         @include lap {
             .left {
-                padding-right: 24px;
-            }
-            .right {
-                flex-basis: 32%;
-                width: 32%;
-                max-width: 360px;
-            }
-        }
-        // tablet 断点（993-1024px）：切换为纵向布局，图片居左对齐
-        @include tab {
-            padding: 16px 0;
-            .wrap {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .left {
-                width: 100%;
-                height: auto;
-                flex-direction: row;
-                align-items: center;
-                gap: 16px;
-                padding-right: 0;
-                border-right: none;
-                flex-shrink: 0;
-                &::after { display: none; }
+                flex-basis: 54%;
+                width: 54%;
+                max-width: none;
+                padding-right: 20px;
                 .cont {
-                    width: calc(100% - 60px);
-                    height: auto;
-                    justify-content: flex-start;
-                    gap: 4px;
+                    max-width: 390px;
+                    gap: 24px;
                 }
             }
             .right {
-                width: 100%;
-                height: 160px;
-                margin-top: 8px;
-                img { width: 100%; height: 100%; object-fit: cover; object-position: left center; }
+                flex-basis: 29%;
+                width: 29%;
+                max-width: 360px;
             }
         }
-        @include mo {
-            height: 340px !important;
+        @media screen and (max-width: 1024px) and (min-width: 768px) {
+            padding: 36px 0 24px;
+            .left {
+                flex-basis: 46%;
+                width: 46%;
+                max-width: none;
+                gap: 14px;
+                padding-right: 16px;
+                border-right: none; // 由 ::before 代替，可控制高度
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 1px;
+                    height: 170px; // 与右侧图片高度一致，从底部缩短
+                    background-color: var(--main-orange);
+                    transition: background-color .4s cubic-bezier(.4, 0, .2, 1);
+                }
+                &::after {
+                    right: -2px; // 圆点中心（right:-2px + width:5px → 中心在 right_edge-0.5px）与线中心对齐
+                }
+                .icon {
+                    font-size: 32px;
+                    margin-top: -2px;
+                }
+                .cont {
+                    max-width: none;
+                    gap: 18px;
+                    padding-top: 0;
+                    .name {
+                        font-size: 22px;
+                    }
+                    .region {
+                        font-size: 14px;
+                        line-height: 1.45;
+                        word-break: keep-all; // 在顿号/逗号处回行，不在字间随意断
+                        margin-top: 20px;
+                    }
+                }
+            }
+            .right {
+                flex-basis: 42%;
+                width: 42%;
+                max-width: none;
+                height: 170px;
+                align-self: flex-start; // 图片顶部与橙色线条顶部齐平
+            }
+        }
+        @media screen and (max-width: 767px) {
+            height: 408px !important;
             overflow: hidden;
-            padding-top: 22px;
+            // 手机端卡片改为标准纵向内容流：icon → 标题 → 正文 → 图片
+            padding: 28px 0 0 0;
             .wrap {
                 display: flex;
                 flex-direction: column;
-                height: 100%;
-                padding-right: 36px;  // 右侧留出竖线+圆点区域，增加右边距缩小内容宽度
+                justify-content: flex-start;
+                // height: auto 让 wrap 收缩到内容高度（文字 + 图片），
+                // 使 ::before 线条的 bottom: 0 精确对齐图片底部，而非卡片底部
+                height: auto;
+                padding-right: 36px;  // 右侧留出竖线+圆点区域
                 overflow: visible;
                 position: relative;
+                gap: 20px;
             }
             .left {
                 width: 100%;
@@ -1481,9 +1529,10 @@ onUnmounted(() => {
                 border-right: none;
                 border-bottom: none;
                 flex-direction: column;
-                gap: 0;
-                padding-right: 0;
                 align-items: flex-start;
+                justify-content: flex-start;
+                gap: 12px;
+                padding-right: 0;
                 padding-bottom: 0;
                 flex-shrink: 0;
                 &::after {
@@ -1491,23 +1540,32 @@ onUnmounted(() => {
                 }
                 .icon {
                     font-size: 26px;
+                    line-height: 1;
                     margin-top: 0;
-                    margin-bottom: 6px;
+                    margin-bottom: 0;
+                    flex-shrink: 0;
                 }
                 .cont {
                     width: 100%;
                     flex: none;
+                    min-width: 0;
                     height: auto;
                     margin-left: 0;
                     justify-content: flex-start;
-                    gap: 4px;
-                    .name { font-size: 16px; }
-                    .region { font-size: 12px; line-height: 1.4;
-                        .c { margin-top: 3px; }
+                    gap: 14px;
+                    padding-top: 0;
+                    .name {
+                        font-size: 20px;
+                        font-weight: 700;
+                        line-height: 1.25;
+                    }
+                    .region { font-size: 14px; line-height: 1.45;
+                        margin-bottom: 0;
+                        .c { margin-top: 5px; }
                     }
                 }
             }
-            // 右侧竖线（绝对定位，精确居中于 24px padding 区域）
+            // 右侧竖线（绝对定位，精确居中于 padding-right 区域）
             .wrap::before {
                 content: '';
                 position: absolute;
@@ -1532,16 +1590,23 @@ onUnmounted(() => {
             }
             .right {
                 width: 100%;
-                height: auto; // 覆盖 @include tab 的 160px，移动端高度由 flex: 1 撑开
-                flex: 1;
+                height: 175px;
+                flex: none;
                 overflow: hidden;
                 border-radius: 10px;
-                margin-top: 16px;
-                img { width: 100%; height: 100%; object-fit: cover; object-position: left center; }
+                margin-top: 0;
+                background: #eef3ff;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    object-position: center top;
+                    display: block;
+                }
             }
         }
     }
-    @include mo {
+    @media screen and (max-width: 767px) {
         // 移动端保留 sticky 叠加效果，高度由 JS 控制
     }
 }

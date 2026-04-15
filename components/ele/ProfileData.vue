@@ -47,7 +47,7 @@ const { locale } = useI18n()
 
     @media screen and (max-width: 560px) {
         >.wrap {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
     }
 
@@ -55,14 +55,15 @@ const { locale } = useI18n()
         width: auto;
         min-width: 0;
         min-height: 226px;
-        padding: 0 20px 20px;
+        padding: 0 20px 0;
         border-left: 1px solid var(--main-light-gray);
         position: relative;
         display: grid;
-        grid-template-rows: auto auto 1fr;
-        row-gap: 16px;
+        grid-template-rows: auto auto 1fr auto;
+        row-gap: 4px;
 
         @include mo {
+            row-gap: 16px;
             min-height: 160px;
             padding: 16px 12px 16px 16px;
             border-left: 0.5px solid var(--main-light-gray);
@@ -77,7 +78,8 @@ const { locale } = useI18n()
         .data {
             text-edge: cap;
             font-family: 'Google Sans', SpaceGrotesk, sans-serif;
-            font-size: fluid(60px, 36px);
+            // clamp(28px, 3.5vw, 60px)：4 列窄区间（约 1320px）时缩至 ~46px，避免长数字溢出列边界
+            font-size: clamp(28px, 3.5vw, 60px);
             font-weight: 700;
             display: flex;
             flex-flow: row nowrap;
@@ -93,9 +95,11 @@ const { locale } = useI18n()
         .abst {
             font-size: 14px;
             color: var(--main-blue);
-            align-self: end;
-            padding-right: 72px;
-            @include mo { font-size: 12px; }
+            align-self: start;
+            padding-right: 0;
+            text-wrap: pretty;
+            word-break: keep-all; // CJK 只在标点（，、。）处回行，不在字间任意断
+            @include mo { font-size: 12px; padding-right: 32px; word-break: normal; }
             p {
                 margin-block-start: 0;
                 margin-block-end: 0;
@@ -121,10 +125,12 @@ const { locale } = useI18n()
             }
         }
         .icon {
-            position: absolute;
-            right: 20px;
-            bottom: 6px;
+            // 大屏：参与文档流，左对齐，与 border-left 底部完全齐平
+            position: static;
+            align-self: end;
             @include mo {
+                // 手机端保持绝对定位右下角水印效果
+                position: absolute;
                 right: 8px;
                 bottom: 0;
                 opacity: 0.15;
