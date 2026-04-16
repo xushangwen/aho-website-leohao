@@ -631,14 +631,14 @@ nav.norm {
         visibility: hidden;
         opacity: 0;
         width: 100%;
-        height: 360px;
+        height: 330px;
         background: #FAFAFA;
         border-top: 1px solid #F4F4F4;
         overflow: hidden;
         transition: opacity .3s, transform .3s ease-in-out;
         .list {
             margin: 0;
-            padding: 40px 160px 80px;
+            padding: 30px 160px 52px;
             position: absolute;
             inset: 0;
             transform: translateY(-100%);
@@ -651,14 +651,14 @@ nav.norm {
 
             // ≤1439px：收窄子菜单面板边距，并压缩右侧图片区占比
             @include lap {
-                padding: 36px 60px 64px;
+                padding: 28px 60px 44px;
                 column-gap: 28px;
                 grid-template-columns: minmax(140px, 0.7fr) minmax(0, 1.65fr) minmax(180px, 0.82fr);
             }
 
             .left {
                 min-width: 0;
-                padding-top: 16px;
+                padding-top: 10px;
                 .cn {
                     color: var(--main-blue, #1E3296);
                     font-size: fluid(24px);
@@ -689,13 +689,13 @@ nav.norm {
                 display: grid;
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 column-gap: 34px;
-                row-gap: 10px;
+                row-gap: 4px;
                 align-content: start;
                 .item {
                     width: auto;
                     min-width: 0;
-                    min-height: 48px;
-                    padding: 10px 0;
+                    min-height: 40px;
+                    padding: 6px 0;
                     border-bottom: 0.5px solid var(--main-light-gray, #DCDCDC);
                     display: flex;
                     flex-flow: row nowrap;
@@ -748,14 +748,14 @@ nav.norm {
                 img {
                     width: 100%;
                     max-width: 360px;
-                    max-height: 240px;
+                    max-height: 220px;
                     border-radius: 10px;
                     object-fit: cover;
                 }
                 @include lap {
                     img {
                         max-width: 260px;
-                        max-height: 220px;
+                        max-height: 200px;
                     }
                 }
             }

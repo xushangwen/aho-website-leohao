@@ -38,6 +38,8 @@
 </template>
 
 <script setup>
+const emit = defineEmits(['finished'])
+
 const visible = ref(true)
 const barWidth = ref(0)
 const barComplete = ref(false)
@@ -86,7 +88,7 @@ onUnmounted(() => {
 })
 
 const onAfterLeave = () => {
-    // 可在此做收尾（如触发首屏动画），暂留空
+    emit('finished')
 }
 </script>
 

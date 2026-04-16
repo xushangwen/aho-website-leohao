@@ -7,6 +7,8 @@ html {
     /* Google Sans 优先处理英文/数字，中文回退至 HarmonyOS_Sans */
     font-family: -apple-system, 'Google Sans', SpaceGrotesk, HarmonyOS_Sans, BlinkMacSystemFont, SF UI Text, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Arial, sans-serif;
     overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 /* 英文版全站使用 Google Sans */
@@ -15,6 +17,8 @@ html[lang="en"] body {
 }
 body {
     overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 /* webkit, opera, IE9 （谷歌浏览器）*/
 ::selection {

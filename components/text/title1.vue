@@ -13,7 +13,7 @@
 <style scoped lang="scss">
     .title {
         width: 100%;
-        max-width: min(1000px, 90vw);
+        max-width: 1000px;
         :deep(.t1) {
             color: #000;
             font-size: fluid(36px, 24px);

@@ -49,7 +49,7 @@
 <style scoped lang="scss">
 .form {
     width: 96%;
-    max-width: min(800px, 90vw);
+    max-width: 800px;
     margin: 0 auto fluid(60px, 32px);
     display: grid;
     grid-template-columns: repeat(2, 1fr);

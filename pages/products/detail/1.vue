@@ -1083,7 +1083,7 @@
 
                     .ab {
                         width: 100%;
-                        max-width: min(375px, 90vw);
+                        max-width: 375px;
                         color: var(--main-black, #0F171F);
                         text-align: center;
                         font-size: fluid(20px, 14px);
@@ -1274,4 +1274,3 @@
     }
 }
 </style>
-

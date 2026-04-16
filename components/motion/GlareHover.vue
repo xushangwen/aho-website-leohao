@@ -57,7 +57,8 @@ const rgba = computed(() => {
 const overlayStyle = computed(() => ({
     position: 'absolute' as const,
     zIndex: 99,
-    inset: '0',
+    // inset 是 JS inline style，PostCSS 无法处理，手动展开兼容旧版 WebView
+    top: '0', right: '0', bottom: '0', left: '0',
     background: `linear-gradient(${props.glareAngle}deg,
       hsla(0,0%,0%,0) 60%,
       ${rgba.value} 70%,

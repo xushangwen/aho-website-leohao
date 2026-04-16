@@ -54,6 +54,7 @@ onMounted(() => {
     .cover {
         width: 100%;
         height: 100vh;
+        max-height: 413px;
         max-height: clamp(300px, 28.646vw, $max_height);
         display: flex;
         justify-content: center;
@@ -92,6 +93,7 @@ onMounted(() => {
         }
         .wrap {
             height: inherit;
+            max-height: 413px;
             max-height: clamp(300px, 28.646vw, $max_height);
             display: flex;
             flex-flow: column nowrap;

@@ -6,7 +6,10 @@
         <NuxtLayout>
             <NuxtPage />
         </NuxtLayout>
-        <CommonPreloader />
+        <CommonPreloader
+            v-if="enableHomePreloader && !homePreloaderFinished"
+            @finished="homePreloaderFinished = true"
+        />
     </div>
 </template>
 
@@ -14,9 +17,17 @@
 import useLayoutStore from "@/stores/layout";
 import useAppStore from "@/stores/app";
 
+const route = useRoute()
 const appConfig = useAppConfig()
 const layoutStore = useLayoutStore()
 const appStore = useAppStore()
+const normalizePath = (path) => path === '/' ? path : path.replace(/\/+$/, '')
+const isHomeEntry = (path) => {
+    const normalizedPath = normalizePath(path)
+    return normalizedPath === '/' || normalizedPath === '/en'
+}
+const enableHomePreloader = useState('enable-home-preloader', () => isHomeEntry(route.path))
+const homePreloaderFinished = useState('home-preloader-finished', () => !enableHomePreloader.value)
 /**
  * 获取全局数据
  */
@@ -106,4 +117,3 @@ watch(navData, (newNav) => {
     }
 
 </style>
-

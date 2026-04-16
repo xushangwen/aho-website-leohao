@@ -11,7 +11,6 @@
 
         <section class="s1">
             <div class="wrap">
-                <div class="t">{{ $t('honor.title') }}</div>
                 <div class="patent-list">
                     <MotionGlareHover
                         class="item-wrapper"
