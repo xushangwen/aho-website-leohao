@@ -592,10 +592,16 @@ onMounted(() => {
                     const { width, height } = entry.contentRect;
                     lineGroupWidth.value = width;
                     lineGroupHeight.value = height;
+                    // 同步更新容器高度（CSS Grid 使 china 高度 = max(地图,卡片)，需实时反映）
+                    if (indexPlate.value === 1) plateHeight.value = height;
                     changeChinaLine();
                 }
                 if (entry.target === elGlo.value) {
                     calcGloLines();
+                    if (indexPlate.value === 0) {
+                        const { height } = (elGlo.value as HTMLElement).getBoundingClientRect();
+                        plateHeight.value = height;
+                    }
                 }
             }
         });
@@ -1378,20 +1384,32 @@ onUnmounted(() => {
 }
 
 .china {
+    // Grid 叠层：map-scroll-wrap 与 detail-group 共享同一 grid cell
+    // china 高度 = max(地图高度, 卡片高度)，窗口缩窄时容器自动撑高
+    display: grid;
     overflow: hidden;
+    // 填充地图下方空白区域（当卡片高度 > 地图时，#e6e9ec 覆盖白色背景）
+    background-color: #e6e9ec;
+    .map-scroll-wrap {
+        grid-area: 1 / 1;
+        align-self: start; // 地图贴顶对齐，不拉伸；下方空白由 background-color 填充
+    }
     .point-layer,
-    .line-group,
-    .detail-group {
+    .line-group {
         position: absolute;
         inset: 0;
         overflow: hidden;
     }
     .detail-group {
+        grid-area: 1 / 1;
+        align-self: end;
+        z-index: 2;
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-between;
         align-items: flex-end;
-        padding: 0 fluid(60px, 24px) fluid(140px, 48px);
+        // padding-top：防止顶部卡片贴顶；中等宽度下 padding-bottom 由后置断点缩减
+        padding: fluid(60px, 30px) fluid(60px, 24px) fluid(140px, 48px);
         gap: fluid(30px);
         .detail-list {
             width: 100%;
@@ -1508,11 +1526,19 @@ onUnmounted(() => {
         }
     }
 
+    // 中等桌面（993–1280px）：地图变矮时缩减底部 padding，避免空白区域过大
+    @media screen and (min-width: 993px) and (max-width: 1280px) {
+        .detail-group {
+            padding-bottom: 60px;
+        }
+    }
+
     // ============================================================
     // Mobile 响应式（≤992px）
     // .map-inner（img + 标记点）作为整体缩放单元，彻底避免错位
     // ============================================================
     @include mo {
+        display: block; // 重置桌面端的 display:grid，回到正常文档流
         overflow: visible;
         background-color: #e6e9ec;
 
@@ -1523,9 +1549,11 @@ onUnmounted(() => {
             display: none !important;
         }
 
-        // map-scroll-wrap：overflow:hidden 裁剪超出部分，不滚动
+        // map-scroll-wrap：重置 grid-area，恢复文档流；overflow:hidden 裁剪；清除 margin-top:20px
         .map-scroll-wrap {
+            grid-area: auto;
             overflow: hidden;
+            margin-top: 0;
 
             // map-inner 整体 2× 放大，左移使中国居中
             // offset = -(57% × 2 - 50%) = -64%
@@ -1548,10 +1576,9 @@ onUnmounted(() => {
             }
         }
 
-        // detail-group：移出 map-scroll-wrap 外，流式布局贴于地图下方
+        // detail-group：流式布局，负 margin 上移覆盖地图底部区域
         .detail-group {
             position: relative;
-            // inset: auto 展开为四方向（Chrome < 87 / 微信 WebView 兼容）
             top: auto;
             right: auto;
             bottom: auto;
@@ -1563,6 +1590,8 @@ onUnmounted(() => {
             grid-template-columns: repeat(3, 1fr);
             gap: 5px;
             padding: 10px 14px;
+            margin-top: -48px;
+            z-index: 2;
             background: none;
             backdrop-filter: none;
             -webkit-backdrop-filter: none;
@@ -1586,6 +1615,21 @@ onUnmounted(() => {
             }
             .cus {
                 display: none;
+            }
+        }
+
+        // iPad 竖屏（768–992px）：卡片文字放大
+        @media screen and (min-width: 768px) and (max-width: 992px) {
+            .detail-group {
+                gap: 8px;
+                padding: 12px 16px;
+                margin-top: -160px;
+                .item {
+                    padding: 8px 10px;
+                }
+                .name {
+                    font-size: 15px;
+                }
             }
         }
     }
