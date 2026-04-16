@@ -24,7 +24,6 @@
         </nav>
         <section
             class="plate-container"
-            ref="elPlateContainer"
             :style="{
                 height: `${plateHeight}px`,
             }"
@@ -298,8 +297,7 @@
                             <div class="cus" v-if="detailItem.cus.length > 0">
                                 <div
                                     class="cus-name"
-                                    v-for="(cusItem, cusIndex) in locale ===
-                                    'en'
+                                    v-for="cusItem in locale === 'en'
                                         ? detailItem.cusEn || detailItem.cus
                                         : detailItem.cus"
                                 >
@@ -311,19 +309,13 @@
                 </div>
             </div>
         </section>
-        <!--    <EleMapMarker-->
-        <!--        map-image="/images/about/glonet/glo.jpg"-->
-        <!--        :enable-click="true"-->
-        <!--    ></EleMapMarker>-->
     </main>
 </template>
 
 <script setup lang="ts">
-import useEventStore from "@/stores/event";
-const runtimeConfig = useRuntimeConfig();
 const appConfig = useAppConfig();
-const chinaPoints = ref(appConfig.clientConfig.chinaPoints);
-const gloPoints = ref(appConfig.clientConfig.gloPoints);
+const chinaPoints = appConfig.clientConfig.chinaPoints;
+const gloPoints = appConfig.clientConfig.gloPoints;
 
 // 工厂卡片数据（pointIndex 对应 gloPoints 中的索引：23=常州, 24=泰国）
 const gloFactoryCards = [
@@ -359,18 +351,12 @@ const gloLineGroupHeight = ref(0);
 const gloActiveCard = ref(-1);
 const elGloCards = ref<HTMLElement[] | null>(null);
 const elGloPoints = ref<HTMLElement[] | null>(null);
-const eventStore = useEventStore();
-
-const windowWidth = computed(() => eventStore.windowWidth);
 
 const chinaPointsList = computed(() => {
     const res = [];
-    for (let i = 0; i < chinaPoints.value.length; i++) {
-        for (let j = 0; j < chinaPoints.value[i].length; j++) {
-            const item = chinaPoints.value[i][j];
-            item.i = i;
-            item.j = j;
-            res.push(item);
+    for (let i = 0; i < chinaPoints.length; i++) {
+        for (let j = 0; j < chinaPoints[i].length; j++) {
+            res.push({ ...chinaPoints[i][j], i, j });
         }
     }
     return res;
@@ -384,7 +370,6 @@ const breadcrumb = computed(() => [
 const indexPlate = ref(0);
 const elGlo = ref(null);
 const elChina = ref(null);
-const elPlateContainer = ref(null);
 const elGloMapScroll = ref<HTMLElement | null>(null);
 const elChinaMapScroll = ref<HTMLElement | null>(null);
 const plateHeight = ref(0);
@@ -407,10 +392,6 @@ function changePlateIndex(index: number) {
         changeChinaLine();
     }
 }
-// watch(() => windowWidth.value, () => {
-//     changeChinaLine(indexPlate.value)
-// })
-
 const lineGroupWidth = ref(0);
 const lineGroupHeight = ref(0);
 // 初始化和resize时重新计算line
@@ -550,14 +531,10 @@ function gloCardLeave() {
     gloActiveCard.value = -1;
 }
 
-function plateHeightInit() {
-    changePlateIndex(0);
-}
-
 /*********china start********/
 let currentIndex = [-1, -1]; // [col ,row]
 const activeItemIndex = ref(-1);
-function itemMouseEnterHandler(event: Event, col: number, row: number) {
+function itemMouseEnterHandler(_e: Event, col: number, row: number) {
     if (col === currentIndex[0] && row === currentIndex[1]) return;
     currentIndex = [col, row];
     activeItemIndex.value = chinaPointsList.value.findIndex(
@@ -565,7 +542,7 @@ function itemMouseEnterHandler(event: Event, col: number, row: number) {
     );
 }
 
-function itemMouseLeaveHandler(event: Event, col: number, row: number) {
+function itemMouseLeaveHandler() {
     currentIndex = [-1, -1];
     activeItemIndex.value = -1;
 }
@@ -583,7 +560,7 @@ onMounted(() => {
     }
     // 页面加载结束后初始化高度
     timerInitPlateHeight = setTimeout(() => {
-        plateHeightInit();
+        changePlateIndex(0);
     }, 1000);
     lineResizeObserver = new ResizeObserver((entries) => {
         window.requestAnimationFrame(() => {
@@ -598,10 +575,7 @@ onMounted(() => {
                 }
                 if (entry.target === elGlo.value) {
                     calcGloLines();
-                    if (indexPlate.value === 0) {
-                        const { height } = (elGlo.value as HTMLElement).getBoundingClientRect();
-                        plateHeight.value = height;
-                    }
+                    if (indexPlate.value === 0) plateHeight.value = entry.contentRect.height;
                 }
             }
         });
