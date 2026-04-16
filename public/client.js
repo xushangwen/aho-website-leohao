@@ -296,7 +296,7 @@ const history = [
     {
         sectionName: '1973-1999',
         sectionSlogan: '澳弘成立',
-        sectionSloganEn: 'Aohong was established',
+        sectionSloganEn: 'Foundation',
         list: [
             {
                 year: '1973',
@@ -327,7 +327,7 @@ const history = [
     {
         sectionName: '2000-2019',
         sectionSlogan: '势不可挡',
-        sectionSloganEn: 'Unstoppable',
+        sectionSloganEn: 'Expansion',
         list: [
             {
                 year: '2004',
@@ -394,7 +394,7 @@ const history = [
     {
         sectionName: '2020-Future',
         sectionSlogan: '精益求精',
-        sectionSloganEn: 'Striving for Excellence',
+        sectionSloganEn: 'Excellence',
         list: [
             {
                 year: '2020',
