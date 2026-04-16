@@ -235,6 +235,8 @@ b, strong, h1, h2, h3{
         font-feature-settings: 'liga' off, 'clig' off;
         font-size: 14px;
         font-weight: 400;
+        @include tab { font-size: 12px; }
+        @include mo { font-size: 10px; }
     }
     & > ._icon {
         margin-left: 6px;

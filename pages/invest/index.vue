@@ -72,7 +72,7 @@ const breadcrumb = computed(() => [
 .s1 {
     padding: fluid(80px, 40px) 0 fluid(100px, 60px);
     @include tab { padding: 56px 0 64px; }
-    @include mo { padding: 36px 0 48px; }
+    @include mo { padding: 44px 0 48px; }
     .wrap {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -132,11 +132,15 @@ const breadcrumb = computed(() => [
         flex-flow: column nowrap;
         justify-content: flex-end;
         padding: fluid(40px);
+        @include tab { padding: 28px; }
+        @include mo { padding: 20px; }
         .card-icon {
             font-size: fluid(36px);
             color: #fff;
             opacity: 0.9;
             margin-bottom: 16px;
+            @include tab { font-size: 26px; margin-bottom: 10px; }
+            @include mo { font-size: 22px; margin-bottom: 8px; }
         }
         .card-en {
             font-family: 'SpaceGrotesk', sans-serif;
@@ -146,13 +150,16 @@ const breadcrumb = computed(() => [
             text-transform: uppercase;
             color: var(--main-orange);
             margin-bottom: 10px;
+            @include mo { font-size: 10px; margin-bottom: 6px; }
         }
         .card-cn {
-            font-size: fluid(32px);
+            font-size: fluid(36px);
             font-weight: 700;
             color: #fff;
             line-height: 1.2;
             margin-bottom: fluid(24px);
+            @include tab { font-size: 28px; margin-bottom: 16px; }
+            @include mo { font-size: 19px; margin-bottom: 12px; }
         }
         ._btn {
             align-self: flex-start;
