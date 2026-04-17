@@ -182,6 +182,8 @@
                     class="s5-markers-svg"
                     viewBox="0 0 800 450"
                     preserveAspectRatio="xMidYMid meet"
+                    role="img"
+                    :aria-label="$t('home.serviceTitle')"
                     @mouseleave="onMarkerLeave"
                 >
                     <!-- 全区域事件捕获层，点击空白处清除tooltip -->
@@ -190,9 +192,14 @@
                         <g
                             class="s5-marker-g"
                             :ref="el => setMarkerAnchor(marker, el)"
+                            role="button"
+                            tabindex="0"
+                            :aria-label="marker.name"
+                            :aria-pressed="isMarkerActive(marker)"
                             @mouseenter="onMarkerEnter(marker, $event)"
                             @mouseleave="onMarkerLeave"
                             @click.stop="onMarkerClick(marker, $event)"
+                            @keydown.enter.space.prevent="onMarkerClick(marker, $event)"
                         >
                             <!-- 移动端扩大触摸响应区域 -->
                             <circle
@@ -654,7 +661,9 @@ function isMarkerActive(marker) {
 }
 function onMarkerEnter(marker, event) {
     clearTimeout(hoverClearTimer)
-    hoveredMarker.value = { key: getMarkerKey(marker), ...marker }
+    const key = getMarkerKey(marker)
+    if (hoveredMarker.value?.key === key) return
+    hoveredMarker.value = { key, ...marker }
     computeTooltipPos(marker, event?.currentTarget || null)
 }
 let hoverClearTimer = null
@@ -753,7 +762,11 @@ onUnmounted(() => {
     s5MapResizeObserver?.disconnect()
     s5MapResizeObserver = null
     if (s5MapCenterRafId) cancelAnimationFrame(s5MapCenterRafId)
-    if (elS5Section.value) s5Observer?.unobserve(elS5Section.value)
+    s5Observer?.disconnect()
+    s5Observer = null
+    clearTimeout(hoverClearTimer)
+    clearTimeout(markerClickTimer)
+    wasJustClicked = false
     if (scTimer) clearInterval(scTimer)
 })
 
@@ -1800,6 +1813,9 @@ onUnmounted(() => {
                 cursor: pointer;
                 outline: none;
                 &:focus { outline: none; }
+                &:focus-visible circle.marker-dot {
+                    filter: drop-shadow(0 0 6px rgba(255,255,255,0.8)) !important;
+                }
             }
             .s5-pulse-circle {
                 animation: s5-pulse-ring 1.2s ease-out infinite;
