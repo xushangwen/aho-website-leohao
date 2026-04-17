@@ -1,6 +1,8 @@
 import { defineNuxtPlugin } from '#app'
-import ElementPlus from 'element-plus'
 
-export default defineNuxtPlugin(nuxtApp => {
+export default defineNuxtPlugin(async nuxtApp => {
+    if (import.meta.server) return
+
+    const { default: ElementPlus } = await import('element-plus')
     nuxtApp.vueApp.use(ElementPlus)
 })

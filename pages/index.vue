@@ -189,9 +189,10 @@
                     <template v-for="(marker, idx) in filteredMarkers" :key="marker.name + marker.type">
                         <g
                             class="s5-marker-g"
-                            @mouseenter="onMarkerEnter(marker)"
+                            :ref="el => setMarkerAnchor(marker, el)"
+                            @mouseenter="onMarkerEnter(marker, $event)"
                             @mouseleave="onMarkerLeave"
-                            @click.stop="onMarkerClick(marker)"
+                            @click.stop="onMarkerClick(marker, $event)"
                         >
                             <!-- 移动端扩大触摸响应区域 -->
                             <circle
@@ -245,7 +246,6 @@
                 <div
                     v-if="hoveredMarker"
                     class="s5-tooltip-div"
-                    :class="{ 'fixed-mobile': windowWidth <= 1024 }"
                     :style="{ left: tooltipScreenPos.x + 'px', top: tooltipScreenPos.y + 'px' }"
                 >{{ hoveredMarker.name }}</div>
             </div>
@@ -416,6 +416,10 @@ function updateApplicationItem() {
 // 窗口尺寸变化时重新初始化（防止高度/间距错位）
 watch(windowHeight, initApplicationItem)
 watch(windowWidth, initApplicationItem)
+watch(windowWidth, async () => {
+    await nextTick()
+    if (hoveredMarker.value) computeTooltipPos(hoveredMarker.value)
+})
 
 /***application end*****/
 
@@ -436,26 +440,28 @@ const statsCards = computed(() => [
     { value: '3', color: '#FFB432', label: t('home.catRd') },
 ])
 
-// Natural Earth 1 (geoNaturalEarth1) — 源码 projection="geoNaturalEarth1" projectionConfig.center=[10,10] scale=160
-const NE_A1 = 0.8707, NE_A2 = -0.131979, NE_A3 = -0.013791, NE_A4 = 0.003971
-const NE_B1 = 1.007226, NE_B2 = 0.015085, NE_B3 = -0.044475, NE_B4 = 0.028874
-function _neRaw(lng, lat) {
-    const lam = lng * Math.PI / 180, phi = lat * Math.PI / 180
-    const phi2 = phi * phi, phi4 = phi2 * phi2
+// Pacific-centered Miller cylindrical
+// 通过“无缝窗口”展开经度，把西半球整体平移到右侧，避免左右边缘切开国家。
+const MILLER_WEST_SHIFT_THRESHOLD = -30
+const MILLER_SCALE = 91.6732472209317
+const MILLER_TX = 112
+const MILLER_TY = 266.23891367978445
+
+function _millerRaw(lng, lat) {
+    const lam = lng * Math.PI / 180
+    const phi = lat * Math.PI / 180
     return [
-        lam * (NE_A1 + phi2 * (NE_A2 + phi2 * (NE_A3 + phi4 * NE_A4))),
-        phi * (NE_B1 + phi2 * (NE_B2 + phi2 * (NE_B3 + phi4 * NE_B4))),
+        lam,
+        1.25 * Math.log(Math.tan(Math.PI / 4 + 0.4 * phi)),
     ]
 }
-// center=[10,10]：使 [10,10] 出现在 translate [400,225] 处，计算偏移量
-const [_nc_x, _nc_y] = _neRaw(10, 10)
-const NE_TX = 400 - 160 * _nc_x   // ≈ 375.8
-const NE_TY = 225 + 160 * _nc_y   // ≈ 253.1
-function projectNE(lng, lat) {
-    const [x, y] = _neRaw(lng, lat)
+
+function projectPacificMiller(lng, lat) {
+    const unwrappedLng = lng < MILLER_WEST_SHIFT_THRESHOLD ? lng + 360 : lng
+    const [x, y] = _millerRaw(unwrappedLng, lat)
     return {
-        x: +(NE_TX + 160 * x).toFixed(2),
-        y: +(NE_TY - 160 * y).toFixed(2),
+        x: +(MILLER_TX + MILLER_SCALE * x).toFixed(2),
+        y: +(MILLER_TY - MILLER_SCALE * y).toFixed(2),
     }
 }
 function getMarkerSize(type) {
@@ -504,7 +510,7 @@ const allLocations = [
 
 const projectedMarkers = computed(() =>
     allLocations.map(loc => ({
-        ...projectNE(loc.coords[0], loc.coords[1]),
+        ...projectPacificMiller(loc.coords[0], loc.coords[1]),
         name: locale.value === 'en' ? (loc.nameEn || loc.name) : loc.name,
         type: loc.type
     }))
@@ -526,49 +532,72 @@ const hoveredMarker = ref(null)
 const clickedKey = ref(null)
 let markerClickTimer = null
 const tooltipScreenPos = ref({ x: 0, y: 0 })
-const MAP_ZOOM = 1.2  // 与 CSS .s5-map-zoom scale() 保持同步
 let wasJustClicked = false  // 防止 touch 点击后 mouseleave 立即清除 tooltip
+const markerAnchorEls = new Map()
 
-function computeTooltipPos(marker) {
+function getMarkerKey(marker) {
+    return marker?.key || `${marker.name}-${marker.type}`
+}
+
+function setMarkerAnchor(marker, el) {
+    const key = getMarkerKey(marker)
+    if (!key) return
+    if (el) {
+        markerAnchorEls.set(key, el)
+    } else {
+        markerAnchorEls.delete(key)
+    }
+}
+
+function computeTooltipPos(marker, anchorEl = null) {
     const mapWrap = elS5Section.value?.querySelector('.s5-map-wrap')
     if (!mapWrap) return
 
-    if (windowWidth.value <= 1024) {
-        // 移动端：使用 SVG 实际渲染位置 → 视口坐标（配合 position: fixed tooltip）
-        const svgEl = mapWrap.querySelector('.s5-markers-svg')
-        if (!svgEl) return
-        const svgRect = svgEl.getBoundingClientRect()
-        const scaleX = svgRect.width / 800
-        const scaleY = svgRect.height / 450
+    const markerGroup = anchorEl || markerAnchorEls.get(getMarkerKey(marker))
+    const markerDot = markerGroup?.querySelector?.('.marker-dot')
+    if (markerDot) {
+        const dotRect = markerDot.getBoundingClientRect()
         tooltipScreenPos.value = {
-            x: svgRect.left + marker.x * scaleX,
-            y: svgRect.top + marker.y * scaleY,
+            x: dotRect.left + dotRect.width / 2,
+            y: dotRect.top + dotRect.height / 2,
         }
-    } else {
-        // 桌面端：原有逻辑（container 内绝对定位）
-        const { width, height } = mapWrap.getBoundingClientRect()
-        const scale = Math.min(width / 800, height / 450)
-        const ox = (width - 800 * scale) / 2
-        const oy = (height - 450 * scale) / 2
-        const ux = ox + marker.x * scale
-        const uy = oy + marker.y * scale
-        const cx = width / 2
-        const cy = height / 2
-        tooltipScreenPos.value = {
-            x: cx + (ux - cx) * MAP_ZOOM,
-            y: cy + (uy - cy) * MAP_ZOOM,
+        return
+    }
+
+    const svgEl = mapWrap.querySelector('.s5-markers-svg')
+    if (!svgEl) return
+    if (typeof svgEl.createSVGPoint === 'function') {
+        const point = svgEl.createSVGPoint()
+        const matrix = svgEl.getScreenCTM()
+        if (matrix) {
+            point.x = marker.x
+            point.y = marker.y
+            const screenPoint = point.matrixTransform(matrix)
+            tooltipScreenPos.value = {
+                x: screenPoint.x,
+                y: screenPoint.y,
+            }
+            return
         }
+    }
+
+    const svgRect = svgEl.getBoundingClientRect()
+    const scaleX = svgRect.width / 800
+    const scaleY = svgRect.height / 450
+    tooltipScreenPos.value = {
+        x: svgRect.left + marker.x * scaleX,
+        y: svgRect.top + marker.y * scaleY,
     }
 }
 
 function isMarkerActive(marker) {
-    const key = `${marker.name}-${marker.type}`
+    const key = getMarkerKey(marker)
     return hoveredMarker.value?.key === key || clickedKey.value === key
 }
-function onMarkerEnter(marker) {
+function onMarkerEnter(marker, event) {
     clearTimeout(hoverClearTimer)
-    hoveredMarker.value = { key: `${marker.name}-${marker.type}`, ...marker }
-    computeTooltipPos(marker)
+    hoveredMarker.value = { key: getMarkerKey(marker), ...marker }
+    computeTooltipPos(marker, event?.currentTarget || null)
 }
 let hoverClearTimer = null
 function onMarkerLeave() {
@@ -576,8 +605,8 @@ function onMarkerLeave() {
     if (wasJustClicked) return
     hoverClearTimer = setTimeout(() => { hoveredMarker.value = null }, 60)
 }
-function onMarkerClick(marker) {
-    const key = `${marker.name}-${marker.type}`
+function onMarkerClick(marker, event) {
+    const key = getMarkerKey(marker)
     // 标记点击，阻止 mouseleave 在 400ms 内清除 tooltip
     wasJustClicked = true
     clearTimeout(markerClickTimer)
@@ -590,7 +619,7 @@ function onMarkerClick(marker) {
     }
     clickedKey.value = key
     hoveredMarker.value = { key, ...marker }
-    computeTooltipPos(marker)
+    computeTooltipPos(marker, event?.currentTarget || null)
 }
 function clearMapSelection() {
     if (!wasJustClicked) {
@@ -1653,7 +1682,7 @@ onUnmounted(() => {
     width: 100%;
     height: 100vh;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     display: flex;
     flex-direction: column;
 
@@ -1667,7 +1696,7 @@ onUnmounted(() => {
     .s5-map-wrap {
         position: relative;
         flex: 1;
-        overflow: hidden;
+        overflow: visible;
         z-index: 1;
 
         .s5-map-zoom {
@@ -1676,7 +1705,7 @@ onUnmounted(() => {
             display: flex;
             align-items: center;
             justify-content: center;
-            transform: scale(1.2);
+            transform: translate3d(88px, -96px, 0) scale(1.34);
             transform-origin: center center;
         }
         .s5-map-img {
@@ -1709,7 +1738,7 @@ onUnmounted(() => {
             }
         }
         .s5-tooltip-div {
-            position: absolute;
+            position: fixed;
             transform: translate(-50%, calc(-100% - 18px));
             background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(20px) saturate(180%);
@@ -1723,7 +1752,7 @@ onUnmounted(() => {
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
             pointer-events: none;
             white-space: nowrap;
-            z-index: 100;
+            z-index: 9999;
             /* 底部三角箭头（旋转方块） */
             &::after {
                 content: '';
@@ -1736,11 +1765,6 @@ onUnmounted(() => {
                 background: rgba(255, 255, 255, 0.88);
                 border-right: 1px solid rgba(200, 210, 220, 0.6);
                 border-bottom: 1px solid rgba(200, 210, 220, 0.6);
-            }
-            // 移动端使用 fixed 定位避免 overflow:hidden 裁切
-            &.fixed-mobile {
-                position: fixed;
-                z-index: 9999;
             }
         }
     }
@@ -1768,7 +1792,7 @@ onUnmounted(() => {
 
     .s5-bottom {
         position: absolute;
-        bottom: fluid(100px, 40px);
+        bottom: fluid(72px, 28px);
         left: 50%;
         transform: translateX(-50%);
         z-index: 10;
@@ -1881,6 +1905,7 @@ onUnmounted(() => {
     @include mo {
         height: auto;
         min-height: 70vh;
+        overflow: hidden;
         .s5-header {
             padding-top: calc(var(--HEADER_HEIGHT_MOB) + 8px);
             padding-bottom: 8px;
