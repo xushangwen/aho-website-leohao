@@ -175,8 +175,8 @@
                 <div class="s-t">{{ $t('home.serviceTitle') }}</div>
                 <div class="s-a">{{ $t('home.serviceDesc') }}</div>
             </div>
-            <div class="s5-map-wrap">
-                <div class="s5-map-zoom">
+            <div class="s5-map-wrap" ref="elS5MapWrap">
+                <div class="s5-map-zoom" ref="elS5MapZoom">
                 <img src="/images/home/world-map.svg" class="s5-map-img" alt="world map" />
                 <svg
                     class="s5-markers-svg"
@@ -418,15 +418,18 @@ watch(windowHeight, initApplicationItem)
 watch(windowWidth, initApplicationItem)
 watch(windowWidth, async () => {
     await nextTick()
-    if (hoveredMarker.value) computeTooltipPos(hoveredMarker.value)
+    scheduleS5MapCenter()
 })
 
 /***application end*****/
 
 /******全球服务 — 数据 & 投影******/
 const elS5Section = ref(null)
+const elS5MapWrap = ref(null)
+const elS5MapZoom = ref(null)
 const statusS5 = ref(false)
 const activeFilter = ref('all')
+const S5_TOUCH_BREAKPOINT = 1024
 
 const markerColors = { customer: '#FF6400', business: '#1E3296', rd: '#FFB432' }
 const filterCategories = computed(() => [
@@ -464,11 +467,32 @@ function projectPacificMiller(lng, lat) {
         y: +(MILLER_TY - MILLER_SCALE * y).toFixed(2),
     }
 }
+const s5ChinaFocusPoint = projectPacificMiller(104, 35)
+
+function isS5TouchLayout() {
+    return windowWidth.value <= S5_TOUCH_BREAKPOINT
+}
+
+function isS5TabletLayout() {
+    return windowWidth.value >= 768 && windowWidth.value <= S5_TOUCH_BREAKPOINT
+}
+
+function isS5PhoneLayout() {
+    return windowWidth.value > 0 && windowWidth.value < 768
+}
+
 function getMarkerSize(type) {
-    // 移动端标记点适当放大以便触摸操作，与地图同比缩放
-    const mobile = windowWidth.value <= 992
     const base = type === 'rd' ? 5 : type === 'business' ? 4.5 : 4
-    return mobile ? base * 1.5 : base
+    if (isS5PhoneLayout()) {
+        return base * 1.15
+    }
+    if (isS5TabletLayout()) {
+        return base * 0.82
+    }
+    if (isS5TouchLayout()) {
+        return base * 0.95
+    }
+    return base
 }
 
 const allLocations = [
@@ -550,7 +574,7 @@ function setMarkerAnchor(marker, el) {
 }
 
 function computeTooltipPos(marker, anchorEl = null) {
-    const mapWrap = elS5Section.value?.querySelector('.s5-map-wrap')
+    const mapWrap = elS5MapWrap.value
     if (!mapWrap) return
 
     const markerGroup = anchorEl || markerAnchorEls.get(getMarkerKey(marker))
@@ -588,6 +612,40 @@ function computeTooltipPos(marker, anchorEl = null) {
         x: svgRect.left + marker.x * scaleX,
         y: svgRect.top + marker.y * scaleY,
     }
+}
+
+let s5MapCenterRafId = null
+function centerS5MapOnChina() {
+    const mapWrap = elS5MapWrap.value
+    const mapZoom = elS5MapZoom.value
+    if (!mapWrap || !mapZoom) return
+
+    if (!isS5TouchLayout()) {
+        mapWrap.scrollLeft = 0
+        if (hoveredMarker.value) computeTooltipPos(hoveredMarker.value)
+        return
+    }
+
+    const contentWidth = mapZoom.scrollWidth || mapZoom.clientWidth || mapWrap.scrollWidth
+    if (!contentWidth) return
+
+    const targetCenterX = (contentWidth * s5ChinaFocusPoint.x) / 800
+    const maxScrollLeft = Math.max(0, contentWidth - mapWrap.clientWidth)
+    mapWrap.scrollLeft = Math.min(
+        maxScrollLeft,
+        Math.max(0, targetCenterX - mapWrap.clientWidth / 2)
+    )
+
+    if (hoveredMarker.value) computeTooltipPos(hoveredMarker.value)
+}
+
+function scheduleS5MapCenter() {
+    if (!process.client) return
+    if (s5MapCenterRafId) cancelAnimationFrame(s5MapCenterRafId)
+    s5MapCenterRafId = requestAnimationFrame(() => {
+        s5MapCenterRafId = null
+        centerS5MapOnChina()
+    })
 }
 
 function isMarkerActive(marker) {
@@ -631,6 +689,7 @@ function clearMapSelection() {
 
 let s3ScrollCleanup = null
 let mapScrollCleanup = null
+let s5MapResizeObserver = null
 onMounted(async () => {
     await nextTick()
     initApplicationItem()
@@ -658,13 +717,19 @@ onMounted(async () => {
         currentScIndex.value = (currentScIndex.value + 1) % scItems.value.length
     }, 1800)
 
-    // 移动端/tablet 地图初始居中显示（避免停留在最左端）
-    const mapWrap = document.querySelector('.s5-map-wrap')
-    if (windowWidth.value <= 1024 && mapWrap) {
-        mapWrap.scrollLeft = (mapWrap.scrollWidth - mapWrap.clientWidth) / 2
+    scheduleS5MapCenter()
+
+    if (typeof ResizeObserver !== 'undefined') {
+        s5MapResizeObserver = new ResizeObserver(() => {
+            scheduleS5MapCenter()
+            if (hoveredMarker.value) computeTooltipPos(hoveredMarker.value)
+        })
+        if (elS5MapWrap.value) s5MapResizeObserver.observe(elS5MapWrap.value)
+        if (elS5MapZoom.value) s5MapResizeObserver.observe(elS5MapZoom.value)
     }
 
     // 地图横向滚动时同步更新 tooltip 位置（移动端/tablet tooltip 为 fixed 定位，需随地图滚动重算坐标）
+    const mapWrap = elS5MapWrap.value
     if (mapWrap) {
         let mapScrollRafId = null
         const onMapScroll = () => {
@@ -685,6 +750,9 @@ onMounted(async () => {
 onUnmounted(() => {
     s3ScrollCleanup?.()
     mapScrollCleanup?.()
+    s5MapResizeObserver?.disconnect()
+    s5MapResizeObserver = null
+    if (s5MapCenterRafId) cancelAnimationFrame(s5MapCenterRafId)
     if (elS5Section.value) s5Observer?.unobserve(elS5Section.value)
     if (scTimer) clearInterval(scTimer)
 })
@@ -1902,39 +1970,47 @@ onUnmounted(() => {
             padding: 12px 24px;
         }
     }
-    @include mo {
+    @include tab {
         height: auto;
-        min-height: 70vh;
+        min-height: 0;
         overflow: hidden;
+
         .s5-header {
-            padding-top: calc(var(--HEADER_HEIGHT_MOB) + 8px);
-            padding-bottom: 8px;
+            padding-top: calc(var(--HEADER_HEIGHT_MOB) + 6px);
+            padding-bottom: 4px;
             .s-a {
                 font-size: 15px;
-                padding: 0 24px;
+                padding: 0 28px;
                 text-wrap: balance;
             }
         }
         .s5-map-wrap {
-            overflow-x: scroll;
+            display: flex;
+            align-items: center;
+            overflow-x: auto;
             overflow-y: hidden;
             -webkit-overflow-scrolling: touch;
+            overscroll-behavior-x: contain;
             flex: none;
-            // 隐藏滚动条但保留滚动能力
+            height: 430px;
+            margin-top: 10px;
+            padding: 0;
             scrollbar-width: none;
             -ms-overflow-style: none;
             &::-webkit-scrollbar { display: none; }
-            // 高度由内容驱动，避免固定 vw 值与 aspect-ratio 产生裁切
 
             .s5-map-zoom {
                 position: relative;
-                // 兼容旧浏览器：用 width + max-width 代替 min()
-                // 手机端 ≈ 280% 缩放（可横划），tablet 宽时不超 800px 避免过高
-                width: 280%;
-                max-width: 800px;
+                inset: auto;
+                flex: 0 0 auto;
+                width: 150vw;
+                min-width: 1100px;
+                max-width: none;
                 aspect-ratio: 800 / 450;
-                height: auto;   // 高度 = width × 450/800，完全由宽度推导，不裁切
+                height: auto;
                 display: block;
+                margin: 0 auto;
+                transform: none;
             }
             .s5-map-img {
                 position: absolute;
@@ -1957,43 +2033,8 @@ onUnmounted(() => {
             left: 0;
             transform: none;
             width: 100%;
-            padding: 12px 16px 28px;
+            padding: 12px 20px 22px;
         }
-        // 全部按钮独占一行（fit-content居中），其余三个筛选按钮一行（3列）
-        .s5-filters {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
-            .s5-fbtn:first-child {
-                grid-column: 1 / -1;
-                width: fit-content;
-                margin: 0 auto;
-            }
-        }
-        .s5-stats {
-            gap: 8px;
-            padding: 0;
-        }
-        .s5-stat {
-            flex: 1;
-            min-width: 0;
-            padding: 10px 12px;
-        }
-        .s5-stat-num {
-            font-size: 26px;
-        }
-        .s5-stat-txt {
-            font-size: 11px;
-            white-space: nowrap;
-            line-height: 1.4;
-        }
-        .s5-fbtn {
-            padding: 8px 7px;
-            gap: 4px;
-        }
-        .s5-flabel { font-size: 11px; white-space: nowrap; }
-        .s5-fcount { font-size: 10px; }
-        .s5-fdot { width: 10px; height: 10px; }
         .s5-scroll-hint {
             display: flex;
             align-items: center;
@@ -2016,6 +2057,143 @@ onUnmounted(() => {
                 &.ri-arrow-left-s-line  { animation: s5-hint-left  1.8s ease-in-out infinite; }
                 &.ri-arrow-right-s-line { animation: s5-hint-right 1.8s ease-in-out infinite; }
             }
+        }
+    }
+    @include mo {
+        height: auto;
+        min-height: 0;
+        overflow: hidden;
+        .s5-header {
+            padding-top: calc(var(--HEADER_HEIGHT_MOB) + 4px);
+            padding-bottom: 2px;
+            .s-a {
+                font-size: 14px;
+                padding: 0 20px;
+                text-wrap: balance;
+            }
+        }
+        .s5-map-wrap {
+            height: clamp(359px, calc(105.6vw + 20px), 570px);
+            overflow-y: hidden;
+            margin-top: 6px;
+
+            .s5-map-zoom {
+                width: 300vw;
+                min-width: 960px;
+            }
+        }
+        .s5-bottom {
+            position: relative;
+            bottom: auto;
+            left: 0;
+            transform: none;
+            width: 100%;
+            padding: 8px 14px 14px;
+        }
+        // 全部按钮独占一行（fit-content居中），其余三个筛选按钮一行（3列）
+        .s5-filters {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
+            .s5-fbtn:first-child {
+                grid-column: 1 / -1;
+                width: fit-content;
+                margin: 0 auto;
+            }
+        }
+        .s5-stats {
+            gap: 6px;
+            padding: 0;
+            margin-top: 8px;
+        }
+        .s5-stat {
+            flex: 1;
+            min-width: 0;
+            padding: 8px 8px;
+            border-radius: 14px;
+        }
+        .s5-stat-num {
+            font-size: 22px;
+        }
+        .s5-stat-txt {
+            font-size: 10px;
+            white-space: nowrap;
+            line-height: 1.35;
+        }
+        .s5-fbtn {
+            padding: 6px 6px;
+            gap: 4px;
+            border-radius: 10px;
+        }
+        .s5-flabel { font-size: 10px; white-space: nowrap; }
+        .s5-fcount { font-size: 10px; }
+        .s5-fdot { width: 9px; height: 9px; }
+        .s5-scroll-hint {
+            margin: 4px auto 0;
+            padding: 5px 10px 5px 7px;
+            font-size: 11px;
+            i {
+                font-size: 14px;
+            }
+        }
+    }
+    @media screen and (min-width: 768px) and (max-width: 1024px) {
+        min-height: auto;
+
+        .s5-header {
+            padding-top: calc(var(--HEADER_HEIGHT_MOB) + 2px);
+            padding-bottom: 0;
+            .s-a {
+                font-size: 14px;
+                padding: 0 24px;
+            }
+        }
+        .s5-map-wrap {
+            height: clamp(443px, calc(58.1vw + 20px), 680px);
+            margin-top: 6px;
+
+            .s5-map-zoom {
+                width: 165vw;
+                min-width: 1200px;
+            }
+        }
+        .s5-scroll-hint {
+            margin-top: 4px;
+        }
+        .s5-bottom {
+            padding: 6px 18px 10px;
+        }
+        .s5-filters {
+            gap: 6px;
+        }
+        .s5-fbtn {
+            padding: 6px 8px;
+            gap: 5px;
+            border-radius: 10px;
+        }
+        .s5-flabel {
+            font-size: 11px;
+        }
+        .s5-fcount {
+            font-size: 10px;
+        }
+        .s5-fdot {
+            width: 8px;
+            height: 8px;
+        }
+        .s5-stats {
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .s5-stat {
+            padding: 8px 12px;
+            border-radius: 14px;
+        }
+        .s5-stat-num {
+            font-size: 22px;
+        }
+        .s5-stat-txt {
+            font-size: 10px;
         }
     }
 }
