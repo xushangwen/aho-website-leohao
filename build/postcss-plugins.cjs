@@ -4,9 +4,19 @@ const parsePx = (value) => {
 };
 
 const normalizePx = (value) => `${Number(value.toFixed(3))}px`;
+const LEGACY_FALLBACK_VIEWPORT = 1280;
 
 const evaluatePreferredPx = (value, viewportWidth = 1440) => {
-    const normalized = value.replace(/\s+/g, '').trim();
+    let normalized = value.replace(/\s+/g, '').trim();
+
+    if (normalized.startsWith('calc(') && normalized.endsWith(')')) {
+        normalized = normalized.slice(5, -1);
+    }
+
+    const plainPx = parsePx(normalized);
+    if (plainPx != null) {
+        return plainPx;
+    }
 
     const vwMatch = normalized.match(/^(-?\d*\.?\d+)vw$/);
     if (vwMatch) {
@@ -19,6 +29,54 @@ const evaluatePreferredPx = (value, viewportWidth = 1440) => {
         const operator = calcMatch[2];
         const vwValue = Number(calcMatch[3]) * viewportWidth / 100;
         return operator === '-' ? basePx - vwValue : basePx + vwValue;
+    }
+
+    const fluidMatch = normalized.match(
+        /^(-?\d*\.?\d+)px([+-])\((-?\d*\.?\d+)px-(-?\d*\.?\d+)px\)\/\((-?\d*\.?\d+)px-(-?\d*\.?\d+)px\)\*\(100vw-(-?\d*\.?\d+)px\)$/
+    );
+    if (fluidMatch) {
+        const basePx = Number(fluidMatch[1]);
+        const operator = fluidMatch[2];
+        const numerator = Number(fluidMatch[3]) - Number(fluidMatch[4]);
+        const denominator = Number(fluidMatch[5]) - Number(fluidMatch[6]);
+        const minViewport = Number(fluidMatch[7]);
+
+        if (denominator !== 0) {
+            const delta = numerator / denominator * (viewportWidth - minViewport);
+            return operator === '-' ? basePx - delta : basePx + delta;
+        }
+    }
+
+    const simplifiedFluidMatch = normalized.match(
+        /^(-?\d*\.?\d+)px([+-])(-?\d*\.?\d+)px\/(-?\d*\.?\d+)px\*\(100vw-(-?\d*\.?\d+)px\)$/
+    );
+    if (simplifiedFluidMatch) {
+        const basePx = Number(simplifiedFluidMatch[1]);
+        const operator = simplifiedFluidMatch[2];
+        const numerator = Number(simplifiedFluidMatch[3]);
+        const denominator = Number(simplifiedFluidMatch[4]);
+        const minViewport = Number(simplifiedFluidMatch[5]);
+
+        if (denominator !== 0) {
+            const delta = numerator / denominator * (viewportWidth - minViewport);
+            return operator === '-' ? basePx - delta : basePx + delta;
+        }
+    }
+
+    const ratioFluidMatch = normalized.match(
+        /^(-?\d*\.?\d+)px([+-])(-?\d*\.?\d+)\*\(\(100vw-(-?\d*\.?\d+)px\)\/(-?\d*\.?\d+)\)$/
+    );
+    if (ratioFluidMatch) {
+        const basePx = Number(ratioFluidMatch[1]);
+        const operator = ratioFluidMatch[2];
+        const coefficient = Number(ratioFluidMatch[3]);
+        const minViewport = Number(ratioFluidMatch[4]);
+        const denominator = Number(ratioFluidMatch[5]);
+
+        if (denominator !== 0) {
+            const delta = coefficient * ((viewportWidth - minViewport) / denominator);
+            return operator === '-' ? basePx - delta : basePx + delta;
+        }
     }
 
     return null;
@@ -90,7 +148,7 @@ const replaceCssFunction = (value, functionName, replacer) => {
 const computeClampFallback = (args) => {
     const minPx = parsePx(args[0] || '');
     const maxPx = parsePx(args[2] || '');
-    const preferredPx = evaluatePreferredPx(args[1] || '');
+    const preferredPx = evaluatePreferredPx(args[1] || '', LEGACY_FALLBACK_VIEWPORT);
 
     if (preferredPx != null && minPx != null && maxPx != null) {
         return normalizePx(Math.min(maxPx, Math.max(minPx, preferredPx)));

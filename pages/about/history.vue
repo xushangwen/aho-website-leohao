@@ -444,7 +444,9 @@ $NARROW: 1200px;
             // PC 错位：第 1 张卡最高，第 3 张最低（视差感）
             @for $i from 1 through 3 {
                 .item:nth-child(#{$i}) {
-                    margin-top: calc((3 - #{$i}) * #{fluid(80px)});
+                    margin-top: calc((3 - #{$i}) * #{fluid-fallback(80px)});
+                    --history-card-step: #{fluid(80px)};
+                    margin-top: calc((3 - #{$i}) * var(--history-card-step));
                 }
             }
         }

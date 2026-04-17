@@ -680,8 +680,9 @@ onUnmounted(() => {
 }
 
 .swiper-horizontal > .swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal {
-    width: calc(100% - #{fluid(80px, 24px)} * 2);
     left: fluid(80px, 24px);
+    right: fluid(80px, 24px);
+    width: auto;
     bottom: 65px;
     height: 6px;
     text-align: left;

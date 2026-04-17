@@ -1026,12 +1026,14 @@ onUnmounted(() => {
     }
     // 工厂卡片组 — 与上方 profile 数据区等宽居中
     .glo-factory-cards {
+        top: fluid-fallback(100px, 40px) + 260px;
+        --factory-cards-top-offset: #{fluid(100px, 40px)};
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
         width: 100%;
         max-width: 1000px;
-        top: calc(#{fluid(100px, 40px)} + 260px);
+        top: calc(var(--factory-cards-top-offset) + 260px);
         display: flex;
         flex-direction: row;
         gap: 16px;

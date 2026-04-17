@@ -1,3 +1,5 @@
+@use "sass:math";
+
 //媒体查询
 //$breakpoints: (
 //    'phone': (320px, 480px),
@@ -89,11 +91,34 @@ $breakpoints: (
     @if $min == null {
         $min: round($max * 0.65);
     }
-    @return clamp(
-        #{$min},
-        calc(#{$min} + (#{$max} - #{$min}) / (#{$max-vw}px - #{$min-vw}px) * (100vw - #{$min-vw}px)),
-        #{$max}
+    $delta-px: math.div($max - $min, 1px);
+    $delta-vw: $max-vw - $min-vw;
+    // 用 unquote 保留显式 calc()：
+    // Sass 会把 clamp() 中的数学表达式自动摊平，某些旧 Chromium/WebView
+    // 对这种“无 calc 的复杂中间值”兼容性更差，生产环境更容易出现字号/间距回退失效。
+    @return unquote(
+        "clamp(#{$min}, calc(#{$min} + #{$delta-px} * ((100vw - #{$min-vw}px) / #{$delta-vw})), #{$max})"
     );
+}
+
+// 与构建期 clampFallback 保持同口径，用于少数必须手写 fallback 的 calc 组合场景
+@function fluid-fallback($max, $min: null, $viewport: 1280, $max-vw: 1440, $min-vw: 375) {
+    @if $min == null {
+        $min: round($max * 0.65);
+    }
+
+    $progress: math.div($viewport - $min-vw, $max-vw - $min-vw);
+    $value: $min + ($max - $min) * $progress;
+
+    @if $value < $min {
+        @return $min;
+    }
+
+    @if $value > $max {
+        @return $max;
+    }
+
+    @return $value;
 }
 
 // @deprecated — 全站 0 使用，请勿在新代码中使用
