@@ -97,9 +97,24 @@ const { locale } = useI18n()
             color: var(--main-blue);
             align-self: start;
             padding-right: 0;
-            text-wrap: pretty;
-            word-break: keep-all; // CJK 只在标点（，、。）处回行，不在字间任意断
-            @include mo { font-size: 12px; padding-right: 32px; word-break: normal; }
+            white-space: normal;
+            word-break: normal;
+            line-break: auto;
+            overflow-wrap: normal;
+
+            // 只在更宽设备保留更强的中文排版优化，避免 iOS WebKit 在手机端
+            // 对 text-wrap: pretty 的断行策略过度介入，出现“标点优先回行”。
+            @media screen and (min-width: 993px) {
+                text-wrap: pretty;
+                word-break: keep-all; // CJK 只在标点（，、。）处回行，不在字间任意断
+            }
+
+            @include mo {
+                font-size: 12px;
+                padding-right: 32px;
+                text-wrap: initial;
+                overflow-wrap: break-word;
+            }
             p {
                 margin-block-start: 0;
                 margin-block-end: 0;
