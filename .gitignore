@@ -25,3 +25,4 @@ logs
 .playwright-mcp/
 esg-*.jpg
 esg-*.png
+.output.zip
