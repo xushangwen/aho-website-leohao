@@ -596,19 +596,14 @@ function computeTooltipPos(marker, anchorEl = null) {
 
     const svgEl = elS5MarkersSvg.value
     if (!svgEl) return
-    if (typeof svgEl.createSVGPoint === 'function') {
-        const point = svgEl.createSVGPoint()
-        const matrix = svgEl.getScreenCTM()
-        if (matrix) {
-            point.x = marker.x
-            point.y = marker.y
-            const screenPoint = point.matrixTransform(matrix)
-            tooltipScreenPos.value = {
-                x: screenPoint.x,
-                y: screenPoint.y,
-            }
-            return
+    const matrix = svgEl.getScreenCTM()
+    if (matrix) {
+        const screenPoint = new DOMPoint(marker.x, marker.y).matrixTransform(matrix)
+        tooltipScreenPos.value = {
+            x: screenPoint.x,
+            y: screenPoint.y,
         }
+        return
     }
 
     const svgRect = svgEl.getBoundingClientRect()
@@ -665,22 +660,26 @@ function isMarkerActive(marker) {
     const key = getMarkerKey(marker)
     return hoveredMarker.value?.key === key || clickedKey.value === key
 }
+let hoverClearTimer = null
 function onMarkerEnter(marker, event) {
+    // 触摸端（≤1024px）仅响应点击，不响应 hover
+    if (isS5TouchLayout()) return
     clearTimeout(hoverClearTimer)
     const key = getMarkerKey(marker)
     if (hoveredMarker.value?.key === key) return
     hoveredMarker.value = { key, ...marker }
     computeTooltipPos(marker, event?.currentTarget || null)
 }
-let hoverClearTimer = null
 function onMarkerLeave() {
-    // touch 点击后 wasJustClicked 为 true，阻止 hover 事件立即清除 tooltip
+    // 触摸端不响应 hover 离开事件
+    if (isS5TouchLayout()) return
+    // PC 端：点击后短时间内阻止 mouseleave 清除 tooltip（防止点击微位移触发 leave）
     if (wasJustClicked) return
     hoverClearTimer = setTimeout(() => { hoveredMarker.value = null }, 60)
 }
 function onMarkerClick(marker, event) {
     const key = getMarkerKey(marker)
-    // 标记点击，阻止 mouseleave 在 400ms 内清除 tooltip
+    // PC 端：阻止 mouseleave 在 400ms 内清除 tooltip
     wasJustClicked = true
     clearTimeout(markerClickTimer)
     markerClickTimer = setTimeout(() => { wasJustClicked = false }, 400)
@@ -725,7 +724,6 @@ watch(filteredMarkers, async (nextMarkers) => {
 let s3ScrollCleanup = null
 let mapScrollCleanup = null
 let s5MapResizeObserver = null
-let s5OrientationCleanup = null
 onMounted(async () => {
     await nextTick()
     initApplicationItem()
@@ -754,13 +752,6 @@ onMounted(async () => {
     }, 1800)
 
     scheduleS5MapCenter()
-    const onOrientationChange = () => {
-        scheduleS5MapCenter()
-    }
-    window.addEventListener('orientationchange', onOrientationChange)
-    s5OrientationCleanup = () => {
-        window.removeEventListener('orientationchange', onOrientationChange)
-    }
 
     if (typeof ResizeObserver !== 'undefined') {
         s5MapResizeObserver = new ResizeObserver(() => {
@@ -793,7 +784,6 @@ onMounted(async () => {
 onUnmounted(() => {
     s3ScrollCleanup?.()
     mapScrollCleanup?.()
-    s5OrientationCleanup?.()
     s5MapResizeObserver?.disconnect()
     s5MapResizeObserver = null
     if (s5MapCenterRafId) cancelAnimationFrame(s5MapCenterRafId)
@@ -2157,7 +2147,6 @@ onUnmounted(() => {
             display: block;
             overflow-x: auto;
             overflow-y: hidden;
-            -webkit-overflow-scrolling: touch;
             overscroll-behavior-x: contain;
             touch-action: pan-x pinch-zoom;
             scroll-snap-type: x proximity;
@@ -2265,7 +2254,6 @@ onUnmounted(() => {
             display: block;
             overflow-x: auto;
             overflow-y: hidden;
-            -webkit-overflow-scrolling: touch;
             overscroll-behavior-x: contain;
             touch-action: pan-x pinch-zoom;
             scroll-snap-type: x proximity;
