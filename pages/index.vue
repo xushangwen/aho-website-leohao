@@ -22,7 +22,7 @@
                     :key="index"
                 >
                     <template v-if="item.cover[0] && videoTester(item.cover[0])">
-                        <video class="cover" muted loop autoplay playsinline>
+                        <video class="cover" muted loop autoplay playsinline preload="metadata" disablepictureinpicture>
                             <source
                                 v-for="(videoItem, videoIndex) in item.cover"
                                 :key="`videoIndex${videoIndex}`"
@@ -97,7 +97,7 @@
 
         <section class="s2">
             <div class="bg">
-                <img src="/images/home/application_bg.jpg" alt="">
+                <img src="/images/home/application_bg.jpg" alt="" loading="lazy" decoding="async">
             </div>
             <div class="wrap">
                 <div class="s-t">{{ $t('home.applicationTitle') }}</div>
@@ -146,7 +146,7 @@
                         <div class="l"></div>
                     </div>
                     <div class="right">
-                        <img :src="item.cover" alt="">
+                        <img :src="item.cover" alt="" loading="lazy" decoding="async">
                     </div>
                 </div>
             </div>
@@ -177,21 +177,23 @@
             </div>
             <div class="s5-map-wrap" ref="elS5MapWrap">
                 <div class="s5-map-zoom" ref="elS5MapZoom">
-                <img src="/images/home/world-map.svg" class="s5-map-img" alt="world map" />
+                <img src="/images/home/world-map.svg" class="s5-map-img" alt="world map" loading="lazy" decoding="async" />
                 <svg
+                    ref="elS5MarkersSvg"
                     class="s5-markers-svg"
-                    viewBox="0 0 800 450"
+                    viewBox="50 60 660 330"
                     preserveAspectRatio="xMidYMid meet"
                     role="img"
                     :aria-label="$t('home.serviceTitle')"
                     @mouseleave="onMarkerLeave"
                 >
                     <!-- 全区域事件捕获层，点击空白处清除tooltip -->
-                    <rect x="0" y="0" width="800" height="450" fill="transparent" style="pointer-events:all" @click="clearMapSelection" />
-                    <template v-for="(marker, idx) in filteredMarkers" :key="marker.name + marker.type">
+                    <rect x="50" y="60" width="660" height="330" fill="transparent" style="pointer-events:all" @click="clearMapSelection" />
+                    <template v-for="(marker, idx) in filteredMarkers" :key="marker.key">
                         <g
-                            class="s5-marker-g"
+                            :class="['s5-marker-g', { 'is-active': isMarkerActive(marker) }]"
                             :ref="el => setMarkerAnchor(marker, el)"
+                            :style="{ '--marker-color': markerColors[marker.type] }"
                             role="button"
                             tabindex="0"
                             :aria-label="marker.name"
@@ -240,9 +242,6 @@
                                 :class="{ 'marker-visible': statusS5 }"
                                 :style="{
                                     transitionDelay: isMarkerActive(marker) ? '0ms' : `${idx * 40}ms`,
-                                    filter: isMarkerActive(marker)
-                                        ? `drop-shadow(0 0 8px ${markerColors[marker.type]})`
-                                        : 'drop-shadow(0 1px 2px rgba(0,0,0,0.15))',
                                 }"
                             />
                         </g>
@@ -267,7 +266,7 @@
                     <button class="s5-fbtn" :class="{ active: activeFilter === 'all' }" @click="activeFilter = 'all'">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4zM4 16h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"/></svg>
                         <span class="s5-flabel">{{ $t('home.serviceAllLabel') }}</span>
-                        <span class="s5-fcount">34</span>
+                        <span class="s5-fcount">{{ markerCounts.all }}</span>
                     </button>
                     <button v-for="cat in filterCategories" :key="cat.type" class="s5-fbtn" :class="{ active: activeFilter === cat.type }" @click="activeFilter = cat.type">
                         <span class="s5-fdot" :style="{ backgroundColor: cat.color, boxShadow: `0 0 8px ${cat.color}50` }"></span>
@@ -290,13 +289,7 @@
 <script setup>
 import useEventStore from "@/stores/event";
 
-import { useStatusStore} from "@/stores/status";
-import { productsCate1} from "@/mock/products";
-import BlurText from "@/components/motion/BlurText.vue";
-import {setPageLayout} from "#app";
-
 const eventStore = useEventStore()
-const {throttle} = useCommon()
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const aboutPath = computed(() => localePath('/about'))
@@ -305,16 +298,8 @@ const newsPath = computed(() => localePath('/news'))
 definePageMeta({
     layout: 'home',
 })
-// definePageMeta({
-//     layout: 'home'
-// })
-
-const handleAnimationComplete = () => {
-    console.log('All animations complete!')
-}
 
 const appConfig = useAppConfig()
-const runtimeConfig = useRuntimeConfig()
 
 const bannerSlides = ref(appConfig.clientConfig.indexBanner)
 const indexApplication = ref(appConfig.clientConfig.indexApplication)
@@ -358,12 +343,11 @@ function videoTester(url) {
 }
 
 /***application start***/
-const docScrollTop = computed(() => eventStore.docScrollTop)
 const windowHeight = computed(() => eventStore.windowHeight)
 const windowWidth = computed(() => eventStore.windowWidth)
 const elApplication = ref(null)
 const elS3 = ref(null)
-let headerHeight, s3Height, itemLength, lastChildHeight, step
+let headerHeight, itemLength, lastChildHeight, step
 
 // 初始化前必须先重置所有 class，确保 getBoundingClientRect 读到正确的自然高度
 function initApplicationItem() {
@@ -423,7 +407,7 @@ function updateApplicationItem() {
 // 窗口尺寸变化时重新初始化（防止高度/间距错位）
 watch(windowHeight, initApplicationItem)
 watch(windowWidth, initApplicationItem)
-watch(windowWidth, async () => {
+watch([windowWidth, windowHeight], async () => {
     await nextTick()
     scheduleS5MapCenter()
 })
@@ -434,21 +418,18 @@ watch(windowWidth, async () => {
 const elS5Section = ref(null)
 const elS5MapWrap = ref(null)
 const elS5MapZoom = ref(null)
+const elS5MarkersSvg = ref(null)
 const statusS5 = ref(false)
 const activeFilter = ref('all')
 const S5_TOUCH_BREAKPOINT = 1024
+const S5_TABLET_MIN = 768
+const S5_PHONE_MAX = 767
+const S5_MAP_VIEWBOX_WIDTH = 660
+const S5_MAP_VIEWBOX_HEIGHT = 330
+const S5_MAP_VIEWBOX_ORIGIN_X = 50
+const S5_MAP_VIEWBOX_ORIGIN_Y = 60
 
 const markerColors = { customer: '#FF6400', business: '#1E3296', rd: '#FFB432' }
-const filterCategories = computed(() => [
-    { type: 'customer', color: '#FF6400', label: t('home.catCustomer'), count: 27 },
-    { type: 'business', color: '#1E3296', label: t('home.catBusiness'), count: 5 },
-    { type: 'rd', color: '#FFB432', label: t('home.catRd'), count: 3 },
-])
-const statsCards = computed(() => [
-    { value: '27+', color: '#FF6400', label: t('home.statRegions') },
-    { value: '5', color: '#1E3296', label: t('home.catBusiness') },
-    { value: '3', color: '#FFB432', label: t('home.catRd') },
-])
 
 // Pacific-centered Miller cylindrical
 // 通过“无缝窗口”展开经度，把西半球整体平移到右侧，避免左右边缘切开国家。
@@ -481,11 +462,11 @@ function isS5TouchLayout() {
 }
 
 function isS5TabletLayout() {
-    return windowWidth.value >= 768 && windowWidth.value <= S5_TOUCH_BREAKPOINT
+    return windowWidth.value >= S5_TABLET_MIN && windowWidth.value <= S5_TOUCH_BREAKPOINT
 }
 
 function isS5PhoneLayout() {
-    return windowWidth.value > 0 && windowWidth.value < 768
+    return windowWidth.value > 0 && windowWidth.value <= S5_PHONE_MAX
 }
 
 function getMarkerSize(type) {
@@ -539,8 +520,28 @@ const allLocations = [
     { name: '泰国', nameEn: 'Thailand', coords: [100.5, 13.8], type: 'rd' },
 ]
 
+const markerCounts = computed(() =>
+    allLocations.reduce((counts, location) => {
+        counts.all += 1
+        counts[location.type] += 1
+        return counts
+    }, { all: 0, customer: 0, business: 0, rd: 0 })
+)
+
+const filterCategories = computed(() => [
+    { type: 'customer', color: '#FF6400', label: t('home.catCustomer'), count: markerCounts.value.customer },
+    { type: 'business', color: '#1E3296', label: t('home.catBusiness'), count: markerCounts.value.business },
+    { type: 'rd', color: '#FFB432', label: t('home.catRd'), count: markerCounts.value.rd },
+])
+const statsCards = computed(() => [
+    { value: `${markerCounts.value.customer}+`, color: '#FF6400', label: t('home.statRegions') },
+    { value: String(markerCounts.value.business), color: '#1E3296', label: t('home.catBusiness') },
+    { value: String(markerCounts.value.rd), color: '#FFB432', label: t('home.catRd') },
+])
+
 const projectedMarkers = computed(() =>
-    allLocations.map(loc => ({
+    allLocations.map((loc, index) => ({
+        key: `${loc.type}-${index}`,
         ...projectPacificMiller(loc.coords[0], loc.coords[1]),
         name: locale.value === 'en' ? (loc.nameEn || loc.name) : loc.name,
         type: loc.type
@@ -552,6 +553,7 @@ const filteredMarkers = computed(() =>
 
 let s5Observer = null
 function initS5Observer() {
+    if (!elS5Section.value) return
     s5Observer = new IntersectionObserver((entries) => {
         entries.forEach(e => { statusS5.value = e.isIntersecting })
     }, { threshold: 0.3 })
@@ -581,9 +583,6 @@ function setMarkerAnchor(marker, el) {
 }
 
 function computeTooltipPos(marker, anchorEl = null) {
-    const mapWrap = elS5MapWrap.value
-    if (!mapWrap) return
-
     const markerGroup = anchorEl || markerAnchorEls.get(getMarkerKey(marker))
     const markerDot = markerGroup?.querySelector?.('.marker-dot')
     if (markerDot) {
@@ -595,7 +594,7 @@ function computeTooltipPos(marker, anchorEl = null) {
         return
     }
 
-    const svgEl = mapWrap.querySelector('.s5-markers-svg')
+    const svgEl = elS5MarkersSvg.value
     if (!svgEl) return
     if (typeof svgEl.createSVGPoint === 'function') {
         const point = svgEl.createSVGPoint()
@@ -613,19 +612,23 @@ function computeTooltipPos(marker, anchorEl = null) {
     }
 
     const svgRect = svgEl.getBoundingClientRect()
-    const scaleX = svgRect.width / 800
-    const scaleY = svgRect.height / 450
+    const scaleX = svgRect.width / S5_MAP_VIEWBOX_WIDTH
+    const scaleY = svgRect.height / S5_MAP_VIEWBOX_HEIGHT
     tooltipScreenPos.value = {
-        x: svgRect.left + marker.x * scaleX,
-        y: svgRect.top + marker.y * scaleY,
+        x: svgRect.left + (marker.x - S5_MAP_VIEWBOX_ORIGIN_X) * scaleX,
+        y: svgRect.top + (marker.y - S5_MAP_VIEWBOX_ORIGIN_Y) * scaleY,
     }
 }
 
 let s5MapCenterRafId = null
+function getS5MapContentWidth() {
+    const mapZoom = elS5MapZoom.value
+    if (!mapZoom) return 0
+    return mapZoom.getBoundingClientRect().width || mapZoom.scrollWidth || mapZoom.clientWidth || 0
+}
 function centerS5MapOnChina() {
     const mapWrap = elS5MapWrap.value
-    const mapZoom = elS5MapZoom.value
-    if (!mapWrap || !mapZoom) return
+    if (!mapWrap) return
 
     if (!isS5TouchLayout()) {
         mapWrap.scrollLeft = 0
@@ -633,14 +636,15 @@ function centerS5MapOnChina() {
         return
     }
 
-    const contentWidth = mapZoom.scrollWidth || mapZoom.clientWidth || mapWrap.scrollWidth
-    if (!contentWidth) return
+    const contentWidth = getS5MapContentWidth()
+    const wrapWidth = mapWrap.clientWidth
+    if (!contentWidth || !wrapWidth) return
 
-    const targetCenterX = (contentWidth * s5ChinaFocusPoint.x) / 800
-    const maxScrollLeft = Math.max(0, contentWidth - mapWrap.clientWidth)
+    const targetCenterX = (contentWidth * (s5ChinaFocusPoint.x - S5_MAP_VIEWBOX_ORIGIN_X)) / S5_MAP_VIEWBOX_WIDTH
+    const maxScrollLeft = Math.max(0, contentWidth - wrapWidth)
     mapWrap.scrollLeft = Math.min(
         maxScrollLeft,
-        Math.max(0, targetCenterX - mapWrap.clientWidth / 2)
+        Math.max(0, targetCenterX - wrapWidth / 2)
     )
 
     if (hoveredMarker.value) computeTooltipPos(hoveredMarker.value)
@@ -650,8 +654,10 @@ function scheduleS5MapCenter() {
     if (!process.client) return
     if (s5MapCenterRafId) cancelAnimationFrame(s5MapCenterRafId)
     s5MapCenterRafId = requestAnimationFrame(() => {
-        s5MapCenterRafId = null
-        centerS5MapOnChina()
+        s5MapCenterRafId = requestAnimationFrame(() => {
+            s5MapCenterRafId = null
+            centerS5MapOnChina()
+        })
     })
 }
 
@@ -695,10 +701,31 @@ function clearMapSelection() {
     }
 }
 
+watch(filteredMarkers, async (nextMarkers) => {
+    const visibleKeys = new Set(nextMarkers.map((marker) => marker.key))
+
+    if (clickedKey.value && !visibleKeys.has(clickedKey.value)) {
+        clickedKey.value = null
+    }
+
+    if (!hoveredMarker.value) return
+
+    const nextMarker = nextMarkers.find((marker) => marker.key === hoveredMarker.value.key)
+    if (!nextMarker) {
+        hoveredMarker.value = null
+        return
+    }
+
+    hoveredMarker.value = { key: nextMarker.key, ...nextMarker }
+    await nextTick()
+    computeTooltipPos(nextMarker)
+}, { flush: 'post' })
+
 
 let s3ScrollCleanup = null
 let mapScrollCleanup = null
 let s5MapResizeObserver = null
+let s5OrientationCleanup = null
 onMounted(async () => {
     await nextTick()
     initApplicationItem()
@@ -727,6 +754,13 @@ onMounted(async () => {
     }, 1800)
 
     scheduleS5MapCenter()
+    const onOrientationChange = () => {
+        scheduleS5MapCenter()
+    }
+    window.addEventListener('orientationchange', onOrientationChange)
+    s5OrientationCleanup = () => {
+        window.removeEventListener('orientationchange', onOrientationChange)
+    }
 
     if (typeof ResizeObserver !== 'undefined') {
         s5MapResizeObserver = new ResizeObserver(() => {
@@ -759,6 +793,7 @@ onMounted(async () => {
 onUnmounted(() => {
     s3ScrollCleanup?.()
     mapScrollCleanup?.()
+    s5OrientationCleanup?.()
     s5MapResizeObserver?.disconnect()
     s5MapResizeObserver = null
     if (s5MapCenterRafId) cancelAnimationFrame(s5MapCenterRafId)
@@ -920,6 +955,7 @@ onUnmounted(() => {
 .main-banner {
     width: 100%;
     height: 100vh;
+    height: 100dvh;
     background: whitesmoke;
     .banner-prev, .banner-next {
         width: 72px;
@@ -947,6 +983,10 @@ onUnmounted(() => {
         }
         @include mo {
             display: none;
+        }
+
+        @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+            background-color: rgba(255, 255, 255, 0.74);
         }
     }
     .banner-prev {
@@ -1760,12 +1800,25 @@ onUnmounted(() => {
 }
 
 .s5 {
+    --s5-map-ratio: 2;
+    --s5-map-ratio-height: 50%;
+    --s5-viewport-height: 100vh;
+    --s5-desktop-map-budget: clamp(236px, 24vh, 304px);
+
     width: 100%;
-    height: 100vh;
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    // 底部留白为绝对定位的 s5-bottom（filters+stats）腾出空间
+    padding-bottom: clamp(160px, 18vh, 220px);
     position: relative;
-    overflow: visible;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
+
+    @supports (height: 100dvh) {
+        --s5-viewport-height: 100dvh;
+    }
 
     .s5-bg {
         position: absolute;
@@ -1776,35 +1829,58 @@ onUnmounted(() => {
 
     .s5-map-wrap {
         position: relative;
-        flex: 1;
-        overflow: visible;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        // 侧边留极小内边距即可，底部不留（s5-bottom 绝对定位悬浮）
+        padding: clamp(8px, 1vw, 16px) clamp(12px, 1.5vw, 24px) 0;
+        overflow: hidden;
         z-index: 1;
+        touch-action: pan-x pan-y pinch-zoom;
 
         .s5-map-zoom {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transform: translate3d(88px, -96px, 0) scale(1.34);
-            transform-origin: center center;
+            position: relative;
+            flex: 0 1 auto;
+            width: calc((var(--s5-viewport-height) - var(--s5-desktop-map-budget)) * var(--s5-map-ratio));
+            max-width: 100%;
+            min-width: 0;
+            transform: none;
+
+            &::before {
+                content: '';
+                display: block;
+                padding-top: var(--s5-map-ratio-height);
+            }
         }
-        .s5-map-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            opacity: 0.9;
-        }
+
+        .s5-map-img,
         .s5-markers-svg {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
+        }
+
+        .s5-map-img {
+            display: block;
+            object-fit: contain;
+            object-position: center;
+            opacity: 0.96;
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .s5-markers-svg {
             overflow: visible;
-            /* 主标记点：初始不可见，进入视口后淡入 */
+            transform: translateZ(0);
+
             circle.marker-dot {
                 opacity: 0;
-                transition: opacity 0.5s ease, filter 0.15s ease-out;
+                transition: opacity 0.45s ease, r 0.18s ease, stroke-width 0.18s ease, filter 0.18s ease-out;
+                filter: drop-shadow(0 1px 2px rgba(15, 23, 42, 0.18));
+                will-change: opacity, filter;
                 &.marker-visible {
                     opacity: 1;
                 }
@@ -1813,6 +1889,11 @@ onUnmounted(() => {
                 cursor: pointer;
                 outline: none;
                 &:focus { outline: none; }
+                &.is-active {
+                    circle.marker-dot {
+                        filter: drop-shadow(0 0 8px var(--marker-color));
+                    }
+                }
                 &:focus-visible circle.marker-dot {
                     filter: drop-shadow(0 0 6px rgba(255,255,255,0.8)) !important;
                 }
@@ -1833,11 +1914,13 @@ onUnmounted(() => {
             border-radius: 4px;
             font-size: 13px;
             font-weight: 500;
+            max-width: calc(100vw - 24px);
+            overflow: hidden;
+            text-overflow: ellipsis;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
             pointer-events: none;
             white-space: nowrap;
             z-index: 9999;
-            /* 底部三角箭头（旋转方块） */
             &::after {
                 content: '';
                 position: absolute;
@@ -1871,6 +1954,7 @@ onUnmounted(() => {
             font-size: 18px;
             max-width: 560px;
             margin: 0 auto;
+            overflow-wrap: break-word;
         }
     }
 
@@ -1882,8 +1966,8 @@ onUnmounted(() => {
         z-index: 10;
         padding-bottom: 0;
         pointer-events: none;
-        width: auto;
-        max-width: 100%;
+        width: 100%;
+        max-width: 1180px;
         padding-left: 16px;
         padding-right: 16px;
     }
@@ -1912,7 +1996,7 @@ onUnmounted(() => {
         backdrop-filter: $glass-blur;
         -webkit-backdrop-filter: $glass-blur;
         cursor: pointer;
-        transition: all 0.3s;
+        transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.3s;
         &:hover {
             background: $glass-bg;
             box-shadow: $glass-shadow;
@@ -1978,6 +2062,75 @@ onUnmounted(() => {
         margin-top: 4px;
     }
 
+    .s5-scroll-hint {
+        display: none;
+    }
+
+    // PC端：宽度驱动 — 地图撑满容器宽度，高度由 aspect-ratio 自动决定，完整显示不裁切
+    @media screen and (min-width: 1025px) {
+        @supports (aspect-ratio: 1 / 1) {
+            .s5-map-wrap {
+                .s5-map-zoom {
+                    width: 100%;
+                    height: auto;
+                    aspect-ratio: 660 / 330;
+
+                    &::before {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+    // 移动端/iPad：以宽度为基准，aspect-ratio 撑开高度，不裁切
+    @media screen and (max-width: 1024px) {
+        @supports (aspect-ratio: 1 / 1) {
+            .s5-map-wrap {
+                .s5-map-zoom {
+                    aspect-ratio: 660 / 330;
+
+                    &::before {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+        .s5-tooltip-div {
+            background: rgba(255, 255, 255, 0.96);
+
+            &::after {
+                background: rgba(255, 255, 255, 0.96);
+            }
+        }
+
+        .s5-fbtn,
+        .s5-stat {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(203, 213, 225, 0.88);
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+        }
+
+        .s5-scroll-hint {
+            background: rgba(15, 23, 42, 0.72);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .s5-markers-svg circle.marker-dot,
+        .s5-fbtn,
+        .s5-stat {
+            transition: none;
+        }
+
+        .s5-pulse-circle,
+        .s5-scroll-hint i {
+            animation: none !important;
+        }
+    }
+
     @include lap {
         .s5-header {
             .s5-desc { font-size: 16px; }
@@ -1986,30 +2139,31 @@ onUnmounted(() => {
             padding: 12px 24px;
         }
     }
-    @include tab {
+    @media screen and (min-width: 768px) and (max-width: 1024px) {
         height: auto;
         min-height: 0;
+        padding-bottom: 0;
         overflow: hidden;
 
         .s5-header {
-            padding-top: calc(var(--HEADER_HEIGHT_MOB) + 6px);
-            padding-bottom: 4px;
+            padding-top: calc(var(--HEADER_HEIGHT_MOB) + 2px);
+            padding-bottom: 0;
             .s-a {
-                font-size: 15px;
-                padding: 0 28px;
-                text-wrap: balance;
+                font-size: 14px;
+                padding: 0 24px;
             }
         }
         .s5-map-wrap {
-            display: flex;
-            align-items: center;
+            display: block;
             overflow-x: auto;
             overflow-y: hidden;
             -webkit-overflow-scrolling: touch;
             overscroll-behavior-x: contain;
+            touch-action: pan-x pinch-zoom;
+            scroll-snap-type: x proximity;
             flex: none;
-            height: 430px;
-            margin-top: 10px;
+            // 不设固定高度，由 s5-map-zoom 的 aspect-ratio 自然撑开，避免地图被裁切
+            margin-top: 6px;
             padding: 0;
             scrollbar-width: none;
             -ms-overflow-style: none;
@@ -2017,30 +2171,15 @@ onUnmounted(() => {
 
             .s5-map-zoom {
                 position: relative;
-                inset: auto;
-                flex: 0 0 auto;
-                width: 150vw;
-                min-width: 1100px;
+                width: clamp(1160px, 160vw, 1440px);
+                min-width: 1160px;
                 max-width: none;
-                aspect-ratio: 800 / 450;
-                height: auto;
-                display: block;
-                margin: 0 auto;
-                transform: none;
+                margin: 0;
+                scroll-snap-align: start;
             }
             .s5-map-img {
-                position: absolute;
-                inset: 0;
-                width: 100%;
-                height: 100%;
-                object-fit: fill;
-                object-position: center;
-            }
-            .s5-markers-svg {
-                position: absolute;
-                inset: 0;
-                width: 100%;
-                height: 100%;
+                object-fit: contain;
+                opacity: 0.98;
             }
         }
         .s5-bottom {
@@ -2049,15 +2188,15 @@ onUnmounted(() => {
             left: 0;
             transform: none;
             width: 100%;
-            padding: 12px 20px 22px;
+            padding: 6px 18px 10px;
         }
         .s5-scroll-hint {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 4px;
-            width: fit-content;
-            margin: 8px auto 0;
+            width: auto;
+            margin: 4px auto 0;
             background: rgba(0, 0, 0, 0.28);
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
@@ -2073,111 +2212,6 @@ onUnmounted(() => {
                 &.ri-arrow-left-s-line  { animation: s5-hint-left  1.8s ease-in-out infinite; }
                 &.ri-arrow-right-s-line { animation: s5-hint-right 1.8s ease-in-out infinite; }
             }
-        }
-    }
-    @include mo {
-        height: auto;
-        min-height: 0;
-        overflow: hidden;
-        .s5-header {
-            padding-top: calc(var(--HEADER_HEIGHT_MOB) + 4px);
-            padding-bottom: 2px;
-            .s-a {
-                font-size: 14px;
-                padding: 0 20px;
-                text-wrap: balance;
-            }
-        }
-        .s5-map-wrap {
-            height: clamp(359px, calc(105.6vw + 20px), 570px);
-            overflow-y: hidden;
-            margin-top: 6px;
-
-            .s5-map-zoom {
-                width: 300vw;
-                min-width: 960px;
-            }
-        }
-        .s5-bottom {
-            position: relative;
-            bottom: auto;
-            left: 0;
-            transform: none;
-            width: 100%;
-            padding: 8px 14px 14px;
-        }
-        // 全部按钮独占一行（fit-content居中），其余三个筛选按钮一行（3列）
-        .s5-filters {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 6px;
-            .s5-fbtn:first-child {
-                grid-column: 1 / -1;
-                width: fit-content;
-                margin: 0 auto;
-            }
-        }
-        .s5-stats {
-            gap: 6px;
-            padding: 0;
-            margin-top: 8px;
-        }
-        .s5-stat {
-            flex: 1;
-            min-width: 0;
-            padding: 8px 8px;
-            border-radius: 14px;
-        }
-        .s5-stat-num {
-            font-size: 22px;
-        }
-        .s5-stat-txt {
-            font-size: 10px;
-            white-space: nowrap;
-            line-height: 1.35;
-        }
-        .s5-fbtn {
-            padding: 6px 6px;
-            gap: 4px;
-            border-radius: 10px;
-        }
-        .s5-flabel { font-size: 10px; white-space: nowrap; }
-        .s5-fcount { font-size: 10px; }
-        .s5-fdot { width: 9px; height: 9px; }
-        .s5-scroll-hint {
-            margin: 4px auto 0;
-            padding: 5px 10px 5px 7px;
-            font-size: 11px;
-            i {
-                font-size: 14px;
-            }
-        }
-    }
-    @media screen and (min-width: 768px) and (max-width: 1024px) {
-        min-height: auto;
-
-        .s5-header {
-            padding-top: calc(var(--HEADER_HEIGHT_MOB) + 2px);
-            padding-bottom: 0;
-            .s-a {
-                font-size: 14px;
-                padding: 0 24px;
-            }
-        }
-        .s5-map-wrap {
-            height: clamp(443px, calc(58.1vw + 20px), 680px);
-            margin-top: 6px;
-
-            .s5-map-zoom {
-                width: 165vw;
-                min-width: 1200px;
-            }
-        }
-        .s5-scroll-hint {
-            margin-top: 4px;
-        }
-        .s5-bottom {
-            padding: 6px 18px 10px;
         }
         .s5-filters {
             gap: 6px;
@@ -2212,8 +2246,116 @@ onUnmounted(() => {
             font-size: 10px;
         }
     }
+
+    @media screen and (max-width: 767px) {
+        height: auto;
+        min-height: 0;
+        padding-bottom: 0;
+        overflow: hidden;
+        .s5-header {
+            padding-top: calc(var(--HEADER_HEIGHT_MOB) + 4px);
+            padding-bottom: 2px;
+            .s-a {
+                font-size: 14px;
+                padding: 0 20px;
+                text-wrap: balance;
+            }
+        }
+        .s5-map-wrap {
+            display: block;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-x: contain;
+            touch-action: pan-x pinch-zoom;
+            scroll-snap-type: x proximity;
+            // 不设固定高度，由 s5-map-zoom 的 aspect-ratio 自然撑开，避免地图被裁切
+            margin-top: 6px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            &::-webkit-scrollbar { display: none; }
+
+            .s5-map-zoom {
+                position: relative;
+                width: clamp(960px, 255vw, 1240px);
+                min-width: 960px;
+                margin: 0;
+                scroll-snap-align: start;
+            }
+            .s5-map-img {
+                object-fit: contain;
+                opacity: 0.98;
+            }
+        }
+        .s5-bottom {
+            position: relative;
+            bottom: auto;
+            left: 0;
+            transform: none;
+            width: 100%;
+            padding: 8px 14px 14px;
+        }
+        .s5-filters {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
+            .s5-fbtn:first-child {
+                grid-column: 1 / -1;
+                justify-self: center;
+            }
+        }
+        .s5-stats {
+            gap: 6px;
+            padding: 0;
+            margin-top: 8px;
+        }
+        .s5-stat {
+            flex: 1;
+            min-width: 0;
+            padding: 8px 8px;
+            border-radius: 14px;
+        }
+        .s5-stat-num {
+            font-size: 22px;
+        }
+        .s5-stat-txt {
+            font-size: 10px;
+            white-space: nowrap;
+            line-height: 1.35;
+        }
+        .s5-fbtn {
+            padding: 6px 6px;
+            gap: 4px;
+            border-radius: 10px;
+        }
+        .s5-flabel { font-size: 10px; white-space: nowrap; }
+        .s5-fcount { font-size: 10px; }
+        .s5-fdot { width: 9px; height: 9px; }
+        .s5-scroll-hint {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            width: auto;
+            margin: 4px auto 0;
+            background: rgba(0, 0, 0, 0.28);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            color: #fff;
+            padding: 5px 10px 5px 7px;
+            font-size: 11px;
+            border-radius: 100px;
+            pointer-events: none;
+            white-space: nowrap;
+            i {
+                font-size: 14px;
+                opacity: 0.8;
+                &.ri-arrow-left-s-line  { animation: s5-hint-left  1.8s ease-in-out infinite; }
+                &.ri-arrow-right-s-line { animation: s5-hint-right 1.8s ease-in-out infinite; }
+            }
+        }
+    }
 }
-.s5-scroll-hint { display: none; }
 
 @keyframes s5-hint-left {
     0%, 100% { transform: translateX(0);   opacity: 0.7; }
