@@ -167,12 +167,16 @@ function indexValueUpdate(index: number) {
             .t1 {
                 color: white;
                 font-size: fluid(24px);
+                text-align: center;
+                text-wrap: balance;
                 @include tab {
                     font-size: 20px;
                 }
                 @include mo {
                     font-size: 18px;
                     flex: 1;
+                    text-align: left;
+                    text-wrap: nowrap;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -186,6 +190,7 @@ function indexValueUpdate(index: number) {
                 font-size: fluid(18px, 16px);
                 overflow-wrap: break-word;
                 word-break: break-word;
+                white-space: pre-line;
                 @include mo {
                     display: none;
                 }
@@ -202,12 +207,14 @@ function indexValueUpdate(index: number) {
                 justify-content: flex-start;
                 align-items: flex-start;
                 .t1 {
-                    font-size: fluid(36px);
+                    font-size: fluid(26px);
+                    text-align: left;
+                    text-wrap: pretty;
                     @include tab {
-                        font-size: 26px;
+                        font-size: 22px;
                     }
                     @include mo {
-                        font-size: 24px;
+                        font-size: 22px;
                         flex: none;
                         white-space: normal;
                     }

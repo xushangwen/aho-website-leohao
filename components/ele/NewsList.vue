@@ -249,23 +249,26 @@ function getCategoryName(type) {
             }
         }
     }
-    .item:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, .2);
-        .mask {
-            .rect-1,
-            .rect-2 {
-                opacity: 0;
+    // 仅鼠标设备触发 hover，触摸屏不产生残留 hover 态
+    @media (hover: hover) and (pointer: fine) {
+        .item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, .2);
+            .mask {
+                .rect-1,
+                .rect-2 {
+                    opacity: 0;
+                }
+                .rect-1 {
+                    transform: translateX(-20px) translateY(-20px);
+                }
+                .rect-2 {
+                    transform: translateX(20px) translateY(20px);
+                }
             }
-            .rect-1 {
-                transform: translateX(-20px) translateY(-20px);
+            .norm {
+                transform: scale(1.1);
             }
-            .rect-2 {
-                transform: translateX(20px) translateY(20px);
-            }
-        }
-        .norm {
-            transform: scale(1.1);
         }
     }
 }

@@ -25,7 +25,7 @@
                             <div class="factory-meta">
                                 <div class="meta-item">
                                     <span class="label">{{ $t('contact.addressLabel') }}</span>
-                                    <span class="value">{{ company.address }}</span>
+                                    <span class="value" v-html="fmtAddr(company.address)"></span>
                                 </div>
                                 <div class="meta-item" v-if="company.zip">
                                     <span class="label">{{ $t('contact.zipLabel') }}</span>
@@ -127,6 +127,11 @@ const contactInfo = computed(() => [
     { icon: 'ri-phone-line', label: t('contact.phoneLabel'), value: t('contact.phoneNumber') },
     { icon: 'ri-mail-line', label: t('contact.emailLabel'), value: t('contact.emailAddress') },
 ])
+
+// \n → <br>；CSS 控制 br 在桌面隐藏、手机显示，桌面不产生空格
+function fmtAddr(addr) {
+    return addr.replace(/\n/g, '<br>')
+}
 </script>
 
 <style scoped lang="scss">
@@ -274,6 +279,9 @@ const contactInfo = computed(() => [
                     .value {
                         color: var(--main-dark-gray);
                         font-weight: 500;
+                        text-wrap: pretty;
+                        word-break: keep-all;
+                        overflow-wrap: break-word;
                     }
                 }
             }
@@ -448,5 +456,13 @@ const contactInfo = computed(() => [
             }
         }
     }
+}
+</style>
+
+<style>
+/* v-html 注入的 <br> 不受 scoped 控制，需用全局样式 */
+.factory-meta .value br { display: none; }
+@media (max-width: 992px) {
+    .factory-meta .value br { display: inline; }
 }
 </style>
