@@ -286,9 +286,7 @@ const profileData = [
             '亚洲、欧洲、北美洲、南美洲、大洋洲、非洲'
         ],
         abstEn: ['Customers in 20+ countries and regions', 'Asia, Europe, North America, South America, Oceania, Africa'],
-        icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
-            '<path d="M12 22C6.46999 22 1.98999 17.52 1.98999 12C1.98999 6.47 6.45999 2 11.99 2C17.51 2 21.99 6.47 21.99 11.99C21.99 17.51 17.51 21.99 11.99 21.99L12 22ZM12 20C16.41 20 20 16.41 20 12C20 7.58 16.41 4 12 4C7.57999 4 3.98999 7.58 3.98999 11.99C3.98899 16.4 7.56999 19.99 11.99 19.99L12 20ZM13 13H16V15H13V17H11V15H7.98999V13H10.99V12H7.97999V10H10.56L8.42999 7.87L9.83999 6.45L11.96 8.57L14.08 6.44L15.49 7.85L13.36 9.97H15.94V11.97H12.94V12.97L13 13Z" fill="#DCDCDC"/>\n' +
-            '</svg>\n'
+        icon: '<i class="ri-earth-line"></i>'
     }
 ]
 

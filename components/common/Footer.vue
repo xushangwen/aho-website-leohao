@@ -7,7 +7,7 @@
         <div class="top">
             <div class="wrap">
                 <div class="logo">
-                    <svg width="181" height="51" viewBox="0 0 181 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="150" height="42" viewBox="0 0 181 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_2269_785)">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M0 50.4332L27.0957 3.50952H57.3644V50.4332H43.7441V30.6447C43.0529 30.6447 42.4144 31.0134 42.072 31.6124L36.9834 40.4271H21.5001L15.7268 50.4332H0ZM52.0058 15.7671H35.7392L27.7869 29.5388H43.7376V18.5056L52.0651 16.274C52.3547 16.195 52.3021 15.7671 51.9992 15.7671H52.0058Z" fill="#1E3296"/>
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M181 50.4332H167.38V25.082H143.694V50.4332H130.074V0.566895H143.694V23.9695C144.385 23.9695 145.024 23.6009 145.366 23.0018L151.245 12.8245H174.193C177.952 12.8245 181 15.8724 181 19.6313V50.4332Z" fill="#FF6400"/>
@@ -156,16 +156,16 @@ footer {
         }
         .logo svg {
             @include lap {
-                width: 140px;
+                width: 120px;
                 height: auto;
             }
             @include mo {
-                width: 120px;
+                width: 100px;
                 height: auto;
             }
         }
         .slogan {
-            font-size: fluid(30px, 18px);
+            font-size: fluid(22px, 14px);
             font-weight: 400;
             text-align: right;
             .en {

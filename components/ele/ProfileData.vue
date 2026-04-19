@@ -155,6 +155,10 @@ const { locale } = useI18n()
             :deep(svg path) {
                 fill: var(--main-blue);
             }
+            :deep(i) {
+                font-size: 24px;
+                color: var(--main-blue);
+            }
         }
     }
 }
